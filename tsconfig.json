@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "outDir": "./dist/",  // path to output directory
+    "sourceMap": true,    // allow sourcemap support
+    "strictNullChecks": true,   // enable strict null checks as a best practice
+    "module": "commonjs",     // specify module code generation
+    "target": "es6",     // specify ECMAScript target version
+    "allowJs": true,
+    "noImplicitAny": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "lib": [
+      "ES2015"
+    ],
+    "typeRoots": [
+      "node_modules/@types",
+      "node_modules/types"
+    ]
+  },
+  "include": [
+    "./src/",
+    "./app/",
+    "./routes/"
+  ],
+  "exclude": [
+    "node_modules",
+    "**/*.spec.ts"
+  ]
+}

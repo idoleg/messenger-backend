@@ -1,0 +1,9 @@
+.idea
+
+.env
+package-lock.json
+node_modules
+dist
+
+test/.nyc-tmp
+test/.nyc-coverage

@@ -1,0 +1,55 @@
+{
+  "name": "cometserver",
+  "version": "0.0.1",
+  "description": "real time server",
+  "main": "index.js",
+  "author": "Oleg Shikov <oleg.shikov@ya.ru>",
+  "scripts": {
+    "start": "node dist/app",
+    "dev": "nodemon  dist/app",
+    "lint": "tslint -p tslint.json --format stylish",
+    "fix": "tslint -p tslint.json --fix --format stylish",
+    "test": "mocha --reporter spec -r ts-node/register test/**/*.ts",
+    "test-coverage": "nyc mocha --reporter spec -r ts-node/register test/**/*.ts"
+  },
+  "license": "GPL",
+  "dependencies": {
+    "chalk": "^2.4.1",
+    "dot-prop": "^4.2.0",
+    "dotenv": "^6.2.0",
+    "moment": "^2.23.0",
+    "websocket": "^1.0.28"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.1.7",
+    "@types/dot-prop": "^4.2.0",
+    "@types/dotenv": "^6.1.0",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.18",
+    "chai": "^4.2.0",
+    "mocha": "^5.2.0",
+    "nodemon": "^1.18.9",
+    "nyc": "^13.1.0",
+    "source-map-support": "^0.5.9",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.12.0",
+    "typescript": "^3.2.2"
+  },
+  "nyc": {
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "dist",
+      "config"
+    ],
+    "reporter": [
+      "html", "text"
+    ],
+    "temp-dir": "test/.nyc-tmp",
+    "report-dir": "test/.nyc-coverage",
+    "all": true
+  }
+}
