@@ -6,4 +6,5 @@ node_modules
 dist
 
 test/.nyc-tmp
-test/.nyc-coverage
+test/.coverage
+test/.report

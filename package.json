@@ -5,12 +5,14 @@
   "main": "index.js",
   "author": "Oleg Shikov <oleg.shikov@ya.ru>",
   "scripts": {
-    "start": "node dist/app",
-    "dev": "nodemon  dist/app",
+    "build": "tsc",
+    "start": "set APP_DEBUG=false & node dist/app",
+    "dev": "set APP_DEBUG=true & nodemon  dist/app",
     "lint": "tslint -p tslint.json --format stylish",
     "fix": "tslint -p tslint.json --fix --format stylish",
-    "test": "mocha --reporter spec -r ts-node/register test/**/*.ts",
-    "test-coverage": "nyc mocha --reporter spec -r ts-node/register test/**/*.ts"
+    "test": "mocha --reporter spec",
+    "test:report": "mocha --reporter mochawesome --reporter-options reportDir=test/.report",
+    "test:coverage": "nyc mocha --reporter spec"
   },
   "license": "GPL",
   "dependencies": {
@@ -26,10 +28,14 @@
     "@types/dotenv": "^6.1.0",
     "@types/mocha": "^5.2.5",
     "@types/node": "^10.12.18",
+    "@types/sinon": "^7.0.3",
     "chai": "^4.2.0",
+    "cz-customizable": "^5.3.0",
     "mocha": "^5.2.0",
+    "mochawesome": "^3.1.1",
     "nodemon": "^1.18.9",
     "nyc": "^13.1.0",
+    "sinon": "^7.2.2",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.0",
@@ -43,13 +49,23 @@
     "exclude": [
       "**/*.d.ts",
       "dist",
-      "config"
+      "config",
+      "test"
     ],
     "reporter": [
-      "html", "text"
+      "html",
+      "text"
     ],
     "temp-dir": "test/.nyc-tmp",
-    "report-dir": "test/.nyc-coverage",
+    "report-dir": "test/.coverage",
     "all": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "commitizen.js"
+    }
   }
 }
