@@ -20,10 +20,12 @@
     "dot-prop": "^4.2.0",
     "dotenv": "^6.2.0",
     "moment": "^2.23.0",
+    "mongoose": "^5.4.2",
     "pretty-error": "^2.1.1",
     "websocket": "^1.0.28"
   },
   "devDependencies": {
+    "@types/mongoose": "^5.3.7",
     "@types/chai": "^4.1.7",
     "@types/dot-prop": "^4.2.0",
     "@types/dotenv": "^6.1.0",
