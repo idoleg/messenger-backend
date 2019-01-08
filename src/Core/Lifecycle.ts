@@ -22,6 +22,18 @@ const aliases: { [index: string]: string } = {
 };
 const hooks: Hooks[] = ["beforeInit", "init", "afterInit", "beforeDestroy", "destroyed", "errorDestroyed"];
 
+const nodeExitEvents = [
+    {name: "exit"},
+    {name: "SIGINT"},
+    {name: "SIGUSR1"},
+    {name: "SIGUSR2"},
+];
+
+const nodeUncaughtErrorEvents = [
+    {name: "uncaughtException", readableName: "Unhandled Exception"},
+    {name: "unhandledRejection", readableName: "Unhandled Rejection"},
+];
+
 /**
  *
  * Event names:
@@ -49,10 +61,30 @@ export default class Lifecycle {
     constructor() {
 
         process.on("beforeExit", () => {
-            if (this.status !== Status.WORKING) { return; }
+            if (this.status !== Status.WORKING) {
+                return;
+            }
 
             Logging.notice("No more work. Exiting...");
             this.destroy();
+        });
+
+        nodeExitEvents.forEach((event) => {
+            process.on(event.name as any, () => {
+                if (this.status !== Status.WORKING) {
+                    return;
+                }
+                Logging.warning("Forced exit");
+                this.destroy();
+            });
+        });
+
+        nodeUncaughtErrorEvents.forEach((event) => {
+            process.on(event.name as any, (error: object) => {
+                Logging.error(event.readableName + ":");
+                Logging.renderError(error);
+                this.destroy();
+            });
         });
     }
 
@@ -68,7 +100,9 @@ export default class Lifecycle {
 
             return;
         }
-        if (!callback) { return; }
+        if (!callback) {
+            return;
+        }
 
         if (aliases[name]) {
             name = aliases[name];

@@ -57,10 +57,6 @@ export default class Console extends EventEmitter {
             output: this.output,
         });
 
-        this.readline.on("SIGINT", () => {
-            this.$app.stop();
-        });
-
         this.waitingForCommand();
         this.emit("initReadline");
     }
