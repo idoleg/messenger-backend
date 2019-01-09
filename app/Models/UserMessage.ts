@@ -5,6 +5,7 @@ const UserMessageSchema = new Schema({
     recipient: {type: String, required: true},
     text: {type: String, required: true},
     read: {type: Boolean, default: false},
+}, {
     timestamps: {createdAt: "sent_at", updatedAt: false},
 });
 

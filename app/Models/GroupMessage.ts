@@ -4,6 +4,7 @@ const GroupMessageSchema = new Schema({
     sender: {type: String, required: true},
     group: {type: String, required: true},
     text: {type: String, required: true},
+}, {
     timestamps: {createdAt: "sent_at", updatedAt: false},
 });
 
