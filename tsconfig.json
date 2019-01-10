@@ -19,8 +19,7 @@
   },
   "include": [
     "./src/",
-    "./app/",
-    "./routes/"
+    "./app/"
   ],
   "exclude": [
     "node_modules",

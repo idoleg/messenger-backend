@@ -20,13 +20,17 @@
     "dot-prop": "^4.2.0",
     "dotenv": "^6.2.0",
     "express": "^4.16.4",
+    "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
     "mongoose": "^5.4.2",
     "pretty-error": "^2.1.1",
+    "validator": "^10.10.0",
     "websocket": "^1.0.28"
   },
   "devDependencies": {
     "@types/express": "^4.16.0",
+    "@types/jsonwebtoken": "^8.3.0",
+    "@types/validator": "^10.9.0",
     "@types/mongoose": "^5.3.7",
     "@types/chai": "^4.1.7",
     "@types/dot-prop": "^4.2.0",
