@@ -79,6 +79,10 @@ class Logging extends EventEmitter {
     }
 
     public renderError(error: object) {
+        if (this.paused) {
+            return;
+        }
+
         this.output.write("\r" + this.pe.render(error));
     }
 
