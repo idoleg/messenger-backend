@@ -1,13 +1,13 @@
+import cors, {CorsOptions} from "cors";
 import express, {Express, Router} from "express";
 import {Server} from "http";
-import {promisify} from "util";
 import Application from "../Core/Application";
-import RouteGroup from "../Core/EventRouter/RouteGroup";
 import Logging from "../Logging";
 
 interface IServerOptions {
     port: number;
     host: string;
+    cors?: CorsOptions;
 }
 
 export default class HttpServer {
@@ -38,7 +38,9 @@ export default class HttpServer {
     }
 
     public async init() {
+        this.expressApp.use(cors(this.options.cors));
         this.expressApp.use(this.expressRouter);
+
         this.httpServer = await createListener(this.expressApp, this.options);
     }
 
