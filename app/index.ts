@@ -15,8 +15,8 @@ const MODELS_DIR = dir("app", "Models");
 
 export const App = new Application();
 export const Config = App.config;
-export const DBClient = new MongodbClient(App);
-export const Server = new HttpServer(App, Config.get("server"));
+export const DB = new MongodbClient(App);
+export const Server = new HttpServer(App);
 // export const Socket = new WebSocketServer(App);
 
 // App.router.group()
@@ -29,9 +29,10 @@ export const Server = new HttpServer(App, Config.get("server"));
     /* tslint:disable-next-line */
     if (App.isDebug()) new Console(App);
 
-    DBClient.setConfig(Config.get("db.mongo"));
-    await DBClient.importModels(MODELS_DIR);
+    DB.setOptions(Config.get("db.mongo"));
+    await DB.importModels(MODELS_DIR);
 
+    Server.setOptions(Config.get("server"));
     await Server.importRoutes(ROUTES_DIR + "/api");
 
     await App.start();

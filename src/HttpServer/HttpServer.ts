@@ -21,11 +21,15 @@ export default class HttpServer {
     constructor(app: Application, options?: IServerOptions) {
         this.$app = app;
 
-        this.options = options || {port: 80, host: "localhost"};
+        this.setOptions(options);
         this.expressApp = express();
         this.expressRouter = express.Router();
 
         this.$app.attach("server", this);
+    }
+
+    public setOptions(options: IServerOptions = {port: 80, host: "localhost"}) {
+        this.options = options;
     }
 
     public async importRoutes(fileName: string) {
