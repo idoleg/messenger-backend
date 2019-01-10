@@ -61,10 +61,6 @@ export default class Lifecycle {
     constructor() {
 
         process.on("beforeExit", () => {
-            if (this.status !== Status.WORKING) {
-                return;
-            }
-
             Logging.notice("No more work. Exiting...");
             this.destroy();
         });
@@ -81,9 +77,7 @@ export default class Lifecycle {
 
         nodeUncaughtErrorEvents.forEach((event) => {
             process.on(event.name as any, (error: object) => {
-                Logging.error(event.readableName + ":");
-                Logging.renderError(error);
-                this.destroy();
+                this.errorHandler(error, event.readableName);
             });
         });
     }
@@ -116,35 +110,51 @@ export default class Lifecycle {
     }
 
     public async init() {
-        // try {
-        this.log("initialization");
-        this.status = Status.INITIALIZATION;
+        if (this.status !== Status.NOT_INIT) return;
 
-        await this.emit("beforeInit");
-        await this.emit("init");
+        try {
+            this.log("initialization");
+            this.status = Status.INITIALIZATION;
 
-        this.log("working");
-        this.status = Status.WORKING;
+            await this.emit("beforeInit");
+            await this.emit("init");
 
-        await this.emit("afterInit");
-        // } catch (error) {
-        // this.errorHandler(error);
-        // }
+            this.log("working");
+            this.status = Status.WORKING;
+
+            await this.emit("afterInit");
+        } catch (error) {
+            await this.errorHandler(error, "Exception while initialization");
+        }
     }
 
     public async destroy() {
-        // try {
-        this.log("destroying");
-        this.status = Status.DESTROYING;
+        if (this.status !== Status.WORKING) return;
 
-        await this.emit("beforeDestroy");
-        await this.emit("destroyed");
+        try {
+            this.log("destroying");
+            this.status = Status.DESTROYING;
 
-        this.log("destroyed");
-        this.status = Status.DESTROYED;
-        // } catch (error) {
-        // this.errorHandler(error);
-        // }
+            await this.emit("beforeDestroy");
+            await this.emit("destroyed");
+
+            this.log("destroyed");
+            this.status = Status.DESTROYED;
+        } catch (error) {
+            await this.errorHandler(error, "Exception while destroying");
+        }
+    }
+
+    public async errorHandler(error: object, type: string) {
+        this.log("error-destroying");
+        this.status = Status.ERROR;
+
+        Logging.error(type + ":");
+        Logging.renderError(error);
+
+        await this.emit("errorDestroyed", error, type);
+
+        this.log("error-destroyed");
     }
 
     public getStatus() {
@@ -155,7 +165,7 @@ export default class Lifecycle {
         Logging.write(Chalk.bgMagenta.whiteBright("Lifecycle: " + status));
     }
 
-    protected async emit(name: Hooks) {
+    protected async emit(name: Hooks, ...params: any[]) {
         if (!this.handlers[name]) {
             return;
         }
@@ -163,7 +173,7 @@ export default class Lifecycle {
         const promises: Array<Promise<Function>> = [];
 
         this.handlers[name].map((callback) => {
-            promises.push(callback());
+            promises.push(callback(params));
         });
 
         return await Promise.all(promises);

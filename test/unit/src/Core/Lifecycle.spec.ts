@@ -121,6 +121,18 @@ describe("Application Lifecycle", () => {
             object.destroyed.calledAfter(object.beforeDestroy).should.be.true;
         });
 
+        it("should catch exceptions", async () => {
+            const lifecycle = new Lifecycle();
+
+            const beforeInitCallback = sinon.stub().throws();
+
+            lifecycle.on("beforeInit", beforeInitCallback);
+
+            await lifecycle.init();
+
+            lifecycle.getStatus().should.be.equal(Status.ERROR);
+        });
+
     });
 
 });
