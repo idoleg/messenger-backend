@@ -46,12 +46,12 @@ export default class Route {
         if (this.applied) return;
 
         if (this.type === TypeOfPayload.CALLBACK) {
-            callback(this.getName(), this.payload);
+            callback(this.getName(), this.payload, this.handlerName);
         } else if (this.type === TypeOfPayload.CONTROLLER) {
             const instance = await this.router.resolveController(this.payload[0], this.handlerName);
 
             if (instance[this.payload[1]]) {
-                callback(this.getName(), instance[this.payload[1]].bind(instance));
+                callback(this.getName(), instance[this.payload[1]].bind(instance), this.handlerName);
             } else {
                 Logging.warning(
                     `Controller ${this.payload[0]} does not have method ${this.payload[1]}. `

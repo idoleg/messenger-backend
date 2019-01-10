@@ -68,7 +68,7 @@ describe("Event Routing - Route", () => {
 
             route.apply(handler);
 
-            handler.calledWithExactly(route.getName(), callback).should.be.true;
+            handler.calledWithExactly(route.getName(), callback, "myHandler").should.be.true;
         });
 
         it("should apply route payload to its handler only once", () => {

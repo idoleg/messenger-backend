@@ -4,7 +4,7 @@ import RouteGroup from "./RouteGroup";
 export default class EventRouter extends RouteGroup {
 
     public readonly $app: Application;
-    public readonly handlers = new Map<string, Function>();
+
     public readonly groups = new Set();
     public readonly controllerInstances = new Map<string, object>();
 
@@ -16,7 +16,7 @@ export default class EventRouter extends RouteGroup {
         this.groups.add(this);
     }
 
-    public registerHandler(handlerName: string, handler: Function | object) {
+    public registerHandler(handlerName: string | symbol, handler: Function | object): this {
         if (typeof handler === "object") {
             const object = handler as any;
 
@@ -26,12 +26,13 @@ export default class EventRouter extends RouteGroup {
                     (...params: any[]) => object.route.apply(object, params),
                 );
             }
-            return;
+            return this;
         }
 
         this.handlers.set(handlerName, handler);
 
         this.applyAllRoutesForHandler(handlerName);
+        return this;
     }
 
     public async resolveController(fileName: string) {
@@ -46,11 +47,7 @@ export default class EventRouter extends RouteGroup {
         return instance;
     }
 
-    public resolveEventHandler(handlerName: string) {
-        return this.handlers.get(handlerName);
-    }
-
-    private applyAllRoutesForHandler(handlerName: string) {
+    private applyAllRoutesForHandler(handlerName: string | symbol) {
         this.groups.forEach((group) => group.applyRoutesForHandler(handlerName));
     }
 
