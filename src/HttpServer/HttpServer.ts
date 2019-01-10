@@ -1,4 +1,5 @@
 import cors, {CorsOptions} from "cors";
+import bodyParser from "body-parser";
 import express, {Express, Router} from "express";
 import {Server} from "http";
 import Application from "../Core/Application";
@@ -8,6 +9,7 @@ interface IServerOptions {
     port: number;
     host: string;
     cors?: CorsOptions;
+    bodyParser?: bodyParser.OptionsJson & bodyParser.OptionsText & bodyParser.OptionsUrlencoded;
 }
 
 export default class HttpServer {
@@ -38,7 +40,10 @@ export default class HttpServer {
     }
 
     public async init() {
+        this.expressApp.use(express.json());
         this.expressApp.use(cors(this.options.cors));
+        this.expressApp.use(bodyParser.json(this.options.bodyParser));
+        this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
         this.expressApp.use(this.expressRouter);
 
         this.httpServer = await createListener(this.expressApp, this.options);
