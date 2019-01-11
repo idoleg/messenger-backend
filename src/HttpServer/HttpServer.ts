@@ -1,5 +1,5 @@
-import cors, {CorsOptions} from "cors";
 import bodyParser from "body-parser";
+import cors, {CorsOptions} from "cors";
 import express, {Express, Router} from "express";
 import {Server} from "http";
 import Application from "../Core/Application";
@@ -35,7 +35,7 @@ export default class HttpServer {
     }
 
     public async importRoutes(fileName: string) {
-        const {"default": routes} =  await import(fileName);
+        const {"default": routes} = await import(fileName);
         return routes.call(this.expressRouter, this.expressApp);
     }
 
@@ -45,12 +45,18 @@ export default class HttpServer {
         this.expressApp.use(bodyParser.json(this.options.bodyParser));
         this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
         this.expressApp.use(this.expressRouter);
+        this.expressApp.use(this.errorHandler.bind(this));
 
         this.httpServer = await createListener(this.expressApp, this.options);
     }
 
     public async destroyed() {
         this.httpServer.close(() => Logging.info("HTTP server is stopped"));
+    }
+
+    protected errorHandler(err: any, req: any, res: any, next: any) {
+        res.status(err.status || 500).json(err.message);
+        if (!err.status) next(err);
     }
 }
 

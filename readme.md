@@ -88,5 +88,10 @@
 ##### Документация к используемым пакетам
  1. [Mongoose](https://mongoosejs.com/docs/index.html)
  2. [Express](https://expressjs.com/en/4x/api.html)
- 3. [Validator](https://www.npmjs.com/package/validator)
+ 3. [Validator](https://github.com/hapijs/joi/blob/v14.3.1/API.md)
  4. [JWT](https://github.com/auth0/node-jsonwebtoken)
+ 5. [WebSocket-Node](https://github.com/theturtle32/WebSocket-Node/tree/58f301a6e245ee25c4ca50dbd6e3d30c69c9d3d1/docs)
+
+
+
+
