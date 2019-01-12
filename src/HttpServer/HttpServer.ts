@@ -4,6 +4,7 @@ import express, {Express, Router} from "express";
 import {Server} from "http";
 import Application from "../Core/Application";
 import Logging from "../Logging";
+import BaseResource from "./BaseResource";
 
 interface IServerOptions {
     port: number;
@@ -45,6 +46,7 @@ export default class HttpServer {
         this.expressApp.use(bodyParser.json(this.options.bodyParser));
         this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
         this.expressApp.use(this.expressRouter);
+        this.expressApp.use(this.resourceHandler.bind(this));
         this.expressApp.use(this.errorHandler.bind(this));
 
         this.httpServer = await createListener(this.expressApp, this.options);
@@ -52,6 +54,14 @@ export default class HttpServer {
 
     public async destroyed() {
         this.httpServer.close(() => Logging.info("HTTP server is stopped"));
+    }
+
+    protected resourceHandler(resource: any, req: any, res: any, next: any) {
+        if (resource instanceof BaseResource) {
+            res.json(resource.uncover(req, res));
+        } else {
+            next(resource);
+        }
     }
 
     protected errorHandler(err: any, req: any, res: any, next: any) {
