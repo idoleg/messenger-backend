@@ -3,7 +3,7 @@ import httpError from "http-errors";
 import Joi from "joi";
 import jwt from "jsonwebtoken";
 import Validator from "../../src/HttpServer/Validator";
-import { DB } from "../index";
+import { DB, Config } from "../index";
 
 const User = DB.getModel("User");
 
@@ -26,8 +26,8 @@ export default class Auth {
           email: user.email,
           userId: user._id.toString(),
         },
-        "somesupersecretprivatekey",
-        { expiresIn: "10h" },
+        Config.get("auth.privateKey"),
+        { expiresIn: Config.get("auth.expiresTime") },
       );
       res.status(200).json({ token, userId: user._id.toString() });
     } catch (err) {
@@ -54,8 +54,8 @@ export default class Auth {
           email: user.email,
           userId: user._id.toString(),
         },
-        "somesupersecretprivatekey",
-        { expiresIn: "10h" },
+        Config.get("auth.privateKey"),
+        { expiresIn: Config.get("auth.expiresTime") },
       );
       res.status(201).json({ token, userId: result._id });
     } catch (err) {

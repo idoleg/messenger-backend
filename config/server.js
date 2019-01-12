@@ -5,5 +5,6 @@ module.exports = {
   host: env("HTTP_SERVER_HOST"),
   cors: {
     methods: ["GET", "PUT", "POST", "DELETE", "HEAD", "PATH", "LINK", "UNLINK"],
+    allowedHeaders: ["Authentication"]
   },
 };
