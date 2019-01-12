@@ -4,6 +4,8 @@ import {Error as MongooseError} from "mongoose";
 import Validator from "../../../src/HttpServer/Validator";
 import {DB} from "../../index";
 import {IUserMessage, IUserMessageModel} from "../../Models/UserMessage.d";
+import MessageCollectionResource from "../../Resources/MessageCollectionResource";
+import MessageResource from "../../Resources/MessageResource";
 
 const UserMessage = DB.getModel<IUserMessage, IUserMessageModel>("UserMessage");
 
@@ -15,8 +17,7 @@ export default class MessagesController {
 
             const messages = await UserMessage.findConversation("currentUser", userId);
 
-            res.json(messages);
-            next();
+            next(new MessageCollectionResource(messages, {offset: 0}));
 
         } catch (e) {
             next(e);
@@ -29,8 +30,7 @@ export default class MessagesController {
 
             const message = await UserMessage.findOneForConversation("currentUser", userId, messageId);
 
-            res.json(message);
-            next();
+            next(new MessageResource(message));
 
         } catch (e) {
             if (e instanceof MongooseError.CastError || e instanceof MongooseError.DocumentNotFoundError) {
@@ -48,9 +48,7 @@ export default class MessagesController {
 
             const message = await UserMessage.send("currentUser", userId, text);
 
-            res.json(message);
-            next();
-
+            next(new MessageResource(message));
         } catch (e) {
             next(e);
         }
