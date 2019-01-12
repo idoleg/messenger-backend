@@ -1,5 +1,5 @@
 import fs from "fs";
-import mongoose, {ConnectionOptions, Mongoose} from "mongoose";
+import mongoose, {ConnectionOptions, Document, Model, Mongoose} from "mongoose";
 import {parse as parseFile} from "path";
 import Application from "../Core/Application";
 import Logging from "../Logging";
@@ -13,7 +13,7 @@ interface IConnectionOptions extends ConnectionOptions {
 export default class MongodbClient {
 
     public mongoose: Mongoose;
-    public readonly models = new Map<string, object>();
+    // public readonly models = new Map<string, Model<any>>();
     protected connectionOptions: IConnectionOptions;
     protected readonly $app: Application;
 
@@ -33,7 +33,7 @@ export default class MongodbClient {
         const {"default": model} = await import(fileName);
 
         const initModel = model(this.mongoose);
-        this.models.set(initModel.modelName, initModel);
+        // this.models.set(initModel.modelName, initModel);
         return initModel;
     }
 
@@ -48,6 +48,10 @@ export default class MongodbClient {
             await this.importModel(fileName);
         }
 
+    }
+
+    public getModel<T extends Document, U extends Model<T>>(name: string): U {
+        return this.mongoose.model<T, U>(name);
     }
 
     public async init() {
