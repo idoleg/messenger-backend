@@ -46,7 +46,7 @@ export default class Auth {
       user = new User({
         email,
         password: hashedPw,
-        name,
+        profile: {name},
       });
       const result = await user.save();
       const token = jwt.sign(
