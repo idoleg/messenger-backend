@@ -33,9 +33,11 @@ export const Server = new HttpServer(App);
     await DB.importModels(MODELS_DIR);
 
     Server.setOptions(Config.get("server"));
+    await Server.importRoutes(ROUTES_DIR + "/AllRoutes");
     await Server.importRoutes(ROUTES_DIR + "/AuthRoutes");
     await Server.importRoutes(ROUTES_DIR + "/UserRoutes");
     await Server.importRoutes(ROUTES_DIR + "/AccountRoutes");
+    await Server.importRoutes(ROUTES_DIR + "/ErrorRoutes");
 
     await App.start();
 })();

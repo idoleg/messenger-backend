@@ -1,7 +1,7 @@
 export default class AccountController {
 
     public static get(req: any, res: any, next: any) {
-        res.send("it's get:/account");
+        res.send("it's get:/account " + req.user);
         next();
     }
 
