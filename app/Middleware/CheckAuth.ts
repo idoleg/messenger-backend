@@ -9,7 +9,7 @@ export default class CheckAuth {
             if (req.url === "/auth/login" || req.url === "/auth/registration" || req.url === "/socket") {
                 return next();
             }
-            const authHeader = req.get('Authentication');
+            const authHeader = req.get('Authorization');
             if (!authHeader || authHeader.split(' ')[0] !== 'Bearer') {
                 throw new httpError.NotFound("No token");
             }
