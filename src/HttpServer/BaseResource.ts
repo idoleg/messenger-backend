@@ -4,6 +4,9 @@ export default class BaseResource {
     protected data: any;
     protected params: any;
 
+    protected req: any;
+    protected res: any;
+
     constructor(data: any, params: any = {}) {
         this.data = data;
         this.params = params;
@@ -17,7 +20,17 @@ export default class BaseResource {
         });
     }
 
-    public uncover(req: any, res: any) {
+    public attach(req: any, res: any) {
+        this.req = req;
+        this.res = res;
+        return this;
+    }
+
+    public nest(resource: BaseResource) {
+        return resource.attach(this.req, this.res).uncover();
+    }
+
+    public uncover() {
         return this.data;
     }
 

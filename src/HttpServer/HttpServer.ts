@@ -78,7 +78,8 @@ export default class HttpServer {
 
     protected resourceHandler(resource: any, req: any, res: any, next: any) {
         if (resource instanceof BaseResource) {
-            res.json(resource.uncover(req, res));
+            resource.attach(req, res);
+            res.json(resource.uncover());
         } else {
             next(resource);
         }

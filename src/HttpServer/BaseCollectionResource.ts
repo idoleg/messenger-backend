@@ -4,18 +4,18 @@ export default class BaseCollectionResource extends BaseResource {
 
     protected innerResource = BaseResource;
 
-    public uncoverItems(req: any, res: any) {
+    public uncoverItems() {
         const items: any[] = [];
         this.data.forEach((item: any) => {
-            items.push((new this.innerResource(item)).uncover(req, res));
+            items.push((new this.innerResource(item)).attach(this.req, this.req).uncover());
         });
 
         return items;
     }
 
-    public uncover(req: any, res: any) {
+    public uncover() {
         return {
-            data: this.uncoverItems(req, res),
+            data: this.uncoverItems(),
         };
     }
 
