@@ -36,7 +36,7 @@ export default class Application extends EventEmitter {
         this.context.set(name, object);
     }
 
-    public get(name: string) {
+    public get(name: string): any {
         return this.context.get(name);
     }
 

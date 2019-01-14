@@ -34,7 +34,7 @@ class Logging extends EventEmitter {
 
     constructor() {
         super();
-        if (!process.env.APP_DEBUG) this.pause();
+        if (!process.env.APP_DEBUG || process.env.APP_DEBUG === "false") this.pause();
     }
 
     public pause() {
