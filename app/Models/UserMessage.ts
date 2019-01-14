@@ -1,4 +1,4 @@
-import {DocumentNotFoundError, Mongoose, Schema} from "mongoose";
+import {Mongoose, Schema} from "mongoose";
 import {Error as MongooseError} from "mongoose";
 
 export const MESSAGES_LIMIT = 50;

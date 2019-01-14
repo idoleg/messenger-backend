@@ -7,10 +7,12 @@ import HttpServer from "../src/HttpServer/HttpServer";
 import MongodbClient from "../src/MongodbClient/MongodbClient";
 
 dotenv.config();
-const BASE_DIR = dirname(dirname(module.filename));
-const CONFIG_DIR = dirname(BASE_DIR) + "/config";
-const ROUTES_DIR = dir("app", "Routes");
-const MODELS_DIR = dir("app", "Models");
+
+export const APP_DIR = dirname(dirname(module.filename));
+export const PROJECT_DIR = dirname(APP_DIR);
+export const CONFIG_DIR = PROJECT_DIR + "/config";
+export const ROUTES_DIR = dir("app", "Routes");
+export const MODELS_DIR = dir("app", "Models");
 // const CONTROLLERS_DIR = dir("app", "Controllers");
 
 export const App = new Application();
@@ -33,15 +35,11 @@ export const Server = new HttpServer(App);
     await DB.importModels(MODELS_DIR);
 
     Server.setOptions(Config.get("server"));
-    await Server.importRoutes(ROUTES_DIR + "/AllRoutes");
-    await Server.importRoutes(ROUTES_DIR + "/AuthRoutes");
-    await Server.importRoutes(ROUTES_DIR + "/UserRoutes");
-    await Server.importRoutes(ROUTES_DIR + "/AccountRoutes");
-    await Server.importRoutes(ROUTES_DIR + "/ErrorRoutes");
+    await Server.importRoutes(ROUTES_DIR);
 
     await App.start();
 })();
 
 function dir(...name: string[]): string {
-    return [BASE_DIR, ...name].join("/");
+    return [APP_DIR, ...name].join("/");
 }

@@ -1,3 +1,4 @@
+import bcrypt from "bcryptjs";
 import {Mongoose, Schema} from "mongoose";
 
 const UserSchema = new Schema({
@@ -10,6 +11,11 @@ const UserSchema = new Schema({
     },
 }, {
     timestamps: {createdAt: "created_at", updatedAt: false},
+});
+
+UserSchema.static("registration", async function(email: string, password: string, name: string) {
+    password = await bcrypt.hash(password, 12);
+    return await this.create({email, password, profile: {name}});
 });
 
 export default (mongoose: Mongoose) => {

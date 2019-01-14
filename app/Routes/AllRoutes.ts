@@ -3,6 +3,6 @@ import CheckAuth from "../Middleware/CheckAuth";
 
 export default function(express: Express) {
 
-    this.use("",CheckAuth.isAuth);
+    this.use("", CheckAuth.isAuth);
 
 }
