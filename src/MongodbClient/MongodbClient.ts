@@ -5,8 +5,8 @@ import Application from "../Core/Application";
 import Logging from "../Logging";
 
 interface IConnectionOptions extends ConnectionOptions {
-    address: string;
-    port: string | number;
+    address?: string;
+    port?: string | number;
     database?: string;
 }
 

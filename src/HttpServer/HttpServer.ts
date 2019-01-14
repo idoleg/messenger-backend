@@ -1,7 +1,10 @@
 import bodyParser from "body-parser";
 import cors, {CorsOptions} from "cors";
 import express, {Express, Router} from "express";
+import fs from "fs";
 import {Server} from "http";
+import httpError from "http-errors";
+import {parse as parseFile} from "path";
 import Application from "../Core/Application";
 import Logging from "../Logging";
 import BaseResource from "./BaseResource";
@@ -15,9 +18,9 @@ interface IServerOptions {
 
 export default class HttpServer {
 
-    protected expressRouter: Router;
-    protected expressApp: Express;
-    protected httpServer: Server;
+    public readonly expressRouter: Router;
+    public readonly expressApp: Express;
+    public httpServer: Server;
     protected options: IServerOptions;
     protected readonly $app: Application;
 
@@ -35,9 +38,23 @@ export default class HttpServer {
         this.options = options;
     }
 
-    public async importRoutes(fileName: string) {
+    public async importRoute(fileName: string) {
         const {"default": routes} = await import(fileName);
-        return routes.call(this.expressRouter, this.expressApp);
+
+        if (routes.call) {
+            return routes.call(this.expressRouter, this.expressApp, this.$app);
+        }
+    }
+
+    public async importRoutes(path: string) {
+        const files = await fs.promises.readdir(path);
+
+        for (const file of files) {
+            const fileName = path + "/" + file;
+            if (parseFile(fileName).ext !== ".js") continue;
+
+            await this.importRoute(fileName);
+        }
     }
 
     public async init() {
@@ -46,6 +63,9 @@ export default class HttpServer {
         this.expressApp.use(bodyParser.json(this.options.bodyParser));
         this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
         this.expressApp.use(this.expressRouter);
+        this.expressRouter.use("", () => {
+            throw new httpError.NotFound("Wrong path");
+        });
         this.expressApp.use(this.resourceHandler.bind(this));
         this.expressApp.use(this.errorHandler.bind(this));
 
@@ -65,7 +85,12 @@ export default class HttpServer {
     }
 
     protected errorHandler(err: any, req: any, res: any, next: any) {
-        res.status(err.status || 500).json(err.message);
+        res.status(err.status || 500);
+        if (typeof err.message === "string") {
+            res.json({message: err.message});
+        } else {
+            res.json(err.message);
+        }
         if (!err.status) next(err);
     }
 }
