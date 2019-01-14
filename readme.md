@@ -65,6 +65,7 @@
  3. [Медиум: Мокирование](https://medium.com/@cakeinpanic/%D1%8E%D0%BD%D0%B8%D1%82-%D1%82%D0%B5%D1%81%D1%82%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-angular2-%D0%BC%D0%BE%D0%BA%D0%B8%D1%80%D0%BE%D0%B2%D0%B0%D0%BD%D0%B8%D0%B5-bad6bb7a6a5c)
  3. [Медиум: Mocking in TypeScript](https://medium.com/@michal.m.stocki/when-it-comes-to-mocking-in-typescript-be8531d39327)
  4. [Istanbul: Формирование отчета покрытия кода тестами](https://istanbul.js.org/)
+ 4. [Mongoose models and unit tests](https://codeutopia.net/blog/2016/06/10/mongoose-models-and-unit-tests-the-definitive-guide/)
  
 ## Пуш кода в репозиторий
 Перед пушем кода в репозиторий, убедитесть, что:
