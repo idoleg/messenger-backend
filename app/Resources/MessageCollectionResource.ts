@@ -5,11 +5,11 @@ export default class MessageCollectionResource extends BaseCollectionResource {
 
     protected innerResource = MessageResource;
 
-    public uncover(req: any, res: any) {
+    public uncover() {
 
         return {
             offset: this.params.offset,
-            data: this.uncoverItems(req, res),
+            data: this.uncoverItems(),
         };
     }
 

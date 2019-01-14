@@ -16,7 +16,7 @@ export default class CheckAuth {
             }
             const authHeader = req.get("Authorization");
             if (!authHeader || authHeader.split(" ")[0] !== "Bearer") {
-                throw new httpError.NotFound("No token");
+                throw new httpError.Unauthorized("No valid token");
             }
             const token = authHeader.split(" ")[1];
             const decodedToken = jwt.verify(token, Config.get("auth.privateKey")) as any;
