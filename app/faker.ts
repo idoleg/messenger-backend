@@ -4,6 +4,8 @@ import {App, DB} from "./index";
 const MULTIPLIER = +process.argv[2] || 1;
 
 App.lifecycle.on("afterInit", async () => {
+    if (process.env.AUTO_FAKER_OFF !== undefined) return;
+
     const users = await fakeUsers(MULTIPLIER * 10);
     const groups = await fakeGroups(MULTIPLIER * 5, users);
     await fakeUserMessages(MULTIPLIER * 50, users);
@@ -40,7 +42,7 @@ export async function fakeGroups(count: number, users: any[]) {
     });
 }
 
-export async function fakeGroupMembers(count: number, groups: any[], users: any[]) {
+export async function fakeGroupMembers(count: number, groups: any, users: any[]) {
     return await iterable(count, () => {
         return DB.getModel<any, any>("GroupMember").create({
             group: getRandomItem(groups)._id,
@@ -69,7 +71,9 @@ async function iterable(count: number, callback: Function) {
     return await Promise.all(promises);
 }
 
-function getRandomItem(array: any[]) {
+function getRandomItem(array: any) {
+    if (!array.length) return array;
+
     const rand = Math.floor(Math.random() * array.length);
     return array[rand];
 }
