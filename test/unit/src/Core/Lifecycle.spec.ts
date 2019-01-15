@@ -8,7 +8,7 @@ should();
 describe("Application Lifecycle", () => {
 
     it("should return correct statuses in each state", async () => {
-        const lifecycle = new Lifecycle();
+        const lifecycle = new Lifecycle(false);
 
         lifecycle.getStatus().should.be.equal(Status.NOT_INIT);
 
@@ -23,7 +23,7 @@ describe("Application Lifecycle", () => {
     describe("Handler setter (on)", () => {
 
         it("should not call handlers right after they adding", () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             const callback = sinon.spy();
 
@@ -32,7 +32,7 @@ describe("Application Lifecycle", () => {
         });
 
         it("should allow adding handler by alias", async () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             const callback = sinon.spy();
 
@@ -43,7 +43,7 @@ describe("Application Lifecycle", () => {
         });
 
         it("should allow to pass object as an event handler", async () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             const object = {
                 beforeInit: sinon.spy(),
@@ -60,7 +60,7 @@ describe("Application Lifecycle", () => {
         });
 
         it("should ignore if passed only string to first argument", async () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             lifecycle.on("beforeStart");
         });
@@ -70,7 +70,7 @@ describe("Application Lifecycle", () => {
     describe("Lifecycle emitter", () => {
 
         it("should call handlers on Lifecycle-events", async () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             const beforeInitCallback = sinon.spy();
             const initCallback = sinon.spy();
@@ -98,7 +98,7 @@ describe("Application Lifecycle", () => {
         });
 
         it("should call methods of passed object which have named as Lifecycle-events ", async () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             const object = {
                 beforeInit: sinon.spy(),
@@ -122,7 +122,7 @@ describe("Application Lifecycle", () => {
         });
 
         it("should catch exceptions", async () => {
-            const lifecycle = new Lifecycle();
+            const lifecycle = new Lifecycle(false);
 
             const beforeInitCallback = sinon.stub().throws();
 

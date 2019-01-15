@@ -1,3 +1,4 @@
+import EventEmitter from "events";
 import fs from "fs";
 import mongoose, {ConnectionOptions, Document, Model, Mongoose} from "mongoose";
 import {parse as parseFile} from "path";
@@ -10,7 +11,7 @@ interface IConnectionOptions extends ConnectionOptions {
     database?: string;
 }
 
-export default class MongodbClient {
+export default class MongodbClient extends EventEmitter  {
 
     public mongoose: Mongoose;
     // public readonly models = new Map<string, Model<any>>();
@@ -18,6 +19,7 @@ export default class MongodbClient {
     protected readonly $app: Application;
 
     constructor(app: Application, options?: IConnectionOptions) {
+        super();
         this.$app = app;
         this.setOptions(options);
 
@@ -32,7 +34,7 @@ export default class MongodbClient {
     public async importModel(fileName: string) {
         const {"default": model} = await import(fileName);
 
-        const initModel = model(this.mongoose);
+        const initModel = model.call(this, this.mongoose);
         // this.models.set(initModel.modelName, initModel);
         return initModel;
     }
@@ -55,6 +57,7 @@ export default class MongodbClient {
     }
 
     public async init() {
+        this.emit("registeredAllModels");
         const options = {useCreateIndex: this.$app.isDebug(), useNewUrlParser: true, ...this.connectionOptions};
 
         await this.mongoose.connect(`mongodb://${options.address}:${options.port}/${options.database}`, filterOptions(options));

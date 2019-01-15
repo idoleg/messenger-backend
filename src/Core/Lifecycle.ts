@@ -57,21 +57,28 @@ export default class Lifecycle {
 
     private status: Status = Status.NOT_INIT;
     private handlers: { [index: string]: Function[] } = {};
+    private readonly watchForProcess: boolean;
 
-    constructor() {
+    constructor(watchForProcess = true) {
+        if (watchForProcess) this.initProcessListeners();
+        this.watchForProcess = watchForProcess;
 
+    }
+
+    public initProcessListeners() {
         process.on("beforeExit", () => {
-            Logging.notice("No more work. Exiting...");
+            if (this.status !== Status.WORKING) return;
+            Logging.warning("No more work. Exiting...");
             this.destroy();
         });
 
         nodeExitEvents.forEach((event) => {
-            process.on(event.name as any, () => {
+            process.on(event.name as any, async () => {
                 if (this.status !== Status.WORKING) {
                     return;
                 }
                 Logging.warning("Forced exit");
-                this.destroy();
+                await this.destroy();
             });
         });
 
@@ -150,11 +157,12 @@ export default class Lifecycle {
         this.status = Status.ERROR;
 
         Logging.error(type + ":");
-        Logging.renderError(error);
+        if (this.watchForProcess) Logging.renderError(error);
 
         await this.emit("errorDestroyed", error, type);
 
         this.log("error-destroyed");
+        if (this.watchForProcess) process.abort();
     }
 
     public getStatus() {
