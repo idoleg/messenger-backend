@@ -14,10 +14,11 @@ export default class MessagesController {
     public static async getCollection(req: any, res: any, next: any) {
         try {
             const {userId} = req.params;
+            const {offset} = req.query;
 
-            const messages = await UserMessage.findConversation("currentUser", userId);
+            const messages = await UserMessage.findConversation("currentUser", userId, offset);
 
-            next(new MessageCollectionResource(messages, {offset: 0}));
+            next(new MessageCollectionResource(messages, {offset}));
 
         } catch (e) {
             next(e);
