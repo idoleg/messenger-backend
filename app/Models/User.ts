@@ -18,6 +18,10 @@ UserSchema.static("registration", async function(email: string, password: string
     return await this.create({email, password, profile: {name}});
 });
 
+UserSchema.static("isExist", async function(id: string) {
+    return null != await this.findById(id);
+});
+
 export default (mongoose: Mongoose) => {
     return mongoose.model("User", UserSchema);
 };
