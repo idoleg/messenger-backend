@@ -7,7 +7,9 @@ import {SuperAgent} from "superagent";
 import HttpServer from "../../src/HttpServer/HttpServer";
 
 const TEST_ENV_FILE = dirname(dirname(dirname(module.filename))) + "/.env.test";
+
 dotenv.config({path: TEST_ENV_FILE});
+process.env.AUTO_FAKER_OFF = "true";
 
 import {App} from "../../dist/app/index";
 

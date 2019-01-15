@@ -44,6 +44,8 @@
   2. [Chai](https://www.chaijs.com/guide/styles/) ([API](https://www.chaijs.com/api/bdd/)) - Библиотека для создания утверждений
   3. [Sinon](https://sinonjs.org/releases/v7.2.2/) - Библиотека для создания шпионов, стабов и мок
  
+ При тестировании маршрутов подключайте сбилженные js файлы, а не ts.
+ 
  ##### Команды
   1. `npm run test` - запустить тесты и вывести результаты в консоль
   2. `npm run test:report` - запустить тесты и сформировать html-отчет с результатами тестов по пути _/test/.report/mochawesome.html_

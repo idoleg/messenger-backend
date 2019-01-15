@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import {Agent, Config, DB} from "./Bootstrap.spec";
+import {Agent, Config, DB} from "./Bootstrap";
 
 describe("Auth API", () => {
 
