@@ -12,11 +12,11 @@ export interface IUserDocument extends Document {
 }
 
 export interface IUser extends IUserDocument {
+    createToken(): Promise<string>;
 
 }
 
 export interface IUserModel extends Model<IUser> {
     registration(email: string, password: string, name: string): Promise<IUser>;
     isExist(id: string): Promise<boolean>;
-    createToken(id: string): Promise<string>;
 }

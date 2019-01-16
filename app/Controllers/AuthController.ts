@@ -23,7 +23,7 @@ export default class AuthController {
             if (!isEqual) {
                 throw new httpError.NotFound("Credentials are wrong");
             }
-            const token = User.createToken(user._id);
+            const token = user.createToken();
             res.status(200).json({token, user: (new UserResource(user)).attach(req, res).uncover()});
         } catch (err) {
             next(err);
@@ -37,7 +37,7 @@ export default class AuthController {
                 throw new httpError.Conflict("This email has already existed");
             }
             const user = await User.registration(email, password, name);
-            const token = User.createToken(user._id);
+            const token = user.createToken();
             res.status(201).json({token, user: (new UserResource(user)).attach(req, res).uncover()});
         } catch (err) {
             next(err);

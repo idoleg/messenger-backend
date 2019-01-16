@@ -24,10 +24,10 @@ UserSchema.static("isExist", async function(id: string) {
     return null != await this.findById(id);
 });
 
-UserSchema.static("createToken", function(id: string) {
+UserSchema.method("createToken", function() {
     return jwt.sign(
         {
-            userId: id.toString(),
+            userId: this._id.toString(),
         },
         Config.get("auth.privateKey"),
         {expiresIn: Config.get("auth.expiresTime")},
