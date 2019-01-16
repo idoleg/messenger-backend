@@ -6,6 +6,7 @@ import Application from "../Core/Application";
 import Logging from "../Logging";
 
 interface IConnectionOptions extends ConnectionOptions {
+    uri?: string;
     address?: string;
     port?: string | number;
     database?: string;
@@ -59,9 +60,10 @@ export default class MongodbClient extends EventEmitter  {
     public async init() {
         this.emit("registeredAllModels");
         const options = {useCreateIndex: this.$app.isDebug(), useNewUrlParser: true, ...this.connectionOptions};
+        const uri = options.uri ? options.uri : `mongodb://${options.address}:${options.port}/${options.database}`;
 
-        await this.mongoose.connect(`mongodb://${options.address}:${options.port}/${options.database}`, filterOptions(options));
-        Logging.notice(`Mongo client is successfully connected to mongodb://${options.address}:${options.port}/${options.database}`);
+        await this.mongoose.connect(uri, filterOptions(options));
+        Logging.notice(`Mongo client is successfully connected to ${uri}`);
     }
 
     public async destroyed() {
