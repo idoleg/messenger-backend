@@ -32,6 +32,26 @@ export async function fakeUserMessages(count: number, users: any[]) {
     });
 }
 
+export async function fakeUserConversation(count: number, between: any[]) {
+    return await iterable(count, () => {
+        let sender;
+        let recipient;
+        if (randomInteger(1, 2) === 1) {
+            sender = between[0]._id;
+            recipient = between[1]._id;
+        } else {
+            sender = between[1]._id;
+            recipient = between[0]._id;
+        }
+        return DB.getModel<any, any>("UserMessage").create({
+            sender,
+            recipient,
+            text: faker.lorem.text(),
+            read: true,
+        });
+    });
+}
+
 export async function fakeGroups(count: number, users: any[]) {
     return await iterable(count, () => {
         return DB.getModel<any, any>("Group").create({
@@ -76,4 +96,10 @@ function getRandomItem(array: any) {
 
     const rand = Math.floor(Math.random() * array.length);
     return array[rand];
+}
+
+function randomInteger(min: number, max: number) {
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
+    rand = Math.round(rand);
+    return rand;
 }
