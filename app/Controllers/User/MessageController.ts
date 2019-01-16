@@ -1,22 +1,22 @@
 import httpError from "http-errors";
-import Joi from "joi";
 import {Error as MongooseError} from "mongoose";
 import Validator from "../../../src/HttpServer/Validator";
 import {DB} from "../../index";
 import {IUserMessage, IUserMessageModel} from "../../Models/UserMessage.d";
 import MessageCollectionResource from "../../Resources/MessageCollectionResource";
 import MessageResource from "../../Resources/MessageResource";
+import Joi from "./../../../src/Joi/Joi";
 
 const UserMessage = DB.getModel<IUserMessage, IUserMessageModel>("UserMessage");
 
-export default class MessagesController {
+export default class MessageController {
 
     public static async getCollection(req: any, res: any, next: any) {
         try {
-            const {userId} = req.params;
-            const {offset} = req.query;
+            const {userId} = Validator(req.params, {userId: Joi.objectId()});
+            const {offset} = Validator(req.query, {offset: Joi.number()});
 
-            const messages = await UserMessage.findConversation("currentUser", userId, offset);
+            const messages = await UserMessage.findConversation(req.user, userId, offset);
 
             next(new MessageCollectionResource(messages, {offset}));
 
@@ -27,9 +27,9 @@ export default class MessagesController {
 
     public static async getOne(req: any, res: any, next: any) {
         try {
-            const {userId, messageId} = req.params;
+            const {userId, messageId} = Validator(req.params, {userId: Joi.objectId(), messageId: Joi.objectId()});
 
-            const message = await UserMessage.findOneForConversation("currentUser", userId, messageId);
+            const message = await UserMessage.findOneForConversation(req.user, userId, messageId);
 
             next(new MessageResource(message));
 
@@ -44,10 +44,10 @@ export default class MessagesController {
 
     public static async send(req: any, res: any, next: any) {
         try {
-            const {userId} = req.params;
-            const {text} = Validator(req.body, MessagesController.sendMessageValidationSchema);
+            const {userId} = Validator(req.params, {userId: Joi.objectId()});
+            const {text} = Validator(req.body, MessageController.sendMessageValidationSchema);
 
-            const message = await UserMessage.send("currentUser", userId, text);
+            const message = await UserMessage.send(req.user, userId, text);
 
             next(new MessageResource(message));
         } catch (e) {

@@ -1,10 +1,10 @@
 import {Express} from "express";
-import MessagesController from "../Controllers/User/MessagesController";
+import MessageController from "../Controllers/User/MessageController";
 
 export default function(express: Express) {
 
-    this.get("/users/:userId/messages", MessagesController.getCollection);
-    this.get("/users/:userId/messages/:messageId", MessagesController.getOne);
-    this.post("/users/:userId/messages", MessagesController.send);
+    this.get("/users/:userId/messages", MessageController.getCollection);
+    this.get("/users/:userId/messages/:messageId", MessageController.getOne);
+    this.post("/users/:userId/messages", MessageController.send);
 
 }

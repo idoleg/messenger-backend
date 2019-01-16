@@ -8,7 +8,7 @@ export default class MessageCollectionResource extends BaseCollectionResource {
     public uncover() {
 
         return {
-            offset: this.params.offset,
+            offset: this.params.offset || 0,
             data: this.uncoverItems(),
         };
     }

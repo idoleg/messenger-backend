@@ -190,4 +190,3 @@ describe("Group member API", () => {
     });
 
 });
-
