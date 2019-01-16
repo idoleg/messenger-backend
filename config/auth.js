@@ -1,4 +1,6 @@
+const env = require("./env");
+
 module.exports = {
-    privateKey: 'somesupersecretprivatekey',
-    expiresTime: '30d'
+    privateKey: env("AUTH_PRIVATE_KEY", "superSecret"),
+    expiresTime: "30d"
 }
