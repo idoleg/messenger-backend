@@ -17,7 +17,7 @@ export default class MemberController {
     public static async getMembers(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
-            const {offset} = req.query;
+            const {offset} = Validator(req.query, {offset: Joi.number()});
 
             if (!await GroupMember.isMember(groupId, req.user)) {
                 throw new httpError.NotFound("This group not found or not allowed for you");

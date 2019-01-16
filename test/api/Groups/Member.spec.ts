@@ -1,6 +1,5 @@
-import jwt from "jsonwebtoken";
 import {fakeGroupMembers, fakeGroups, fakeUsers} from "../../../dist/app/faker";
-import {Agent, Config, DB} from "../Bootstrap";
+import {Agent} from "../Bootstrap";
 
 const data: any = {};
 let groupId: string;
@@ -23,9 +22,9 @@ before(async () => {
     data.countOfMembers = data.members.length;
 
     groupId = data.group._id.toString();
-    authTokenOfMemberAndCreator = generateToken(data.creator);
-    authTokenOfMemberButNotCreator = generateToken(data.memberButNotCreator);
-    authTokenOfUserButNotMember = generateToken(data.userButNotMember);
+    authTokenOfMemberAndCreator = data.creator.createToken();
+    authTokenOfMemberButNotCreator = data.memberButNotCreator.createToken();
+    authTokenOfUserButNotMember = data.userButNotMember.createToken();
 });
 describe("Group member API", () => {
 
@@ -39,6 +38,19 @@ describe("Group member API", () => {
             res.body.group_id.should.be.equal(groupId);
             res.body.offset.should.be.equal(0);
             res.body.data.should.have.lengthOf(data.countOfMembers);
+        });
+
+        it("Successful getting members of group  - use offset", async () => {
+            const offset = 10;
+
+            const res = await Agent().get(`/groups/${groupId}/members`)
+                .query({offset})
+                .set("Authorization", "Bearer " + authTokenOfMemberButNotCreator);
+
+            res.should.have.status(200);
+            res.body.group_id.should.be.equal(groupId);
+            res.body.offset.should.be.equal(offset);
+            res.body.data.should.have.lengthOf(data.countOfMembers - offset);
         });
 
         it("Error of getting group members - group is not exist", async () => {
@@ -179,15 +191,3 @@ describe("Group member API", () => {
 
 });
 
-function generateToken(userModel: any) {
-    const token = jwt.sign(
-        {
-            email: userModel.email,
-            userId: userModel._id.toString(),
-        },
-        Config.get("auth.privateKey"),
-        {expiresIn: Config.get("auth.expiresTime")},
-    );
-
-    return token;
-}
