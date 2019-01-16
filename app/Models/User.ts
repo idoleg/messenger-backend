@@ -1,5 +1,7 @@
 import bcrypt from "bcryptjs";
 import {Mongoose, Schema} from "mongoose";
+import jwt from "jsonwebtoken";
+import {Config} from "../index";
 
 const UserSchema = new Schema({
     email: {type: String, index: true, unique: true, required: true, trim: true},
@@ -20,6 +22,16 @@ UserSchema.static("registration", async function(email: string, password: string
 
 UserSchema.static("isExist", async function(id: string) {
     return null != await this.findById(id);
+});
+
+UserSchema.static("createToken", function(id: string) {
+    return jwt.sign(
+        {
+            userId: id.toString(),
+        },
+        Config.get("auth.privateKey"),
+        {expiresIn: Config.get("auth.expiresTime")},
+    );
 });
 
 export default (mongoose: Mongoose) => {

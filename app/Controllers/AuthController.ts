@@ -23,14 +23,7 @@ export default class AuthController {
             if (!isEqual) {
                 throw new httpError.NotFound("Credentials are wrong");
             }
-            const token = jwt.sign(
-                {
-                    email: user.email,
-                    userId: user._id.toString(),
-                },
-                Config.get("auth.privateKey"),
-                {expiresIn: Config.get("auth.expiresTime")},
-            );
+            const token = User.createToken(user._id);
             res.status(200).json({token, user: (new UserResource(user)).attach(req, res).uncover()});
         } catch (err) {
             next(err);
@@ -44,14 +37,7 @@ export default class AuthController {
                 throw new httpError.Conflict("This email has already existed");
             }
             const user = await User.registration(email, password, name);
-            const token = jwt.sign(
-                {
-                    email: user.email,
-                    userId: user._id.toString(),
-                },
-                Config.get("auth.privateKey"),
-                {expiresIn: Config.get("auth.expiresTime")},
-            );
+            const token = User.createToken(user._id);
             res.status(201).json({token, user: (new UserResource(user)).attach(req, res).uncover()});
         } catch (err) {
             next(err);
