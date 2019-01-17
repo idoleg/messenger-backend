@@ -3,13 +3,10 @@ import {IUser} from "./User.d";
 import {IGroupMember} from "./GroupMember.d";
 
 export interface IGroupDocument extends Document {
-    email: string;
-    password: string;
-    profile: {
-        name: string;
-        last_name: string;
-        last_seen: Date;
-    };
+    creator: string;
+    name: string;
+    description: string;
+    invitingCode: string;
     created_at: Date;
 }
 
@@ -19,8 +16,10 @@ export interface IGroup extends IGroupDocument {
     addMember(user: string | IUser): Promise<IGroupMember>;
     deleteMember(member: string | IUser): Promise<IGroupMember>;
     getMembers(offset?: number, limit?: number): Promise<IGroupMember>;
+    updateGroup(name?: string, description?: string): void;
 }
 
 export interface IGroupModel extends Model<IGroup> {
-
+    getGroup(id: string): Promise<IGroup>;
+    addGroup(user: IUser, name: string, description?: string): Promise<IGroup>;
 }
