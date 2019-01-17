@@ -12,8 +12,8 @@ export default class GroupController {
 
     public static async getGroup(req: any, res: any, next: any) {
         try {
-            const {id} = Validator(req.params, {id: Joi.objectId()});
-            const group = await Group.getGroup(id);
+            const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
+            const group = await Group.getGroup(groupId);
             next(new GroupResource(group));
         } catch (err) {
             next(err);
@@ -22,7 +22,7 @@ export default class GroupController {
 
     public static async addGroup(req: any, res: any, next: any) {
         try {
-            const {name, description} = Validator({name: req.body.name, description: req.body.description}, GroupController.validationAddSchema);
+            const {name, description} = Validator(req.body, GroupController.validationAddSchema);
             const group = await Group.addGroup(req.user, name, description);
             group.addMember(req.user);
             next(new GroupResource(group));
@@ -33,9 +33,12 @@ export default class GroupController {
 
     public static async updateGroup(req: any, res: any, next: any) {
         try {
-            const {id} = Validator(req.params, {id: Joi.objectId()});
-            const {name, description} = Validator({name: req.body.name, description: req.body.description}, GroupController.validationUpdateSchema);
-            const group = await Group.getGroup(id);
+            const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
+            const {name, description} = Validator(req.body, GroupController.validationUpdateSchema);
+            const group = await Group.getGroup(groupId);
+            if (!await group.isCreator(req.user)) {
+                throw new httpError.Forbidden("You cannot do it");
+            }
             group.updateGroup(name, description);
             await group.save();
             next(new GroupResource(group));
@@ -47,10 +50,10 @@ export default class GroupController {
     public static async leaveGroup(req: any, res: any, next: any) {
         try {
             if (req.method === "UNLINK") {
-                const {id} = Validator(req.params, {id: Joi.objectId()});
-                const group = await Group.getGroup(id);
+                const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
+                const group = await Group.getGroup(groupId);
                 await group.deleteMember(req.user);
-                res.status(200).json({});
+                res.status(200).json({message: "successfully"});
             } else {
                 next();
             }

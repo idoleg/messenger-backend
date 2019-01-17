@@ -40,8 +40,10 @@ GroupSchema.static("getGroup", async function(id: string) {
     return await this.findById(id);
 });
 
-GroupSchema.static("addGroup", async function(user: IUser, name: string, description?: string) {
-    return await this.create({name, description, creator: user._id});
+GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
+    let userId = user;
+    if (typeof user !== "string") userId = user._id.toString();
+    return await this.create({name, description, creator: userId});
 });
 
 GroupSchema.method("updateGroup", function(name?: string, description?: string) {
