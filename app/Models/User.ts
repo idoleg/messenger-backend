@@ -15,12 +15,8 @@ const UserSchema = new Schema({
     timestamps: {createdAt: "created_at", updatedAt: false},
 });
 
-UserSchema.static("getUserByEmail", async function(email: string) {
+UserSchema.static("getByEmail", async function(email: string) {
     return await this.findOne({ email });
-});
-
-UserSchema.static("getUserById", async function(userId: string) {
-    return await this.findOne({ userId });
 });
 
 UserSchema.static("registration", async function(email: string, password: string, name: string) {

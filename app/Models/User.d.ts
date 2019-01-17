@@ -19,6 +19,5 @@ export interface IUser extends IUserDocument {
 export interface IUserModel extends Model<IUser> {
     registration(email: string, password: string, name: string): Promise<IUser>;
     isExist(id: string): Promise<boolean>;
-    getUserByEmail(email: string): Promise<IUser>;
-    getUserById(userId: string): Promise<IUser>;
+    getByEmail(email: string): Promise<IUser>;
 }
