@@ -1,10 +1,5 @@
-const env = require("./env");
+const env = require("getenv");
 
 module.exports = {
-  debug: convertToBool(env("APP_DEBUG", false)),
+    debug: env.boolish("APP_DEBUG", false),
 };
-
-function convertToBool(value) {
-  value = value.trim();
-  return !(value === "false" || value === 0 || value === false);
-}

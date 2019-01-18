@@ -4,6 +4,7 @@ import moment from "moment";
 import PrettyError from "pretty-error";
 import Chalk from "./Chalk";
 import WriteStream = NodeJS.WriteStream;
+import env from "getenv";
 
 interface IConsoleDecor {
     error: ChalkInterface;
@@ -34,7 +35,7 @@ class Logging extends EventEmitter {
 
     constructor() {
         super();
-        if (!process.env.APP_DEBUG || process.env.APP_DEBUG === "false") this.pause();
+        if (!env.boolish("APP_DEBUG", false)) this.pause();
     }
 
     public pause() {
