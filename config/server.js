@@ -1,10 +1,10 @@
-const env = require('./env');
+const env = require("getenv");
 
 module.exports = {
-  port: env("HTTP_SERVER_PORT"),
-  host: env("HTTP_SERVER_HOST"),
-  cors: {
-    methods: ["GET", "PUT", "POST", "DELETE", "HEAD", "PATH", "LINK", "UNLINK"],
-    allowedHeaders: ["Authentication"]
-  },
+    host: env("HTTP_SERVER_HOST", "localhost"),
+    port: env.int("HTTP_SERVER_PORT", 80),
+    cors: {
+        methods: ["GET", "PUT", "POST", "DELETE", "HEAD", "PATH", "LINK", "UNLINK"],
+        allowedHeaders: ["Authentication"],
+    },
 };
