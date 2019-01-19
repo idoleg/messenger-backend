@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import httpError from "http-errors";
 import Validator from "../../../src/HttpServer/Validator";
 import {DB} from "../../index";

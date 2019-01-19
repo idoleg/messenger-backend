@@ -17,6 +17,9 @@ export interface IGroup extends IGroupDocument {
     deleteMember(member: string | IUser): Promise<IGroupMember>;
     getMembers(offset?: number, limit?: number): Promise<IGroupMember>;
     updateGroup(name?: string, description?: string): void;
+    // getInvite(): string;
+    createInvite(): string;
+    deleteInvite(): void;
 }
 
 export interface IGroupModel extends Model<IGroup> {

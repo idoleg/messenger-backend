@@ -43,12 +43,26 @@ GroupSchema.static("getGroup", async function(id: string) {
 GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
     let userId = user;
     if (typeof user !== "string") userId = user._id.toString();
-    return await this.create({name, description, creator: userId});
+    return await this.create({name, description, creator: userId, invitingCode:null});
 });
 
 GroupSchema.method("updateGroup", function(name?: string, description?: string) {
     this.name = name || this.name;
     this.description = description || this.description;
+    return;
+});
+
+// GroupSchema.method("getInvite", function() {
+//     return this.invitingCode;
+// });
+
+GroupSchema.method("createInvite", function() {
+    this.invitingCode = "invite" + Math.random() * Math.random() * 1000000;
+    return this.invitingCode;
+});
+
+GroupSchema.method("deleteInvite", function() {
+    this.invitingCode = null;
     return;
 });
 
