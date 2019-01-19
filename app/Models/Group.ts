@@ -60,14 +60,8 @@ GroupSchema.method("updateGroup", function(name?: string, description?: string) 
 //     return this.invitingCode;
 // });
 
-GroupSchema.static("createInvite", async function(group: IGroup) {
-    let invitation_code = "invite" + Math.random() * Math.random() * 1000000;
-    let foundedGroup = await this.findOne({invitingCode: invitation_code});
-    while (foundedGroup) {
-        invitation_code = "invite" + Math.random() * Math.random() * 1000000;
-        foundedGroup = await this.findOne({invitingCode: invitation_code});
-    }
-    group.invitingCode = invitation_code;
+GroupSchema.method("createInvite", async function() {
+    this.invitingCode = "invite" + this._id.toString() + Math.random() * Math.random() * 1000000;;
     return;
 });
 

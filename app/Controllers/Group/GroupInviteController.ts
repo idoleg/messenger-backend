@@ -13,6 +13,9 @@ export default class GroupController {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
+            if (!await group.isCreator(req.user)) {
+                throw new httpError.Forbidden("You cannot do it");
+            }
             next(new GroupInviteResource(group));
         } catch (err) {
             next(err);
@@ -23,7 +26,10 @@ export default class GroupController {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
-            await Group.createInvite(group);
+            if (!await group.isCreator(req.user)) {
+                throw new httpError.Forbidden("You cannot do it");
+            }
+            await group.createInvite();
             await group.save();
             next(new GroupInviteResource(group));
         } catch (err) {
@@ -35,6 +41,9 @@ export default class GroupController {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
+            if (!await group.isCreator(req.user)) {
+                throw new httpError.Forbidden("You cannot do it");
+            }
             group.deleteInvite();
             await group.save();
             res.status(200).json({message: "successfully"});
