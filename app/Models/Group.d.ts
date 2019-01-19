@@ -18,11 +18,12 @@ export interface IGroup extends IGroupDocument {
     getMembers(offset?: number, limit?: number): Promise<IGroupMember>;
     updateGroup(name?: string, description?: string): void;
     // getInvite(): string;
-    createInvite(): string;
     deleteInvite(): void;
 }
 
 export interface IGroupModel extends Model<IGroup> {
     getGroup(id: string): Promise<IGroup>;
     addGroup(user: IUser, name: string, description?: string): Promise<IGroup>;
+    getGroupByInvitationCode(invitation_code: string): Promise<IGroup>;
+    createInvite(group: IGroup): void;
 }

@@ -23,7 +23,7 @@ export default class GroupController {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
-            group.createInvite();
+            await Group.createInvite(group);
             await group.save();
             next(new GroupInviteResource(group));
         } catch (err) {

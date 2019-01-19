@@ -40,6 +40,10 @@ GroupSchema.static("getGroup", async function(id: string) {
     return await this.findById(id);
 });
 
+GroupSchema.static("getGroupByInvitationCode", async function(invitation_code: string) {
+    return await this.findOne({invitingCode: invitation_code});
+});
+
 GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
     let userId = user;
     if (typeof user !== "string") userId = user._id.toString();
@@ -56,9 +60,15 @@ GroupSchema.method("updateGroup", function(name?: string, description?: string) 
 //     return this.invitingCode;
 // });
 
-GroupSchema.method("createInvite", function() {
-    this.invitingCode = "invite" + Math.random() * Math.random() * 1000000;
-    return this.invitingCode;
+GroupSchema.static("createInvite", async function(group: IGroup) {
+    let invitation_code = "invite" + Math.random() * Math.random() * 1000000;
+    let foundedGroup = await this.findOne({invitingCode: invitation_code});
+    while (foundedGroup) {
+        invitation_code = "invite" + Math.random() * Math.random() * 1000000;
+        foundedGroup = await this.findOne({invitingCode: invitation_code});
+    }
+    group.invitingCode = invitation_code;
+    return;
 });
 
 GroupSchema.method("deleteInvite", function() {

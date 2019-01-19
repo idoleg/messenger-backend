@@ -46,13 +46,19 @@ export default class GroupController {
         }
     }
 
-    public static async leaveGroup(req: any, res: any, next: any) {
+    public static async enterLeaveGroup(req: any, res: any, next: any) {
         try {
             if (req.method === "UNLINK") {
                 const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
                 const group = await Group.getGroup(groupId);
                 await group.deleteMember(req.user);
                 res.status(200).json({message: "successfully"});
+            } else if (req.method === "LINK") {
+                console.log(req);
+                const {invitation_code} = Validator(req.query, GroupController.validationEnterSchema);
+                const group = await Group.getGroupByInvitationCode(invitation_code);
+                await group.addMember(req.user);
+                next(new GroupResource(group));
             } else {
                 next();
             }
@@ -64,6 +70,10 @@ export default class GroupController {
     protected static validationAddSchema = {
         name: Joi.string().required().min(2),
         description: Joi.string(),
+    };
+
+    protected static validationEnterSchema = {
+        invitation_code: Joi.string().required(),
     };
 
     protected static validationUpdateSchema = {
