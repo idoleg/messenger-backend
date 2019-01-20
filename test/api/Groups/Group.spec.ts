@@ -6,7 +6,6 @@ const AMOUNT_OF_USERS = 2;
 
 const data: any = {};
 let groupId: string;
-let userId: string;
 let authTokenOfCreator: string;
 let authTokenOfUser: string;
 
@@ -18,7 +17,6 @@ before(async () => {
     data.group = data.groups.pop();
 
     groupId = data.group._id.toString();
-    userId = data.group._id.toString();
 
     authTokenOfCreator = data.creator.createToken();
     authTokenOfUser = data.user.createToken();
