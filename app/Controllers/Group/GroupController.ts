@@ -54,9 +54,11 @@ export default class GroupController {
                 await group.deleteMember(req.user);
                 res.status(200).json({message: "successfully"});
             } else if (req.method === "LINK") {
-                console.log(req);
                 const {invitation_code} = Validator(req.query, GroupController.validationEnterSchema);
                 const group = await Group.getGroupByInvitationCode(invitation_code);
+                if (!group) {
+                    throw new httpError.NotFound("Credentials are wrong");
+                }
                 await group.addMember(req.user);
                 next(new GroupResource(group));
             } else {
