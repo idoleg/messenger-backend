@@ -14,25 +14,25 @@ export default class UserContoller {
             const userAccount = await User.getByEmail(email);
 
             next(new UserProfileResource(userAccount.profile));
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
-    public static async getUserById(req: any, res: any, next: any) {
+    public static async getById(req: any, res: any, next: any) {
         try {
             const { userId } = Validator(req.params, UserContoller.idValidationSchema);
 
             const userAccount: any = await User.findById(userId);
 
             next(new UserProfileResource(userAccount.profile));
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
     protected static emailValidationSchema = {
-        email: Joi.string().email(),
+        email: Joi.string().required().email(),
     };
 
     protected static idValidationSchema = {
