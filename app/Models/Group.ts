@@ -28,6 +28,10 @@ GroupSchema.method("addMember", async function(user: string | IUser) {
     return await GroupMember.addMemberTo(this, user);
 });
 
+GroupSchema.method("changeRoleForMember", async function(member: string | IUser, newRole: string) {
+    return await GroupMember.changeRoleForMember(this, member, newRole);
+});
+
 GroupSchema.method("deleteMember", async function(member: string | IUser) {
     return await GroupMember.deleteMemberFrom(this, member);
 });

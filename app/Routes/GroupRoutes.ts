@@ -17,6 +17,7 @@ export default function(express: Express) {
 
     this.get("/groups/:groupId/members", MemberController.getMembers);
     this.post("/groups/:groupId/members", MemberController.addMember);
+    this.put("/groups/:groupId/members/:userId", MemberController.changeRoleForMember);
     this.delete("/groups/:groupId/members/:userId", MemberController.deleteMember);
 
 }

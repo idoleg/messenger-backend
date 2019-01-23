@@ -51,6 +51,32 @@ export default class MemberController {
         }
     }
 
+    public static async changeRoleForMember(req: any, res: any, next: any) {
+        try {
+            const {groupId, userId} = Validator(req.params, {
+                groupId: Joi.objectId(), 
+                userId: Joi.objectId().required()
+            });
+            const {role} = Validator(req.body, {
+                role: Joi.string().required().regex(/speaker|moderator|administrator/), 
+            });
+            const group = await Group.findById(groupId);
+
+            if (!group) {
+                throw new httpError.NotFound("This group not found or not allowed for you");
+            }
+            if (!await group.isCreator(req.user)) {
+                throw new httpError.Forbidden("You cannot do it");
+            }
+
+            group.changeRoleForMember(userId,role);
+
+            res.json({message: "successfully"});
+        } catch (e) {
+            next(e);
+        }
+    }
+
     public static async deleteMember(req: any, res: any, next: any) {
         try {
             const {groupId, userId} = Validator(req.params, {groupId: Joi.objectId(), userId: Joi.objectId().required()});

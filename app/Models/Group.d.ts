@@ -14,10 +14,11 @@ export interface IGroup extends IGroupDocument {
     isCreator(user: string | IUser): boolean;
     isMember(user: string | IUser): Promise<boolean>;
     addMember(user: string | IUser): Promise<IGroupMember>;
+    changeRoleForMember(member: string | IUser, newRole: string): Promise<IGroupMember>;
     deleteMember(member: string | IUser): Promise<IGroupMember>;
     getMembers(offset?: number, limit?: number): Promise<IGroupMember>;
     updateGroup(name?: string, description?: string): void;
-    // getInvite(): string;
+    // getInvite(): string;changeRoleForMember
     createInvite(): void;
     deleteInvite(): void;
 }
