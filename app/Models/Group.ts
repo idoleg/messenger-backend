@@ -47,7 +47,7 @@ GroupSchema.static("getGroupByInvitationCode", async function(invitation_code: s
 GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
     let userId = user;
     if (typeof user !== "string") userId = user._id.toString();
-    return await this.create({name, description, creator: userId, invitingCode:null});
+    return await this.create({name, description, creator: userId, invitingCode: null});
 });
 
 GroupSchema.method("updateGroup", function(name?: string, description?: string) {
@@ -61,7 +61,7 @@ GroupSchema.method("updateGroup", function(name?: string, description?: string) 
 // });
 
 GroupSchema.method("createInvite", async function() {
-    this.invitingCode = "invite" + this._id.toString() + Math.random() * Math.random() * 1000000;;
+    this.invitingCode = "invite" + this._id.toString() + Math.random() * Math.random() * 1000000;
     return;
 });
 

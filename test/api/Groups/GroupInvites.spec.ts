@@ -1,4 +1,4 @@
-import { fakeUsers, fakeGroups } from "../../../dist/app/faker";
+import { fakeGroups, fakeUsers } from "../../../dist/app/faker";
 import { Agent } from "../Bootstrap";
 
 const AMOUNT_OF_GROUPS = 1;
@@ -13,7 +13,7 @@ before(async () => {
     data.users = await fakeUsers(AMOUNT_OF_USERS);
     data.creator = data.users.pop();
     data.user = data.users.pop();
-    data.groups = await fakeGroups(AMOUNT_OF_GROUPS,[data.creator]);
+    data.groups = await fakeGroups(AMOUNT_OF_GROUPS, [data.creator]);
     data.group = data.groups.pop();
 
     groupId = data.group._id.toString();
@@ -25,7 +25,7 @@ before(async () => {
 describe("Group invites API", () => {
     describe("Get invitation code GET /groups/%id/invites", () => {
         it("No token", async () => {
-            const res = await Agent().get(`/groups/${groupId}/invites`)
+            const res = await Agent().get(`/groups/${groupId}/invites`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -56,7 +56,7 @@ describe("Group invites API", () => {
 
     describe("Create invitation code POST /groups/%id/invites", () => {
         it("No token", async () => {
-            const res = await Agent().post(`/groups/${groupId}/invites`)
+            const res = await Agent().post(`/groups/${groupId}/invites`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -87,7 +87,7 @@ describe("Group invites API", () => {
 
     describe("Delete invitation code DELETE /groups/%id/invites", () => {
         it("No token", async () => {
-            const res = await Agent().delete(`/groups/${groupId}/invites`)
+            const res = await Agent().delete(`/groups/${groupId}/invites`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });

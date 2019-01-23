@@ -16,7 +16,7 @@ before(async () => {
 describe("Account API", () => {
     describe("Get account GET /account", () => {
         it("No token", async () => {
-            const res = await Agent().get(`/account`)
+            const res = await Agent().get(`/account`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -44,7 +44,7 @@ describe("Account API", () => {
 
     describe("Change account PUT /account", () => {
         it("No token", async () => {
-            const res = await Agent().put(`/account`)
+            const res = await Agent().put(`/account`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -59,8 +59,8 @@ describe("Account API", () => {
         it("Wrong old password (Credentials are wrong)", async () => {
             const res = await Agent().put(`/account`)
                 .send({
-                    oldPassword:"wrongPassword",
-                    newPassword:"some password"
+                    oldPassword: "wrongPassword",
+                    newPassword: "some password",
                 })
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
             res.should.have.status(404);
@@ -70,8 +70,8 @@ describe("Account API", () => {
         it("Wrong new password (Validation error)", async () => {
             const res = await Agent().put(`/account`)
                 .send({
-                    oldPassword:"012345678",
-                    newPassword:"12345"
+                    oldPassword: "012345678",
+                    newPassword: "12345",
                 })
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
             res.should.have.status(400);
