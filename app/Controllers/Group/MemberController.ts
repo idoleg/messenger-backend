@@ -25,8 +25,8 @@ export default class MemberController {
             const members = await GroupMember.getMembersFor(groupId, offset);
 
             next(new GroupMemberCollectionResource(members, {group_id: groupId, offset}));
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -46,8 +46,8 @@ export default class MemberController {
 
             next(new GroupMemberResource(member));
 
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -68,12 +68,13 @@ export default class MemberController {
             if (!await group.isCreator(req.user)) {
                 throw new httpError.Forbidden("You cannot do it");
             }
-
-            group.changeRoleForMember(userId,role);
-
-            res.json({message: "successfully"});
-        } catch (e) {
-            next(e);
+            if (!await GroupMember.isMember(groupId, userId)) {
+                throw new httpError.NotFound("This group not found or not allowed for you");
+            }
+            const member = await group.changeRoleForMember(userId,role);
+            next(new GroupMemberResource(member));
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -92,8 +93,8 @@ export default class MemberController {
             group.deleteMember(userId);
 
             res.json({message: "successfully"});
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
