@@ -6,6 +6,9 @@ export default function(express: Express) {
 
     this.get("/account", AccountController.get);
     this.put("/account", AccountController.update);
+
     this.get("/account/contacts", ContactController.get);
-    this.get("/account/contacts/%id", ContactController.getById);
+    this.get("/account/contacts/:id", ContactController.getById);
+    this.post("/account/contacts/", ContactController.AddAccount);
+
 }

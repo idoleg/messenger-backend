@@ -7,4 +7,9 @@ const UserContactSchema = new Schema({
     added_at: { type: Date, default: null },
 });
 
-export default (mongoose: Mongoose) => mongoose.model("UserContact", UserContactSchema, "users.contacts");
+UserContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
+    return await this.findOneAndUpdate({ user_id: userId, contact: contactId, byname },
+        { $set: { user_id: userId, contact: contactId, byname, added_at: Date.now() }}, { upsert: true, new: true });
+});
+
+export default (mongoose: Mongoose) => mongoose.model("AccountContact", UserContactSchema, "users.contacts");

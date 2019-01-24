@@ -1,14 +1,15 @@
 import {Document, Model} from "mongoose";
 
-export interface IUserContactDocument extends Document {
+export interface IAccountContactDocument extends Document {
     user_id: string;
     contact: string;
     byname: string;
     added_at: Date;
 }
 
-export interface IUserContact extends IUserContactDocument {
+export interface IAccountContact extends IAccountContactDocument {
 }
 
-export interface IUserContactModel extends Model<IUserContact> {
+export interface IUserContactModel extends Model<IAccountContact> {
+    addContact(userId: string, contactId: string, byname: string): Promise<IAccountContact>;
 }
