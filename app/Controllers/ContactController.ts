@@ -1,3 +1,4 @@
+import httpError from "http-errors";
 import { DB } from "..";
 import Validator from "../../src/HttpServer/Validator";
 import Joi from "../../src/Joi/Joi";
@@ -12,12 +13,9 @@ export default class ContactController {
         try {
 
             const { offset } = Validator(req.query, { offset: Joi.number() });
-
-            const { id } = Validator(req.user, { id: Joi.objectId() });
+            const { id } = req.user;
 
             const contacts = await Contact.find({ user_id: id });
-
-            console.log(contacts);
 
             next(new ContactCollectionResource(contacts, {user_id: id, offset}));
 
@@ -29,9 +27,14 @@ export default class ContactController {
     public static async getById(req: any, res: any, next: any) {
         try {
 
-            const { id } = Validator(req.params, ContactController.idValidationSchema);
+            const { id: userId } = req.user;
 
-            const contact = await Contact.findById(id);
+            const { id } = Validator(req.params, { id: Joi.objectId() });
+
+            const contact = await Contact.getById(userId, id);
+
+            if (!contact) throw new httpError.NotFound("Contact with such id was not found");
+
             next(new ContactResource(contact));
 
         } catch (err) {
@@ -55,13 +58,41 @@ export default class ContactController {
         }
     }
 
-    protected static idValidationSchema = {
-        id: Joi.objectId().required(),
-    };
+    public static async updateContact(req: any, res: any, next: any) {
+        try {
 
-    protected static bynameValidationSchema = {
-        byname: Joi.string().required(),
-    };
+            const { id: userId } = req.user;
+
+            const { id } = Validator(req.params, { id: Joi.objectId() });
+
+            const { byname } = Validator(req.body, { byname: Joi.string().required() });
+
+            const contact = await Contact.updateContact(userId, id, byname);
+
+            if (!contact) throw new httpError.NotFound("Contact with such id was not found");
+
+            next(new ContactResource(contact));
+
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    public static async deleteContact(req: any, res: any, next: any) {
+        try {
+
+            const { id: userId } = req.user;
+
+            const { id } = Validator(req.params, { id: Joi.objectId() });
+
+            await Contact.deleteContact(userId, id);
+
+            res.json({message: "successfully"});
+
+        } catch (err) {
+            next(err);
+        }
+    }
 
     protected static postContactValidationSchema = {
         id: Joi.objectId(),
