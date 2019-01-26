@@ -39,7 +39,7 @@ UserSchema.method("createToken", function() {
     );
 });
 
-UserSchema.static("checkToken", async function(authHeader: string) {
+UserSchema.static("findByToken", async function(authHeader: string) {
     if (!authHeader || authHeader.split(" ")[0] !== "Bearer") {
         return null;
     }
