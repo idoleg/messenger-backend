@@ -1,10 +1,10 @@
 import {Chalk as ChalkInterface} from "chalk";
 import EventEmitter from "events";
+import WriteStream = NodeJS.WriteStream;
+import env from "getenv";
 import moment from "moment";
 import PrettyError from "pretty-error";
 import Chalk from "./Chalk";
-import WriteStream = NodeJS.WriteStream;
-import env from "getenv";
 
 interface IConsoleDecor {
     error: ChalkInterface;
