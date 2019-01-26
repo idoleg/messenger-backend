@@ -7,8 +7,8 @@ const UserSchema = new Schema({
     email: {type: String, index: true, unique: true, required: true, trim: true},
     password: {type: String, default: "", trim: true},
     profile: {
-        name: {type: String, default: "", trim: true},
-        last_name: {type: String, default: "", trim: true},
+        username: {type: String, default: "", trim: true},
+        fullname: {type: String, default: "", trim: true},
         last_seen: {type: Date, default: null},
     },
 }, {
@@ -21,7 +21,7 @@ UserSchema.static("getByEmail", async function(email: string) {
 
 UserSchema.static("registration", async function(email: string, password: string, name: string) {
     password = await bcrypt.hash(password, 12);
-    return await this.create({email, password, profile: {name}});
+    return await this.create({email, password, profile: {username: name}});
 });
 
 UserSchema.static("isExist", async function(id: string) {
