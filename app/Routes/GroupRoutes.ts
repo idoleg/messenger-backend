@@ -2,6 +2,7 @@ import {Express} from "express";
 import GroupController from "../Controllers/Group/GroupController";
 import GroupInviteController from "../Controllers/Group/GroupInviteController";
 import MemberController from "../Controllers/Group/MemberController";
+import GroupMessageController from "../Controllers/Group/MessageController";
 
 export default function(express: Express) {
 
@@ -20,4 +21,7 @@ export default function(express: Express) {
     this.put("/groups/:groupId/members/:userId", MemberController.changeRoleForMember);
     this.delete("/groups/:groupId/members/:userId", MemberController.deleteMember);
 
+    this.get("/groups/:groupId/messages", GroupMessageController.getCollection);
+    this.get("/groups/:groupId/messages/:messageId", GroupMessageController.getOne);
+    this.post("/groups/:groupId/messages", GroupMessageController.send);
 }
