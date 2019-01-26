@@ -9,7 +9,7 @@ const GroupSchema = new Schema({
     creator: {type: String, required: true},
     name: {type: String, required: true, trim: true},
     description: {type: String, default: null, trim: true},
-    invitingCode: {type: String, default: null},
+    invitation_code: {type: String, default: null},
     }, {
     timestamps: {createdAt: "created_at", updatedAt: false},
 });
@@ -45,13 +45,13 @@ GroupSchema.static("getGroup", async function(id: string) {
 });
 
 GroupSchema.static("getGroupByInvitationCode", async function(invitationCode: string) {
-    return await this.findOne({invitingCode: invitationCode});
+    return await this.findOne({invitation_code: invitationCode});
 });
 
 GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
     let userId = user;
     if (typeof user !== "string") userId = user._id.toString();
-    return await this.create({name, description, creator: userId, invitingCode: null});
+    return await this.create({name, description, creator: userId, invitation_code: null});
 });
 
 GroupSchema.method("updateGroup", function(name?: string, description?: string) {
@@ -61,16 +61,16 @@ GroupSchema.method("updateGroup", function(name?: string, description?: string) 
 });
 
 // GroupSchema.method("getInvite", function() {
-//     return this.invitingCode;
+//     return this.invitation_code;
 // });
 
 GroupSchema.method("createInvite", async function() {
-    this.invitingCode = "invite" + this._id.toString() + Math.random() * Math.random() * 1000000;
+    this.invitation_code = "invite" + this._id.toString() + Math.random() * Math.random() * 1000000;
     return;
 });
 
 GroupSchema.method("deleteInvite", function() {
-    this.invitingCode = null;
+    this.invitation_code = null;
     return;
 });
 

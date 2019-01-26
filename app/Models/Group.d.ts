@@ -6,7 +6,7 @@ export interface IGroupDocument extends Document {
     creator: string;
     name: string;
     description: string;
-    invitingCode: string;
+    invitation_code: string;
     created_at: Date;
 }
 
