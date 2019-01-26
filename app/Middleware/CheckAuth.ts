@@ -10,8 +10,7 @@ export default class CheckAuth {
     public static async isAuth(req: any, res: any, next: any) {
         try {
             let user: Document | null;
-
-            if (req.url === "/auth/login" || req.url === "/auth/registration" || req.url === "/socket") {
+            if (req.method === 'OPTIONS' || req.url === "/auth/login" || req.url === "/auth/registration" || req.url === "/socket") {
                 return next();
             }
             const authHeader = req.get("Authorization");

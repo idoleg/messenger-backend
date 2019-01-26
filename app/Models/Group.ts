@@ -28,6 +28,10 @@ GroupSchema.method("addMember", async function(user: string | IUser) {
     return await GroupMember.addMemberTo(this, user);
 });
 
+GroupSchema.method("changeRoleForMember", async function(member: string | IUser, newRole: string) {
+    return await GroupMember.changeRoleForMember(this, member, newRole);
+});
+
 GroupSchema.method("deleteMember", async function(member: string | IUser) {
     return await GroupMember.deleteMemberFrom(this, member);
 });
@@ -40,15 +44,33 @@ GroupSchema.static("getGroup", async function(id: string) {
     return await this.findById(id);
 });
 
+GroupSchema.static("getGroupByInvitationCode", async function(invitation_code: string) {
+    return await this.findOne({invitingCode: invitation_code});
+});
+
 GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
     let userId = user;
     if (typeof user !== "string") userId = user._id.toString();
-    return await this.create({name, description, creator: userId});
+    return await this.create({name, description, creator: userId, invitingCode:null});
 });
 
 GroupSchema.method("updateGroup", function(name?: string, description?: string) {
     this.name = name || this.name;
     this.description = description || this.description;
+    return;
+});
+
+// GroupSchema.method("getInvite", function() {
+//     return this.invitingCode;
+// });
+
+GroupSchema.method("createInvite", async function() {
+    this.invitingCode = "invite" + this._id.toString() + Math.random() * Math.random() * 1000000;;
+    return;
+});
+
+GroupSchema.method("deleteInvite", function() {
+    this.invitingCode = null;
     return;
 });
 

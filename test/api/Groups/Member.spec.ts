@@ -136,6 +136,64 @@ describe("Group member API", () => {
 
     });
 
+    describe("PUT: /groups/:groupId/members/:userId", () => {
+
+        it("Successful change role for member from group", async () => {
+            const userId = data.memberButNotCreator._id.toString();
+
+            const res = await Agent().put(`/groups/${groupId}/members/${userId}`)
+                .send({role: "moderator"})
+                .set("Authorization", "Bearer " + authTokenOfMemberAndCreator);
+            res.should.have.status(200);
+            res.body.should.have.property("user");
+            res.body.should.have.property("role");
+        });
+
+        it("Error changing role - only group's creator can do it", async () => {
+            const userId = data.memberButNotCreator._id.toString();
+
+            const res = await Agent().put(`/groups/${groupId}/members/${userId}`)
+                .send({role: "moderator"})
+                .set("Authorization", "Bearer " + authTokenOfMemberButNotCreator);
+
+            res.should.have.status(403);
+            res.body.message.should.be.equal("You cannot do it");
+        });
+
+        it("Error changing role - user is not member", async () => {
+            const userId = data.userButNotMember._id.toString();
+
+            const res = await Agent().put(`/groups/${groupId}/members/${userId}`)
+                .send({role: "moderator"})
+                .set("Authorization", "Bearer " + authTokenOfMemberAndCreator);
+
+            res.should.have.status(404);
+            res.body.message.should.be.equal("This group not found or not allowed for you");
+        });
+
+        it("Error changing role - wrong role", async () => {
+            const userId = data.members[2]._id.toString();
+
+            const res = await Agent().put(`/groups/groupNotExist/members/${userId}`)
+                .send({role: "wrongRole"})
+                .set("Authorization", "Bearer " + authTokenOfMemberAndCreator);
+
+            res.should.have.status(400);
+            res.body.message.should.be.equal("Validation error");
+        });
+
+        it("Error changing role - group is not id", async () => {
+            const userId = data.members[2]._id.toString();
+
+            const res = await Agent().put(`/groups/groupNotExist/members/${userId}`)
+                .send({role: "moderator"})
+                .set("Authorization", "Bearer " + authTokenOfMemberButNotCreator);
+
+            res.should.have.status(400);
+            res.body.message.should.be.equal("Validation error");
+        });
+    });
+
     describe("DELETE: /groups/:groupId/members/:userId", () => {
 
         it("Successful deleting member from group", async () => {

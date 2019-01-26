@@ -1,4 +1,3 @@
-import bcrypt from "bcryptjs";
 import httpError from "http-errors";
 import Validator from "../../../src/HttpServer/Validator";
 import {DB} from "../../index";
@@ -47,13 +46,21 @@ export default class GroupController {
         }
     }
 
-    public static async leaveGroup(req: any, res: any, next: any) {
+    public static async enterLeaveGroup(req: any, res: any, next: any) {
         try {
             if (req.method === "UNLINK") {
                 const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
                 const group = await Group.getGroup(groupId);
                 await group.deleteMember(req.user);
                 res.status(200).json({message: "successfully"});
+            } else if (req.method === "LINK") {
+                const {invitation_code} = Validator(req.query, GroupController.validationEnterSchema);
+                const group = await Group.getGroupByInvitationCode(invitation_code);
+                if (!group) {
+                    throw new httpError.NotFound("Credentials are wrong");
+                }
+                await group.addMember(req.user);
+                next(new GroupResource(group));
             } else {
                 next();
             }
@@ -65,6 +72,10 @@ export default class GroupController {
     protected static validationAddSchema = {
         name: Joi.string().required().min(2),
         description: Joi.string(),
+    };
+
+    protected static validationEnterSchema = {
+        invitation_code: Joi.string().required(),
     };
 
     protected static validationUpdateSchema = {

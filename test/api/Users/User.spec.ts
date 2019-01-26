@@ -1,5 +1,5 @@
 import { fakeUsers } from "../../../dist/app/faker";
-import {Agent} from "../Bootstrap";
+import { Agent } from "../Bootstrap";
 
 const AMOUNT_OF_USERS = 4;
 
