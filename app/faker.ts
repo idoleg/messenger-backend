@@ -60,7 +60,7 @@ export async function fakeGroups(count: number, users: any[]) {
             creator: getRandomItem(users)._id,
             name: faker.company.companyName(),
             description: faker.lorem.sentence(),
-            invitingCode: invitationCode,
+            invitation_code: invitationCode,
         });
     });
 }
