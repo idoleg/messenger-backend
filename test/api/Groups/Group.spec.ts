@@ -1,4 +1,4 @@
-import { fakeUsers, fakeGroups } from "../../../dist/app/faker";
+import { fakeGroups, fakeUsers } from "../../../dist/app/faker";
 import { Agent } from "../Bootstrap";
 
 const AMOUNT_OF_GROUPS = 1;
@@ -13,7 +13,7 @@ before(async () => {
     data.users = await fakeUsers(AMOUNT_OF_USERS);
     data.creator = data.users.pop();
     data.user = data.users.pop();
-    data.groups = await fakeGroups(AMOUNT_OF_GROUPS,[data.creator]);
+    data.groups = await fakeGroups(AMOUNT_OF_GROUPS, [data.creator]);
     data.group = data.groups.pop();
 
     groupId = data.group._id.toString();
@@ -25,7 +25,7 @@ before(async () => {
 describe("Groups API", () => {
     describe("Get group information GET /groups/:groupId", () => {
         it("No token", async () => {
-            const res = await Agent().get(`/groups/${groupId}`)
+            const res = await Agent().get(`/groups/${groupId}`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -52,7 +52,7 @@ describe("Groups API", () => {
 
     describe("Create group POST /groups", () => {
         it("No token", async () => {
-            const res = await Agent().post(`/groups`)
+            const res = await Agent().post(`/groups`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -67,7 +67,7 @@ describe("Groups API", () => {
         it("No name group", async () => {
             const res = await Agent().post(`/groups`)
                 .send({
-                    description: "created group"
+                    description: "created group",
                 })
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
             res.should.have.status(400);
@@ -77,7 +77,7 @@ describe("Groups API", () => {
         it("Successful creating", async () => {
             const res = await Agent().post(`/groups`)
                 .send({
-                    name: "created group"
+                    name: "created group",
                 })
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
             res.should.have.status(200);
@@ -92,7 +92,7 @@ describe("Groups API", () => {
 
     describe("Change group information PUT /groups/:groupId", () => {
         it("No token", async () => {
-            const res = await Agent().put(`/groups/${groupId}`)
+            const res = await Agent().put(`/groups/${groupId}`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -107,7 +107,7 @@ describe("Groups API", () => {
         it("Not creator", async () => {
             const res = await Agent().put(`/groups/${groupId}`)
                 .send({
-                    description: "not in group"
+                    description: "not in group",
                 })
                 .set("Authorization", `Bearer ${authTokenOfUser}`);
             res.should.have.status(403);
@@ -117,7 +117,7 @@ describe("Groups API", () => {
         it("Successful updating group", async () => {
             const res = await Agent().put(`/groups/${groupId}`)
                 .send({
-                    description: "updated description"
+                    description: "updated description",
                 })
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
             res.should.have.status(200);
@@ -132,7 +132,7 @@ describe("Groups API", () => {
 
     describe("Leave the group UNLINK /groups/:groupId", () => {
         it("No token", async () => {
-            const res = await Agent().unlink(`/groups/${groupId}`)
+            const res = await Agent().unlink(`/groups/${groupId}`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });
@@ -154,7 +154,7 @@ describe("Groups API", () => {
 
     describe("Enter the group LINK /groups", () => {
         it("No token", async () => {
-            const res = await Agent().link(`/groups`)
+            const res = await Agent().link(`/groups`);
             res.should.have.status(401);
             res.body.message.should.be.equal("No valid token");
         });

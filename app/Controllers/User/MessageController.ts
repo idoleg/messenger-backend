@@ -20,8 +20,8 @@ export default class MessageController {
 
             next(new MessageCollectionResource(messages, {offset}));
 
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
     }
 
@@ -33,11 +33,11 @@ export default class MessageController {
 
             next(new MessageResource(message));
 
-        } catch (e) {
-            if (e instanceof MongooseError.CastError || e instanceof MongooseError.DocumentNotFoundError) {
+        } catch (err) {
+            if (err instanceof MongooseError.CastError || err instanceof MongooseError.DocumentNotFoundError) {
                 next(new httpError.NotFound());
             } else {
-                next(e);
+                next(err);
             }
         }
     }
@@ -50,8 +50,8 @@ export default class MessageController {
             const message = await UserMessage.send(req.user, userId, text);
 
             next(new MessageResource(message));
-        } catch (e) {
-            next(e);
+        } catch (err) {
+            next(err);
         }
 
     }

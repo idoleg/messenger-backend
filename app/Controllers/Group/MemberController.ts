@@ -54,11 +54,11 @@ export default class MemberController {
     public static async changeRoleForMember(req: any, res: any, next: any) {
         try {
             const {groupId, userId} = Validator(req.params, {
-                groupId: Joi.objectId(), 
-                userId: Joi.objectId().required()
+                groupId: Joi.objectId(),
+                userId: Joi.objectId().required(),
             });
             const {role} = Validator(req.body, {
-                role: Joi.string().required().regex(/speaker|moderator|administrator/), 
+                role: Joi.string().required().regex(/speaker|moderator|administrator/),
             });
             const group = await Group.findById(groupId);
 
@@ -71,7 +71,7 @@ export default class MemberController {
             if (!await GroupMember.isMember(groupId, userId)) {
                 throw new httpError.NotFound("This group not found or not allowed for you");
             }
-            const member = await group.changeRoleForMember(userId,role);
+            const member = await group.changeRoleForMember(userId, role);
             next(new GroupMemberResource(member));
         } catch (err) {
             next(err);

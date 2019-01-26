@@ -1,12 +1,12 @@
 import crypto from "crypto";
+import dotenv from "dotenv";
 import EventEmitter from "events";
+import fs from "fs";
+import {dirname} from "path";
 import ApplicationConfig from "./ApplicationConfig";
 import ApplicationContext from "./ApplicationContext";
 import EventRouter from "./EventRouter/EventRouter";
 import Lifecycle from "./Lifecycle";
-import dotenv from "dotenv";
-import {dirname} from "path";
-import fs from "fs";
 
 export default class Application extends EventEmitter {
 

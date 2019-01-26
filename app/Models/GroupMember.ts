@@ -8,7 +8,7 @@ export const MEMBERS_LIMIT = 50;
 const GroupMemberSchema = new Schema({
     group: {type: String, required: true},
     member: {type: String, required: true},
-    role: {type: String, default: "speaker"}
+    role: {type: String, default: "speaker"},
 });
 
 GroupMemberSchema.static("isMember", async function(group: string | IGroup, user: string | IUser) {
@@ -36,7 +36,7 @@ GroupMemberSchema.static("changeRoleForMember", async function(group: string | I
     if (typeof group !== "string") group = group._id.toString();
     if (typeof member !== "string") member = member._id.toString();
 
-    return await this.findOneAndUpdate({group, member},{$set: {role: newRole}});
+    return await this.findOneAndUpdate({group, member}, {$set: {role: newRole}});
 });
 
 GroupMemberSchema.static("getMembersFor", async function(group: string | IGroup, offset: number = 0, limit: number = MESSAGES_LIMIT) {
