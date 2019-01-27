@@ -59,7 +59,8 @@ export default class HttpServer {
 
     public async init() {
         this.expressApp.use(express.json());
-        this.expressApp.use(cors(this.options.cors));
+        // this.expressApp.use(cors(this.options.cors));
+        this.expressApp.use(cors());
         this.expressApp.use(bodyParser.json(this.options.bodyParser));
         this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
         this.expressApp.use(this.expressRouter);

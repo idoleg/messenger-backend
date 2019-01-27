@@ -54,13 +54,13 @@ export async function fakeUserConversation(count: number, between: any[]) {
 
 export async function fakeGroups(count: number, users: any[]) {
     return await iterable(count, () => {
-        let invitation_code = null;
-        if (count === 1) invitation_code = "inviteGoodPeople";
+        let invitationCode = null;
+        if (count === 1) invitationCode = "inviteGoodPeople";
         return DB.getModel<any, any>("Group").create({
             creator: getRandomItem(users)._id,
             name: faker.company.companyName(),
             description: faker.lorem.sentence(),
-            invitingCode: invitation_code,
+            invitation_code: invitationCode,
         });
     });
 }

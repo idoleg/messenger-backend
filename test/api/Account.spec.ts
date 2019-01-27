@@ -36,8 +36,8 @@ describe("Account API", () => {
             res.body.should.have.property("id");
             res.body.should.have.property("email");
             res.body.should.have.property("profile");
-            res.body.profile.should.have.property("name");
-            res.body.profile.should.have.property("last_name");
+            res.body.profile.should.have.property("username");
+            res.body.profile.should.have.property("fullname");
             res.body.profile.should.have.property("last_seen");
         });
     });
@@ -85,8 +85,8 @@ describe("Account API", () => {
             res.body.should.have.property("id");
             res.body.should.have.property("email");
             res.body.should.have.property("profile");
-            res.body.profile.should.have.property("name");
-            res.body.profile.should.have.property("last_name");
+            res.body.profile.should.have.property("username");
+            res.body.profile.should.have.property("fullname");
             res.body.profile.should.have.property("last_seen");
         });
     });

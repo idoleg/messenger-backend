@@ -6,8 +6,6 @@ import HttpServer from "../src/HttpServer/HttpServer";
 // import WebSocketServer from '../src/WebSocket/WebSocketServer';
 import MongodbClient from "../src/MongodbClient/MongodbClient";
 
-dotenv.config();
-
 export const APP_DIR = dirname(dirname(module.filename));
 export const PROJECT_DIR = dirname(APP_DIR);
 export const CONFIG_DIR = PROJECT_DIR + "/config";

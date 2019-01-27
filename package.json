@@ -49,6 +49,7 @@
     "@types/mongoose": "^5.3.7",
     "@types/node": "^10.12.18",
     "@types/sinon": "^7.0.3",
+    "@types/superagent": "git+https://github.com/superpike/superagentEdited.git",
     "@types/validator": "^10.9.0",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",

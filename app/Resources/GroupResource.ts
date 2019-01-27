@@ -8,7 +8,7 @@ export default class GroupResource extends BaseResource {
             creator: this.creator,
             name: this.name,
             description: this.description,
-            invitation_code: this.invitingCode,
+            invitation_code: this.invitation_code,
         };
     }
 

@@ -7,6 +7,7 @@ export default class GroupMemberResource extends BaseResource {
         return {
             // id: this._id,
             user: this.member,
+            role: this.role,
         };
     }
 
