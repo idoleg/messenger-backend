@@ -1,4 +1,4 @@
-import {fakeGroupMessages, fakeUsers, fakeGroups} from "../../../dist/app/faker";
+import {fakeGroupMessages, fakeGroups, fakeUsers} from "../../../dist/app/faker";
 import {Agent} from "../Bootstrap";
 
 const data: any = {};
@@ -16,8 +16,8 @@ before(async () => {
     data.groups = await fakeGroups(2, data.firstPerson);
     data.group = data.groups[0];
     data.anotherGroup = data.groups[1];
-    data.messages = await fakeGroupMessages(100, [data.group],[data.firstPerson, data.secondPerson]);
-    data.outherMessages = await fakeGroupMessages(2, [data.anotherGroup],[data.anoutherPerson, data.secondPerson]);
+    data.messages = await fakeGroupMessages(100, [data.group], [data.firstPerson, data.secondPerson]);
+    data.outherMessages = await fakeGroupMessages(2, [data.anotherGroup], [data.anoutherPerson, data.secondPerson]);
 
     groupId = data.group._id.toString();
     anotherGroupId = data.anotherGroup._id.toString();

@@ -84,6 +84,27 @@ export async function fakeGroupMessages(count: number, groups: any[], users: any
     });
 }
 
+export async function fakeContacts(count: number, users: any[], user: any) {
+    return await iterable(count, () => {
+        return DB.getModel<any, any>("AccountContact").create({
+            user_id: user._id,
+            contact: getRandomItem(users)._id,
+            byname: faker.lorem.text(),
+            added_at: Date.now(),
+        });
+    });
+}
+
+export async function fakeBlacklist(count: number, users: any[], user: any) {
+    return await iterable(count, () => {
+        return DB.getModel<any, any>("Blacklist").create({
+            user_id: user._id,
+            banned: getRandomItem(users)._id,
+            added_at: Date.now(),
+        });
+    });
+}
+
 async function iterable(count: number, callback: Function) {
     const promises = [];
 
