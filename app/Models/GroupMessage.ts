@@ -1,6 +1,6 @@
-import {Mongoose, Schema, Error as MongooseError} from "mongoose";
-import {IUser} from "./User.d";
+import {Error as MongooseError, Mongoose, Schema} from "mongoose";
 import {IGroup} from "./Group.d";
+import {IUser} from "./User.d";
 
 export const GROUP_MESSAGES_LIMIT = 50;
 

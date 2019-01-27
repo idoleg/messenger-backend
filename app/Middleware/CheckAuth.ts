@@ -13,10 +13,10 @@ export default class CheckAuth {
                 return next();
             }
             const authHeader = req.get("Authorization");
-            let user = await User.findByToken(authHeader);
+            const user = await User.findByToken(authHeader);
             if (!user) {
-                throw new httpError.Unauthorized("No valid token")
-            };
+                throw new httpError.Unauthorized("No valid token");
+            }
             req.user = user;
             next();
         } catch (err) {

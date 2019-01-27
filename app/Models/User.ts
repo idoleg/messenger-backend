@@ -1,8 +1,8 @@
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import {Mongoose, Schema} from "mongoose";
-import {Config} from "../index";
 import {Document} from "mongoose";
+import {Config} from "../index";
 
 const UserSchema = new Schema({
     email: {type: String, index: true, unique: true, required: true, trim: true},

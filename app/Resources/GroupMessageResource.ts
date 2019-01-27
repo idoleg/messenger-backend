@@ -9,7 +9,7 @@ export default class GroupMessageResource extends BaseResource {
             group: this.group,
             text: this.text,
             sent_at: this.sent_at,
-            type: 'group'
+            type: "group",
         };
     }
 
