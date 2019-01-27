@@ -11,8 +11,8 @@ BlacklistSchema.static("addToBlacklist", async function(userId: string, bannedId
         { $set: { user_id: userId, banned: bannedId, added_at: Date.now() }}, { upsert: true, new: true });
 });
 
-BlacklistSchema.static("removeFromBlacklist", async function(userId: string, id: string) {
-    return await this.deleteMany({ user_id: userId, _id: id });
+BlacklistSchema.static("removeFromBlacklist", async function(id: string) {
+    return await this.deleteMany({ _id: id });
 });
 
 export default (mongoose: Mongoose) => mongoose.model("Blacklist", BlacklistSchema, "users.blacklist");

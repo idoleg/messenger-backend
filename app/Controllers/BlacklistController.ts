@@ -16,7 +16,7 @@ export default class ContactController {
 
             const contacts = await Blacklist.find({ user_id: id });
 
-            next(new BlacklistCollectionResource(contacts, {user_id: id, offset}));
+            next(new BlacklistCollectionResource(contacts, { user_id: id, offset }));
 
         } catch (err) {
             next(err);
@@ -42,13 +42,11 @@ export default class ContactController {
     public static async deleteFromBlacklist(req: any, res: any, next: any) {
         try {
 
-            const { id: userId } = req.user;
-
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
-            await Blacklist.removeFromBlacklist(userId, id);
+            await Blacklist.removeFromBlacklist(id);
 
-            res.json({message: "successfully"});
+            res.json({ message: "successfully" });
 
         } catch (err) {
             next(err);

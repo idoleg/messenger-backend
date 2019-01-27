@@ -11,5 +11,5 @@ export interface IBlacklist extends IBlacklistDocument {
 
 export interface IBlacklostModel extends Model<IBlacklist> {
     addToBlacklist(userId: string, bannedId: string): Promise<IBlacklist>;
-    removeFromBlacklist(userId: string, id: string): Promise<IBlacklist>;
+    removeFromBlacklist(id: string): Promise<IBlacklist>;
 }

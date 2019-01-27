@@ -27,11 +27,9 @@ export default class ContactController {
     public static async getById(req: any, res: any, next: any) {
         try {
 
-            const { id: userId } = req.user;
-
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
-            const contact = await Contact.getById(userId, id);
+            const contact = await Contact.findById(id);
 
             if (!contact) throw new httpError.NotFound("Contact with such id was not found");
 
@@ -61,13 +59,11 @@ export default class ContactController {
     public static async updateContact(req: any, res: any, next: any) {
         try {
 
-            const { id: userId } = req.user;
-
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
             const { byname } = Validator(req.body, { byname: Joi.string().required() });
 
-            const contact = await Contact.updateContact(userId, id, byname);
+            const contact = await Contact.updateContact(id, byname);
 
             if (!contact) throw new httpError.NotFound("Contact with such id was not found");
 
@@ -81,11 +77,9 @@ export default class ContactController {
     public static async deleteContact(req: any, res: any, next: any) {
         try {
 
-            const { id: userId } = req.user;
-
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
-            await Contact.deleteContact(userId, id);
+            await Contact.deleteContact(id);
 
             res.json({message: "successfully"});
 
