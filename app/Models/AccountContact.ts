@@ -5,7 +5,7 @@ const ContactSchema = new Schema({
     contact: { type: String, default: "", trim: true },
     byname: { type: String, default: "", trim: true  },
     added_at: { type: Date, default: null },
-}, { autoIndex: false });
+});
 
 ContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
     return await this.findOneAndUpdate({ user_id: userId, contact: contactId },
