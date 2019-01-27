@@ -1,12 +1,8 @@
 import chai from "chai";
 import chaiHttp from "chai-http";
-import dotenv from "dotenv";
 import MongoMemoryServer from "mongodb-memory-server";
-import {dirname} from "path";
 import {SuperAgent} from "superagent";
 import HttpServer from "../../src/HttpServer/HttpServer";
-
-const TEST_ENV_FILE = dirname(dirname(dirname(module.filename))) + "/.env.test";
 
 process.env.APP_ENV = "test";
 process.env.AUTO_FAKER_OFF = "true";

@@ -1,5 +1,4 @@
-import {fakeBlacklist} from "../../app/faker";
-import { fakeContacts, fakeUsers } from "../../dist/app/faker";
+import { fakeBlacklist, fakeContacts, fakeUsers} from "../../dist/app/faker";
 import { Agent } from "./Bootstrap";
 
 const AMOUNT_OF_USERS = 5;
