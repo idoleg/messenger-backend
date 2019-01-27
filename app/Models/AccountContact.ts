@@ -1,11 +1,11 @@
 import { Mongoose, Schema } from "mongoose";
 
 const ContactSchema = new Schema({
-    user_id: { type: String, required: true },
+    user_id: { type: String, unique: false, index: true, required: true },
     contact: { type: String, default: "", trim: true },
     byname: { type: String, default: "", trim: true  },
     added_at: { type: Date, default: null },
-});
+}, { autoIndex: false });
 
 ContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
     return await this.findOneAndUpdate({ user_id: userId, contact: contactId },
