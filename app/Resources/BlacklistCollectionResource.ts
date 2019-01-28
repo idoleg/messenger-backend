@@ -8,7 +8,7 @@ export default class BlacklistCollectionResource extends BaseCollectionResource 
     public uncover() {
 
         return {
-            user_id: this.params.user_id,
+            user: this.params.user,
             offset: this.params.offset || 0,
             data: this.uncoverItems(),
         };

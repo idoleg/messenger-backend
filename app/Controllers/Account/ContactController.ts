@@ -1,12 +1,12 @@
 import httpError from "http-errors";
-import { DB } from "..";
-import Validator from "../../src/HttpServer/Validator";
-import Joi from "../../src/Joi/Joi";
-import { IAccountContact, IUserContactModel } from "../Models/AccountContact.d";
-import ContactCollectionResource from "../Resources/ContactCollectionResource";
-import ContactResource from "../Resources/ContactResource";
+import { DB } from "../..";
+import Validator from "../../../src/HttpServer/Validator";
+import Joi from "../../../src/Joi/Joi";
+import { IContact, IUserContactModel } from "../../Models/Contact.d";
+import ContactCollectionResource from "../../Resources/ContactCollectionResource";
+import ContactResource from "../../Resources/ContactResource";
 
-const Contact = DB.getModel<IAccountContact, IUserContactModel>("AccountContact");
+const Contact = DB.getModel<IContact, IUserContactModel>("Contact");
 
 export default class ContactController {
     public static async get(req: any, res: any, next: any) {
@@ -15,9 +15,9 @@ export default class ContactController {
             const { offset } = Validator(req.query, { offset: Joi.number() });
             const { id } = req.user;
 
-            const contacts = await Contact.find({ user_id: id });
+            const contacts = await Contact.find({ user: id });
 
-            next(new ContactCollectionResource(contacts, {user_id: id, offset}));
+            next(new ContactCollectionResource(contacts, {user: id, offset}));
 
         } catch (err) {
             next(err);
@@ -40,7 +40,7 @@ export default class ContactController {
         }
     }
 
-    public static async AddAccount(req: any, res: any, next: any) {
+    public static async AddContact(req: any, res: any, next: any) {
         try {
 
             const { id: userId } = req.user;

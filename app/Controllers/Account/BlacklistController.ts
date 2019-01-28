@@ -1,9 +1,9 @@
-import { DB } from "..";
-import Validator from "../../src/HttpServer/Validator";
-import Joi from "../../src/Joi/Joi";
-import { IBlacklist, IBlacklostModel } from "../Models/Blacklist.d";
-import BlacklistCollectionResource from "../Resources/BlacklistCollectionResource";
-import BlacklistResource from "../Resources/BlacklistResource";
+import { DB } from "../..";
+import Validator from "../../../src/HttpServer/Validator";
+import Joi from "../../../src/Joi/Joi";
+import { IBlacklist, IBlacklostModel } from "../../Models/Blacklist.d";
+import BlacklistCollectionResource from "../../Resources/BlacklistCollectionResource";
+import BlacklistResource from "../../Resources/BlacklistResource";
 
 const Blacklist = DB.getModel<IBlacklist, IBlacklostModel>("Blacklist");
 
@@ -14,9 +14,9 @@ export default class ContactController {
             const { offset } = Validator(req.query, { offset: Joi.number() });
             const { id } = req.user;
 
-            const contacts = await Blacklist.find({ user_id: id });
+            const contacts = await Blacklist.find({ user: id });
 
-            next(new BlacklistCollectionResource(contacts, { user_id: id, offset }));
+            next(new BlacklistCollectionResource(contacts, { user: id, offset }));
 
         } catch (err) {
             next(err);

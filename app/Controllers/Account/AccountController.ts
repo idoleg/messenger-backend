@@ -1,9 +1,9 @@
 import bcrypt from "bcryptjs";
 import httpError from "http-errors";
 import Joi from "joi";
-import Validator from "../../src/HttpServer/Validator";
-import {DB} from "../index";
-import UserResource from "../Resources/UserResource";
+import {DB} from "../..";
+import Validator from "../../../src/HttpServer/Validator";
+import UserResource from "../../Resources/UserResource";
 
 const User = DB.getModel("User");
 

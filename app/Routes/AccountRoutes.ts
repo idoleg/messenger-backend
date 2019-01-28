@@ -1,7 +1,7 @@
 import {Express} from "express";
-import AccountController from "../Controllers/AccountController";
-import BlacklistController from "../Controllers/BlacklistController";
-import ContactController from "../Controllers/ContactController";
+import AccountController from "../Controllers/Account/AccountController";
+import BlacklistController from "../Controllers/Account/BlacklistController";
+import ContactController from "../Controllers/Account/ContactController";
 
 export default function(express: Express) {
 
@@ -12,7 +12,7 @@ export default function(express: Express) {
     this.get("/account/contacts/:id", ContactController.getById);
     this.put("/account/contacts/:id", ContactController.updateContact);
     this.delete("/account/contacts/:id", ContactController.deleteContact);
-    this.post("/account/contacts/", ContactController.AddAccount);
+    this.post("/account/contacts/", ContactController.AddContact);
 
     this.get("/account/blacklist/", BlacklistController.getBlacklist);
     this.post("/account/blacklist/", BlacklistController.addToBlacklist);

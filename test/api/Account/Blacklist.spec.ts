@@ -1,5 +1,5 @@
-import { fakeBlacklist, fakeContacts, fakeUsers} from "../../dist/app/faker";
-import { Agent } from "./Bootstrap";
+import { fakeBlacklist, fakeContacts, fakeUsers} from "../../../dist/app/faker";
+import { Agent } from "../Bootstrap";
 
 const AMOUNT_OF_USERS = 5;
 
@@ -27,7 +27,7 @@ describe("Blacklist API", () => {
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
 
             res.should.have.status(200);
-            res.body.should.have.property("user_id");
+            res.body.should.have.property("user");
             res.body.should.have.property("offset");
             res.body.should.have.property("data");
         });

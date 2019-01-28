@@ -1,7 +1,7 @@
 import {Document, Model} from "mongoose";
 
 export interface IBlacklistDocument extends Document {
-    user_id: string;
+    user: string;
     banned: string;
     added_at: Date;
 }
