@@ -42,9 +42,11 @@ export default class ContactController {
     public static async deleteFromBlacklist(req: any, res: any, next: any) {
         try {
 
+            const { id: userId } = req.user;
+
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
-            await Blacklist.removeFromBlacklist(id);
+            await Blacklist.removeFromBlacklist(id, userId);
 
             res.json({ message: "successfully" });
 

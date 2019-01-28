@@ -9,16 +9,17 @@ const ContactSchema = new Schema({
 
 ContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
     return await this.findOneAndUpdate({ user: userId, contact: contactId },
-        { $set: { user: userId, contact: contactId, byname, added_at: Date.now() }}, { upsert: true, new: true });
+        { $set: { user: userId, contact: contactId, byname }, $setOnInsert: { added_at: Date.now() }},
+        { upsert: true, new: true });
 });
 
-ContactSchema.static("updateContact", async function(id: string, byname: string) {
-    return await this.findOneAndUpdate({ _id: id },
+ContactSchema.static("updateContact", async function(id: string, userId: string, byname: string) {
+    return await this.findOneAndUpdate({ _id: id, user: userId },
         { $set: { byname }}, { new: true });
 });
 
-ContactSchema.static("deleteContact", async function(id: string) {
-    return await this.deleteMany({ _id: id });
+ContactSchema.static("deleteContact", async function(id: string, userId: string) {
+    return await this.deleteMany({ _id: id, user: userId });
 });
 
 export default (mongoose: Mongoose) => mongoose.model("Contact", ContactSchema, "users.contacts");

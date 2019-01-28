@@ -11,12 +11,13 @@ before(async () => {
     data.mainUser = data.users.pop();
     data.anotherUser = data.users.pop();
 
-    data.mainUserBannedAccount = await fakeBlacklist(1, [ data.users.pop() ], data.mainUser) ;
-    data.anotherUserBannedAccount = await fakeBlacklist(1, [ data.users.pop() ], data.anotherUser) ;
+    data.mainUserBannedAccount = (await fakeBlacklist(1, [ data.users.pop() ], data.mainUser))[0];
+    data.anotherUserBannedAccount = (await fakeBlacklist(1, [ data.users.pop() ], data.anotherUser))[0];
 
     data.userForManipulations = data.users.pop();
 
     authTokenOfAccount = data.mainUser.createToken();
+
 });
 
 describe("Blacklist API", () => {
@@ -70,7 +71,7 @@ describe("Blacklist API", () => {
                .set("Authorization", `Bearer ${authTokenOfAccount}`);
 
            res.should.have.status(200);
-           res.body.should.be.equal("successfully");
+           res.body.message.should.be.equal("successfully");
        });
 
        it("Successful result of deleting wrong contact", async () => {
@@ -78,7 +79,7 @@ describe("Blacklist API", () => {
                .set("Authorization", `Bearer ${authTokenOfAccount}`);
 
            res.should.have.status(200);
-           res.body.should.be.equal("successfully");
+           res.body.message.should.be.equal("successfully");
        });
     });
 });

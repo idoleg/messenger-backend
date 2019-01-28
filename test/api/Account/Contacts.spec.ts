@@ -12,8 +12,8 @@ before(async () => {
     data.mainUser = data.users.pop();
     data.anotherUser = data.users.pop();
 
-    data.mainUserContact = await fakeContacts(1, [ data.users.pop() ], data.mainUser) ;
-    data.anotherUserContact = await fakeContacts(1, [ data.users.pop() ], data.anotherUser) ;
+    data.mainUserContact = (await fakeContacts(1, [ data.users.pop() ], data.mainUser))[0] ;
+    data.anotherUserContact = (await fakeContacts(1, [ data.users.pop() ], data.anotherUser))[0] ;
 
     data.userForManipulations = data.users.pop();
 
@@ -141,7 +141,7 @@ describe("Contacts API", () => {
                .set("Authorization", `Bearer ${authTokenOfAccount}`);
 
            res.should.have.status(200);
-           res.body.should.be.equal("successfully");
+           res.body.message.should.be.equal("successfully");
        });
 
        it("Successful result of deleting wrong contact", async () => {
@@ -149,7 +149,7 @@ describe("Contacts API", () => {
                .set("Authorization", `Bearer ${authTokenOfAccount}`);
 
            res.should.have.status(200);
-           res.body.should.be.equal("successfully");
+           res.body.message.should.be.equal("successfully");
        });
     });
 });

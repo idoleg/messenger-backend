@@ -12,6 +12,6 @@ export interface IContact extends IAccountContactDocument {
 
 export interface IUserContactModel extends Model<IContact> {
     addContact(userId: string, contactId: string, byname: string): Promise<IContact>;
-    updateContact(id: string, byname: string): Promise<IContact>;
-    deleteContact(id: string): Promise<IContact>;
+    updateContact(id: string, userId: string, byname: string): Promise<IContact>;
+    deleteContact(id: string, userId: string): Promise<IContact>;
 }
