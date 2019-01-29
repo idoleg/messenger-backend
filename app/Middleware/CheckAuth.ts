@@ -1,7 +1,5 @@
 import httpError from "http-errors";
-import jwt from "jsonwebtoken";
-import {Document} from "mongoose";
-import {Config, DB} from "../index";
+import {DB} from "../index";
 import {IUser, IUserModel} from "../Models/User.d";
 
 const User = DB.getModel<IUser, IUserModel>("User");

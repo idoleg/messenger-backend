@@ -1,11 +1,8 @@
 import bcrypt from "bcryptjs";
 import httpError from "http-errors";
 import Joi from "joi";
-import {DB} from "../..";
 import Validator from "../../../src/HttpServer/Validator";
 import UserResource from "../../Resources/UserResource";
-
-const User = DB.getModel("User");
 
 export default class AccountController {
 
@@ -29,8 +26,7 @@ export default class AccountController {
                     throw new httpError.NotFound("Credentials are wrong");
                 }
                 const {newPassword} = Validator({newPassword: req.body.newPassword}, AccountController.validationPasswordSchema);
-                const hashedPw = await bcrypt.hash(newPassword, 12);
-                req.user.password = hashedPw;
+                req.user.password = await bcrypt.hash(newPassword, 12);
             }
             await req.user.save();
             next(new UserResource(req.user));

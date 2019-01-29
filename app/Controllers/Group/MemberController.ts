@@ -93,6 +93,7 @@ export default class MemberController {
             group.deleteMember(userId);
 
             res.json({message: "successfully"});
+
         } catch (err) {
             next(err);
         }
