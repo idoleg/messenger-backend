@@ -9,8 +9,8 @@ export default function(express: Express) {
     this.get("/groups/:groupId", GroupController.getGroup);
     this.post("/groups", GroupController.addGroup);
     this.put("/groups/:groupId", GroupController.updateGroup);
-    express.use("/groups/:groupId", GroupController.enterLeaveGroup); // for UNLINK
-    express.use("/groups", GroupController.enterLeaveGroup); // for LINK
+    express.use("/groups/:groupId", GroupController.leaveGroup); // for UNLINK
+    express.use("/groups", GroupController.enterGroup); // for LINK
 
     this.get("/groups/:groupId/invites", GroupInviteController.getInvite);
     this.post("/groups/:groupId/invites", GroupInviteController.createInvite);

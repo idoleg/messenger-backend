@@ -39,11 +39,7 @@ UserSchema.method("createToken", function() {
     );
 });
 
-UserSchema.static("findByToken", async function(authHeader: string) {
-    if (!authHeader || authHeader.split(" ")[0] !== "Bearer") {
-        return null;
-    }
-    const token = authHeader.split(" ")[1];
+UserSchema.static("findByToken", async function(token: string) {
     const decodedToken = jwt.verify(token, Config.get("auth.privateKey")) as any;
     let user: Document | null;
 

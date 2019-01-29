@@ -13,7 +13,14 @@ export default class GroupController {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
+            const invitation_code = req.query.invitation_code;
+
+            if (!await group.isMember(req.user) && (!invitation_code || invitation_code !== group.invitation_code)) {
+                throw new httpError.Forbidden("You cannot do it");
+            }
+
             next(new GroupResource(group));
+
         } catch (err) {
             next(err);
         }
@@ -23,8 +30,11 @@ export default class GroupController {
         try {
             const {name, description} = Validator(req.body, GroupController.validationAddSchema);
             const group = await Group.addGroup(req.user, name, description);
+
             group.addMember(req.user);
+
             next(new GroupResource(group));
+
         } catch (err) {
             next(err);
         }
@@ -35,32 +45,53 @@ export default class GroupController {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const {name, description} = Validator(req.body, GroupController.validationUpdateSchema);
             const group = await Group.getGroup(groupId);
+
             if (!await group.isCreator(req.user)) {
                 throw new httpError.Forbidden("You cannot do it");
             }
+
             group.updateGroup(name, description);
             await group.save();
+
             next(new GroupResource(group));
+
         } catch (err) {
             next(err);
         }
     }
 
-    public static async enterLeaveGroup(req: any, res: any, next: any) {
+    public static async enterGroup(req: any, res: any, next: any) {
+        try {
+            if (req.method === "LINK") {
+                const {invitation_code} = Validator(req.query, GroupController.validationEnterSchema);
+                const group = await Group.getGroupByInvitationCode(invitation_code);
+
+                if (!group) {
+                    throw new httpError.NotFound("Credentials are wrong");
+                }
+
+                await group.addMember(req.user);
+
+                next(new GroupResource(group));
+
+            } else {
+                next();
+            }
+        } catch (err) {
+            next(err);
+        }
+    }
+
+    public static async leaveGroup(req: any, res: any, next: any) {
         try {
             if (req.method === "UNLINK") {
                 const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
                 const group = await Group.getGroup(groupId);
+
                 await group.deleteMember(req.user);
+
                 res.status(200).json({message: "successfully"});
-            } else if (req.method === "LINK") {
-                const {invitation_code} = Validator(req.query, GroupController.validationEnterSchema);
-                const group = await Group.getGroupByInvitationCode(invitation_code);
-                if (!group) {
-                    throw new httpError.NotFound("Credentials are wrong");
-                }
-                await group.addMember(req.user);
-                next(new GroupResource(group));
+
             } else {
                 next();
             }
