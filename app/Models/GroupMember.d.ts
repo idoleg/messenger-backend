@@ -22,5 +22,5 @@ export interface IGroupMemberModel extends Model<IGroupMember> {
     addMemberTo(group: string | IGroup, user: string | IUser): Promise<IGroupMember>;
     changeRoleForMember(group: string | IGroup, member: string | IUser, newRole: string): Promise<IGroupMember>;
     deleteMemberFrom(group: string | IGroup, member: string | IUser): Promise<IGroupMember>;
-    getMembersFor(group: string | IGroup, offset?: number, limit?: number): Promise<IGroupMember>;
+    getMembersFor(group: string | IGroup, offset?: number, limit?: number): Promise<[IGroupMember]>;
 }

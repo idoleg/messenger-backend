@@ -7,13 +7,14 @@ export const MEMBERS_LIMIT = 50;
 
 const GroupMemberSchema = new Schema({
     group: {type: String, required: true},
-    member: {type: String, required: true},
+    // member: {type: String, required: true},
+    member: {type: Schema.Types.ObjectId,ref: 'User', required: true},
     role: {type: String, default: "speaker"},
 });
 
 GroupMemberSchema.static("isMember", async function(group: string | IGroup, user: string | IUser) {
     if (typeof group !== "string") group = group._id.toString();
-    if (typeof user !== "string") user = user._id.toString();
+    // if (typeof user !== "string") user = user._id.toString();
 
     return null != await this.findOne({group, member: user});
 });
@@ -42,7 +43,7 @@ GroupMemberSchema.static("changeRoleForMember", async function(group: string | I
 GroupMemberSchema.static("getMembersFor", async function(group: string | IGroup, offset: number = 0, limit: number = MESSAGES_LIMIT) {
     if (typeof group !== "string") group = group._id.toString();
 
-    return await this.find({group}).limit(limit).skip(offset);
+    return await this.find({group}).populate({path: 'member', select:'profile'}).limit(limit).skip(offset);
 });
 
 export default (mongoose: Mongoose) => {
