@@ -13,10 +13,12 @@
     "fix": "tslint -p tslint.json --fix --format stylish",
     "test": "mocha --reporter spec",
     "test:report": "mocha --reporter mochawesome --reporter-options reportDir=test/.report",
-    "test:coverage": "nyc mocha --reporter spec"
+    "test:coverage": "nyc mocha --reporter spec",
+    "apidoc": "apidoc -i app/ -o docs/"
   },
   "license": "GPL",
   "dependencies": {
+    "apidoc": "^0.17.7",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
@@ -84,6 +86,12 @@
     "temp-dir": "test/.nyc-tmp",
     "report-dir": "test/.coverage",
     "all": true
+  },
+  "apidoc": {
+    "title": "API Documentation for Messenger",
+    "url" : "http://localhost:8080",
+    "sampleUrl" : "http://localhost:8080",
+    "version": "1.0.0"
   },
   "config": {
     "commitizen": {
