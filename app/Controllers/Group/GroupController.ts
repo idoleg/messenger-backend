@@ -91,7 +91,7 @@ export default class GroupController {
                 await group.deleteMember(req.user);
 
                 res.status(200).json({message: "successfully"});
-                
+
             } else {
                 next();
             }
