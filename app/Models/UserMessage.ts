@@ -1,19 +1,9 @@
-import mongoose, {Mongoose, Schema} from "mongoose";
+import {Mongoose, Schema, Types} from "mongoose";
 import {Error as MongooseError} from "mongoose";
 import {IUser} from "./User.d";
+import { getRightId } from "../Common/workWithModels";
 
 export const MESSAGES_LIMIT = 50;
-
-const getRightId = (id: any) => {
-    let tempId;
-    if (typeof id === "string") {
-        tempId = mongoose.Types.ObjectId(id);
-    } else {
-        tempId = id._id;
-    }
-
-    return tempId;
-};
 
 const UserMessageSchema = new Schema({
     sender: {type: Schema.Types.ObjectId, ref: "User", required: true},
@@ -73,6 +63,6 @@ UserMessageSchema.static("findOneForConversation", async function(
     );
 });
 
-export default (mongooseVar: Mongoose) => {
-    return mongooseVar.model("UserMessage", UserMessageSchema, "users.messages");
+export default (mongoose: Mongoose) => {
+    return mongoose.model("UserMessage", UserMessageSchema, "users.messages");
 };

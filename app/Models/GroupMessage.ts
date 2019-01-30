@@ -1,20 +1,9 @@
-import httpError from "http-errors";
-import mongoose, { Error as MongooseError, Mongoose, Schema } from "mongoose";
+import { Error as MongooseError, Mongoose, Schema, Types } from "mongoose";
 import { IGroup } from "./Group.d";
 import { IUser } from "./User.d";
+import { getRightId } from "../Common/workWithModels";
 
 export const GROUP_MESSAGES_LIMIT = 50;
-
-const getRightId = (id: any) => {
-    let tempId;
-    if (typeof id === "string") {
-        tempId = mongoose.Types.ObjectId(id);
-    } else {
-        tempId = id._id;
-    }
-
-    return tempId;
-};
 
 const GroupMessageSchema = new Schema({
     sender: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -55,11 +44,11 @@ GroupMessageSchema.static("findOneForConversation", async function(
         return message;
     }
 
-    throw new httpError.NotFound(
+    throw new MongooseError.DocumentNotFoundError(
         `In group ${group} there is not message with id ${messageId}`,
     );
 });
 
-export default (mongooseVar: Mongoose) => {
-    return mongooseVar.model("GroupMessage", GroupMessageSchema, "groups.messages");
+export default (mongoose: Mongoose) => {
+    return mongoose.model("GroupMessage", GroupMessageSchema, "groups.messages");
 };

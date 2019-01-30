@@ -1,20 +1,10 @@
-import mongoose, { Model, Mongoose, Schema } from "mongoose";
+import { Model, Mongoose, Schema, Types } from "mongoose";
 import { IGroup } from "./Group.d";
 import { IGroupMember, IGroupMemberModel } from "./GroupMember.d";
 import { IUser } from "./User.d";
+import { getRightId } from "../Common/workWithModels";
 
 let GroupMember: IGroupMemberModel;
-
-const getRightId = (id: any) => {
-    let tempId;
-    if (typeof id === "string") {
-        tempId = mongoose.Types.ObjectId(id);
-    } else {
-        tempId = id._id;
-    }
-
-    return tempId;
-};
 
 const GroupSchema = new Schema({
     creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
@@ -85,7 +75,7 @@ GroupSchema.method("deleteInvite", function() {
     return;
 });
 
-export default function(mongooseVar: Mongoose) {
+export default function(mongoose: Mongoose) {
     this.on("registeredAllModels", () => GroupMember = this.getModel("GroupMember"));
-    return mongooseVar.model("Group", GroupSchema);
+    return mongoose.model("Group", GroupSchema);
 }

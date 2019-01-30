@@ -1,20 +1,10 @@
-import mongoose, {Mongoose, Schema} from "mongoose";
+import {Mongoose, Schema, Types} from "mongoose";
 import {IGroup} from "./Group.d";
 import {IUser} from "./User.d";
 import {MESSAGES_LIMIT} from "./UserMessage";
+import { getRightId } from "../Common/workWithModels";
 
 export const MEMBERS_LIMIT = 50;
-
-const getRightId = (id: any) => {
-    let tempId;
-    if (typeof id === "string") {
-        tempId = mongoose.Types.ObjectId(id);
-    } else {
-        tempId = id._id;
-    }
-
-    return tempId;
-};
 
 const GroupMemberSchema = new Schema({
     group: {type: Schema.Types.ObjectId, ref: "Group", required: true},
@@ -62,6 +52,6 @@ GroupMemberSchema.static("getMembersFor", async function(group: string | IGroup,
     return await this.find({group: groupId}).populate({path: "member", select: "profile"}).limit(limit).skip(offset);
 });
 
-export default (mongooseVar: Mongoose) => {
-    return mongooseVar.model("GroupMember", GroupMemberSchema, "groups.members");
+export default (mongoose: Mongoose) => {
+    return mongoose.model("GroupMember", GroupMemberSchema, "groups.members");
 };
