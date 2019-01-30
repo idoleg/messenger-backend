@@ -1,9 +1,9 @@
-import {Schema, Model, Document} from "mongoose";
+import {Types, Model, Document} from "mongoose";
 import {IUser} from "./User.d";
 
 export interface IUserMessageDocument extends Document {
-    sender: string;
-    recipient: string;
+    sender: Types.ObjectId;
+    recipient: Types.ObjectId;
     text: string;
     read: string;
     sent_at: Date;

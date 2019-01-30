@@ -1,8 +1,8 @@
 import { Mongoose, Schema } from "mongoose";
 
 const ContactSchema = new Schema({
-    user: { type: String, unique: false, index: true, required: true },
-    contact: { type: String, default: "", trim: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", unique: false, index: true, required: true },
+    contact: { type: Schema.Types.ObjectId, ref: "User" },
     byname: { type: String, default: "", trim: true  },
     added_at: { type: Date, default: null },
 });

@@ -1,8 +1,8 @@
-import {Document, Model} from "mongoose";
+import {Document, Model, Types} from "mongoose";
 
 export interface IAccountContactDocument extends Document {
-    user: string;
-    contact: string;
+    user: Types.ObjectId;
+    contact: Types.ObjectId;
     byname: string;
     added_at: Date;
 }

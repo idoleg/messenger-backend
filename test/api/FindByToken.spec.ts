@@ -11,7 +11,7 @@ before(async () => {
     authToken = data.user.createToken();
 });
 
-describe("find by token Middleware", () => {
+describe("Find by token Middleware", () => {
 
     it("No token", async () => {
         const res = await Agent().get(`/anyRoute`);

@@ -72,6 +72,7 @@ export default class MemberController {
                 throw new httpError.NotFound("This group not found or not allowed for you");
             }
             const member = await group.changeRoleForMember(userId, role);
+
             next(new GroupMemberResource(member));
         } catch (err) {
             next(err);

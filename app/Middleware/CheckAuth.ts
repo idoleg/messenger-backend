@@ -11,8 +11,8 @@ export default class CheckAuth {
                 return next();
             }
             const authHeader = req.get("Authorization");
-            if (!authHeader || authHeader.split(" ")[0] !== "Bearer") {
-                return null;
+            if (!authHeader || authHeader.split(" ")[0].toLowerCase() !== "bearer") {
+                throw new httpError.Unauthorized("No valid token");
             }
             const token = authHeader.split(" ")[1];
             const user = await User.findByToken(token);

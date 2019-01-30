@@ -27,13 +27,13 @@ export default class ContactController {
     public static async getById(req: any, res: any, next: any) {
         try {
 
-            const { id: userId } = req.user;
+            const userId = req.user._id;
 
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
             const contact = await Contact.findById(id);
 
-            if (!contact || contact.user !== userId) throw new httpError.NotFound("Contact with such id was not found");
+            if (!contact || !contact.user.equals(userId)) throw new httpError.NotFound("Contact with such id was not found");
 
             next(new ContactResource(contact));
 
