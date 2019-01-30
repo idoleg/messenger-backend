@@ -1,8 +1,8 @@
 import { Model, Mongoose, Schema } from "mongoose";
+import { getRightId } from "../Common/workWithModels";
 import { IGroup } from "./Group.d";
 import { IGroupMember, IGroupMemberModel } from "./GroupMember.d";
 import { IUser } from "./User.d";
-import { getRightId } from "../Common/workWithModels";
 
 let GroupMember: IGroupMemberModel;
 

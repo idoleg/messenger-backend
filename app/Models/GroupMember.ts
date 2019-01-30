@@ -1,8 +1,8 @@
 import {Mongoose, Schema} from "mongoose";
+import { getRightId } from "../Common/workWithModels";
 import {IGroup} from "./Group.d";
 import {IUser} from "./User.d";
 import {MESSAGES_LIMIT} from "./UserMessage";
-import { getRightId } from "../Common/workWithModels";
 
 export const MEMBERS_LIMIT = 50;
 

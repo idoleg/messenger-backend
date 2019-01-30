@@ -31,6 +31,9 @@ export default class WebSocketServer extends EventEmitter {
     public async afterInit() {
         Debug.info("Starting WebSocket server...");
 
+        if (this.$app.get("server")) {
+            this.httpServer = this.$app.get("server").httpServer;
+        }
         if (this.httpServer == null) {
             this.httpServer = await createHttpServer(this.$app.config.get("socket"));
         }

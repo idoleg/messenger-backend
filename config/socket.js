@@ -1,7 +1,7 @@
 module.exports = {
-    port: 80,
-    host: "localhost",
-    //path: "/socket",
+    //port: 80,
+    //host: "localhost",
+    path: "/socket",
     autoAcceptConnections: false,
     keepalive: true,
     keepaliveInterval: 5000, //20000

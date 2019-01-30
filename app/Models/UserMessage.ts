@@ -1,7 +1,7 @@
 import {Mongoose, Schema} from "mongoose";
 import {Error as MongooseError} from "mongoose";
-import {IUser} from "./User.d";
 import { getRightId } from "../Common/workWithModels";
+import {IUser} from "./User.d";
 
 export const MESSAGES_LIMIT = 50;
 

@@ -1,7 +1,7 @@
 import { Error as MongooseError, Mongoose, Schema } from "mongoose";
+import { getRightId } from "../Common/workWithModels";
 import { IGroup } from "./Group.d";
 import { IUser } from "./User.d";
-import { getRightId } from "../Common/workWithModels";
 
 export const GROUP_MESSAGES_LIMIT = 50;
 
