@@ -3,8 +3,9 @@ import {dirname} from "path";
 import Console from "../src/Console/Console";
 import Application from "../src/Core/Application";
 import HttpServer from "../src/HttpServer/HttpServer";
-// import WebSocketServer from '../src/WebSocket/WebSocketServer';
 import MongodbClient from "../src/MongodbClient/MongodbClient";
+import WebSocketServer from "../src/WebSocket/WebSocketServer";
+// import http from "http";
 
 export const APP_DIR = dirname(dirname(module.filename));
 export const PROJECT_DIR = dirname(APP_DIR);
@@ -17,11 +18,7 @@ export const App = new Application();
 export const Config = App.config;
 export const DB = new MongodbClient(App);
 export const Server = new HttpServer(App);
-// export const Socket = new WebSocketServer(App);
-
-// App.router.group()
-//     .controllerDir("socket", dir("app", "WebSocketController"))
-//     .import(ROUTES_DIR + "/ws");
+export const Socket = new WebSocketServer(App); // http.createServer(Server.expressApp)
 
 (async () => {
     await Config.loadFromFile(CONFIG_DIR);
@@ -34,6 +31,8 @@ export const Server = new HttpServer(App);
 
     Server.setOptions(Config.get("server"));
     await Server.importRoutes(ROUTES_DIR);
+
+    // Socket.httpServer = Server.httpServer;
 
     await App.start();
 })();

@@ -51,6 +51,7 @@
     "@types/sinon": "^7.0.3",
     "@types/superagent": "git+https://github.com/superpike/superagentEdited.git",
     "@types/validator": "^10.9.0",
+    "@types/websocket": "0.0.40",
     "chai": "^4.2.0",
     "chai-http": "^4.2.1",
     "cz-customizable": "^5.3.0",
