@@ -1,4 +1,4 @@
-import { Model, Mongoose, Schema, Types } from "mongoose";
+import { Model, Mongoose, Schema } from "mongoose";
 import { IGroup } from "./Group.d";
 import { IGroupMember, IGroupMemberModel } from "./GroupMember.d";
 import { IUser } from "./User.d";

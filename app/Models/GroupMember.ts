@@ -1,4 +1,4 @@
-import {Mongoose, Schema, Types} from "mongoose";
+import {Mongoose, Schema} from "mongoose";
 import {IGroup} from "./Group.d";
 import {IUser} from "./User.d";
 import {MESSAGES_LIMIT} from "./UserMessage";
@@ -8,7 +8,6 @@ export const MEMBERS_LIMIT = 50;
 
 const GroupMemberSchema = new Schema({
     group: {type: Schema.Types.ObjectId, ref: "Group", required: true},
-    // member: {type: String, required: true},
     member: {type: Schema.Types.ObjectId, ref: "User", required: true},
     role: {type: String, default: "speaker"},
 });

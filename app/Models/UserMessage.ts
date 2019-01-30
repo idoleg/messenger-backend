@@ -1,4 +1,4 @@
-import {Mongoose, Schema, Types} from "mongoose";
+import {Mongoose, Schema} from "mongoose";
 import {Error as MongooseError} from "mongoose";
 import {IUser} from "./User.d";
 import { getRightId } from "../Common/workWithModels";

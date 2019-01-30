@@ -1,3 +1,5 @@
+import { Types } from "mongoose";
+
 export const getRightId = (id: any) => {
     let tempId;
     if (typeof id === "string") {
