@@ -1,12 +1,23 @@
-import {Mongoose, Schema} from "mongoose";
+import mongoose, {Mongoose, Schema} from "mongoose";
 import {Error as MongooseError} from "mongoose";
 import {IUser} from "./User.d";
 
 export const MESSAGES_LIMIT = 50;
 
+const getRightId = (id: any) => {
+    let tempId;
+    if (typeof id === "string") {
+        tempId = mongoose.Types.ObjectId(id);
+    } else {
+        tempId = id._id;
+    }
+
+    return tempId;
+};
+
 const UserMessageSchema = new Schema({
-    sender: {type: String, required: true},
-    recipient: {type: String, required: true},
+    sender: {type: Schema.Types.ObjectId, ref: "User", required: true},
+    recipient: {type: Schema.Types.ObjectId, ref: "User", required: true},
     text: {type: String, required: true},
     read: {type: Boolean, default: false},
 }, {
@@ -14,10 +25,10 @@ const UserMessageSchema = new Schema({
 });
 
 UserMessageSchema.static("send", async function(sender: string | IUser, recipient: string | IUser, text: string) {
-    if (typeof sender !== "string") sender = sender._id.toString();
-    if (typeof recipient !== "string") recipient = recipient._id.toString();
+    const senderId = getRightId(sender);
+    const recipientId = getRightId(recipient);
 
-    return await this.create({sender, recipient, text});
+    return await this.create({sender: senderId, recipient: recipientId, text});
 });
 
 UserMessageSchema.static("findConversation", async function(
@@ -26,14 +37,14 @@ UserMessageSchema.static("findConversation", async function(
     offset: number = 0,
     limit: number = MESSAGES_LIMIT,
 ) {
-    if (typeof firstPerson !== "string") firstPerson = firstPerson._id.toString();
-    if (typeof secondPerson !== "string") secondPerson = secondPerson._id.toString();
+    const firstPersonId = getRightId(firstPerson);
+    const secondPersonId = getRightId(secondPerson);
 
     return await this.find(
         {
             $or: [
-                {sender: firstPerson, recipient: secondPerson},
-                {sender: secondPerson, recipient: firstPerson},
+                {sender: firstPersonId, recipient: secondPersonId},
+                {sender: secondPersonId, recipient: firstPersonId},
             ],
         })
         .limit(limit).skip(offset);
@@ -44,15 +55,15 @@ UserMessageSchema.static("findOneForConversation", async function(
     secondPerson: string | IUser,
     messageId: string,
 ) {
-    if (typeof firstPerson !== "string") firstPerson = firstPerson._id.toString();
-    if (typeof secondPerson !== "string") secondPerson = secondPerson._id.toString();
+    const firstPersonId = getRightId(firstPerson);
+    const secondPersonId = getRightId(secondPerson);
 
     const message = await this.findById(messageId);
 
     if (
         message && (
-        (message.sender === firstPerson && message.recipient === secondPerson)
-        || (message.sender === secondPerson && message.recipient === firstPerson))
+        (message.sender.equals(firstPersonId) && message.recipient.equals(secondPersonId))
+        || (message.sender.equals(secondPersonId) && message.recipient.equals(firstPersonId)))
     ) {
         return message;
     }
@@ -62,6 +73,6 @@ UserMessageSchema.static("findOneForConversation", async function(
     );
 });
 
-export default (mongoose: Mongoose) => {
-    return mongoose.model("UserMessage", UserMessageSchema, "users.messages");
+export default (mongooseVar: Mongoose) => {
+    return mongooseVar.model("UserMessage", UserMessageSchema, "users.messages");
 };

@@ -109,7 +109,7 @@ describe("Group message API", () => {
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(404);
-            res.body.message.should.be.equal("Not Found");
+            res.body.message.should.be.equal(`In group ${groupId} there is not message with id ${messageId}`);
         });
 
     });

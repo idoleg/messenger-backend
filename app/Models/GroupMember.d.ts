@@ -1,16 +1,11 @@
-import {Model, Document} from "mongoose";
+import {Model, Document, Types} from "mongoose";
 import {IUser} from "./User.d";
 import {IGroup} from "./Group.d";
 
 export interface IGroupMemberDocument extends Document {
-    email: string;
-    password: string;
-    profile: {
-        name: string;
-        last_name: string;
-        last_seen: Date;
-    };
-    created_at: Date;
+    group: Types.ObjectId,
+    member: Types.ObjectId,
+    role: string
 }
 
 export interface IGroupMember extends IGroupMemberDocument {

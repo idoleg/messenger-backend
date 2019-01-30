@@ -1,8 +1,8 @@
-import {Document, Model} from "mongoose";
+import {Document, Model, Types} from "mongoose";
 
 export interface IBlacklistDocument extends Document {
-    user: string;
-    banned: string;
+    user: Types.ObjectId;
+    banned: Types.ObjectId;
     added_at: Date;
 }
 

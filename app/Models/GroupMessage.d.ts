@@ -1,10 +1,10 @@
-import {Schema, Model, Document} from "mongoose";
+import {Types, Model, Document} from "mongoose";
 import {IGroup} from "./Group.d";
 // import {IUser} from "./User.d";
 
 export interface IGroupMessageDocument extends Document {
-    sender: string;
-    group: string;
+    sender: Types.ObjectId;
+    group: Types.ObjectId;
     text: string;
     sent_at: Date;
 }
