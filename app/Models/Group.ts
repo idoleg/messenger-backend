@@ -1,23 +1,24 @@
-import {Model, Mongoose, Schema} from "mongoose";
-import {IGroup} from "./Group.d";
-import {IGroupMember, IGroupMemberModel} from "./GroupMember.d";
-import {IUser} from "./User.d";
+import { Model, Mongoose, Schema } from "mongoose";
+import { IGroup } from "./Group.d";
+import { IGroupMember, IGroupMemberModel } from "./GroupMember.d";
+import { IUser } from "./User.d";
+import { getRightId } from "../Common/workWithModels";
 
 let GroupMember: IGroupMemberModel;
 
 const GroupSchema = new Schema({
-    creator: {type: String, required: true},
-    name: {type: String, required: true, trim: true},
-    description: {type: String, default: null, trim: true},
-    invitation_code: {type: String, default: null},
-    }, {
-    timestamps: {createdAt: "created_at", updatedAt: false},
-});
+    creator: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    name: { type: String, required: true, trim: true },
+    description: { type: String, default: null, trim: true },
+    invitation_code: { type: String, default: null },
+}, {
+        timestamps: { createdAt: "created_at", updatedAt: false },
+    });
 
 GroupSchema.method("isCreator", function(user: string | IUser) {
-    if (typeof user !== "string") user = user._id.toString();
+    const userId = getRightId(user);
 
-    return this.creator === user;
+    return this.creator.equals(userId);
 });
 
 GroupSchema.method("isMember", async function(user: string | IUser) {
@@ -45,13 +46,13 @@ GroupSchema.static("getGroup", async function(id: string) {
 });
 
 GroupSchema.static("getGroupByInvitationCode", async function(invitationCode: string) {
-    return await this.findOne({invitation_code: invitationCode});
+    return await this.findOne({ invitation_code: invitationCode });
 });
 
 GroupSchema.static("addGroup", async function(user: string | IUser, name: string, description?: string) {
-    let userId = user;
-    if (typeof user !== "string") userId = user._id.toString();
-    return await this.create({name, description, creator: userId, invitation_code: null});
+    const userId = getRightId(user);
+
+    return await this.create({ name, description, creator: userId, invitation_code: null });
 });
 
 GroupSchema.method("updateGroup", function(name?: string, description?: string) {

@@ -1,4 +1,4 @@
-import { fakeGroups, fakeUsers } from "../../../dist/app/faker";
+import { fakeGroupMembers, fakeGroups, fakeUsers } from "../../../dist/app/faker";
 import { Agent } from "../Bootstrap";
 
 const AMOUNT_OF_GROUPS = 1;
@@ -14,6 +14,9 @@ before(async () => {
     data.creator = data.users.pop();
     data.user = data.users.pop();
     data.groups = await fakeGroups(AMOUNT_OF_GROUPS, [data.creator]);
+    await data.groups.forEach((element: any) => {
+        fakeGroupMembers(1, element, data.creator);
+    });
     data.group = data.groups.pop();
 
     groupId = data.group._id.toString();
@@ -23,20 +26,7 @@ before(async () => {
 });
 
 describe("Groups API", () => {
-    describe("Get group information GET /groups/:groupId", () => {
-        it("No token", async () => {
-            const res = await Agent().get(`/groups/${groupId}`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
-            const res = await Agent().get(`/groups/${groupId}`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
+    describe("GET /groups/:groupId", () => {
         it("Successful getting group profile", async () => {
             const res = await Agent().get(`/groups/${groupId}`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
@@ -50,36 +40,14 @@ describe("Groups API", () => {
         });
     });
 
-    describe("Create group POST /groups", () => {
-        it("No token", async () => {
-            const res = await Agent().post(`/groups`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
-            const res = await Agent().post(`/groups`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("No name group", async () => {
-            const res = await Agent().post(`/groups`)
-                .send({
-                    description: "created group",
-                })
-                .set("Authorization", `Bearer ${authTokenOfCreator}`);
-            res.should.have.status(400);
-            res.body.message.should.be.equal("Validation error");
-        });
-
+    describe("POST /groups", () => {
         it("Successful creating", async () => {
             const res = await Agent().post(`/groups`)
                 .send({
                     name: "created group",
                 })
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
             res.should.have.status(200);
             res.body.should.have.property("id");
             res.body.should.have.property("creator");
@@ -88,20 +56,32 @@ describe("Groups API", () => {
             res.body.should.have.property("invitation_code");
         });
 
+        it("No name for group", async () => {
+            const res = await Agent().post(`/groups`)
+                .send({
+                    description: "created group",
+                })
+                .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
+            res.should.have.status(400);
+            res.body.message.should.be.equal("Validation error");
+        });
     });
 
-    describe("Change group information PUT /groups/:groupId", () => {
-        it("No token", async () => {
-            const res = await Agent().put(`/groups/${groupId}`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
+    describe("PUT /groups/:groupId", () => {
+        it("Successful updating group", async () => {
             const res = await Agent().put(`/groups/${groupId}`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
+                .send({
+                    description: "updated description",
+                })
+                .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
+            res.should.have.status(200);
+            res.body.should.have.property("id");
+            res.body.should.have.property("creator");
+            res.body.should.have.property("name");
+            res.body.should.have.property("description");
+            res.body.should.have.property("invitation_code");
         });
 
         it("Not creator", async () => {
@@ -110,78 +90,41 @@ describe("Groups API", () => {
                     description: "not in group",
                 })
                 .set("Authorization", `Bearer ${authTokenOfUser}`);
+
             res.should.have.status(403);
             res.body.message.should.be.equal("You cannot do it");
         });
-
-        it("Successful updating group", async () => {
-            const res = await Agent().put(`/groups/${groupId}`)
-                .send({
-                    description: "updated description",
-                })
-                .set("Authorization", `Bearer ${authTokenOfCreator}`);
-            res.should.have.status(200);
-            res.body.should.have.property("id");
-            res.body.should.have.property("creator");
-            res.body.should.have.property("name");
-            res.body.should.have.property("description");
-            res.body.should.have.property("invitation_code");
-        });
-
     });
 
-    describe("Leave the group UNLINK /groups/:groupId", () => {
-        it("No token", async () => {
-            const res = await Agent().unlink(`/groups/${groupId}`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
-            const res = await Agent().unlink(`/groups/${groupId}`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
+    describe("UNLINK /groups/:groupId", () => {
         it("Success remove", async () => {
             const res = await Agent().unlink(`/groups/${groupId}`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
             res.should.have.status(200);
             res.body.message.should.be.equal("successfully");
         });
     });
 
-    describe("Enter the group LINK /groups", () => {
-        it("No token", async () => {
-            const res = await Agent().link(`/groups`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
-            const res = await Agent().link(`/groups`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Wrong invitation code", async () => {
-            const res = await Agent().link(`/groups?invitation_code=someWrongCode`)
-                .set("Authorization", `Bearer ${authTokenOfUser}`);
-            res.should.have.status(404);
-            res.body.message.should.be.equal("Credentials are wrong");
-        });
-
+    describe("LINK /groups", () => {
         it("Successfull enter the group", async () => {
             const res = await Agent().link(`/groups?invitation_code=inviteGoodPeople`)
                 .set("Authorization", `Bearer ${authTokenOfUser}`);
+
             res.should.have.status(200);
             res.body.should.have.property("id");
             res.body.should.have.property("creator");
             res.body.should.have.property("name");
             res.body.should.have.property("description");
             res.body.should.have.property("invitation_code");
+        });
+
+        it("Wrong invitation code", async () => {
+            const res = await Agent().link(`/groups?invitation_code=someWrongCode`)
+                .set("Authorization", `Bearer ${authTokenOfUser}`);
+
+            res.should.have.status(404);
+            res.body.message.should.be.equal("Credentials are wrong");
         });
     });
 });

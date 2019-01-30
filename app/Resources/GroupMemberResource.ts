@@ -6,7 +6,7 @@ export default class GroupMemberResource extends BaseResource {
     public uncover() {
         return {
             // id: this._id,
-            user: this.member,
+            user: this.member.profile,
             role: this.role,
         };
     }

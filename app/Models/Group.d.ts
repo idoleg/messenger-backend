@@ -1,9 +1,9 @@
-import {Model, Document} from "mongoose";
+import {Model, Document, Types} from "mongoose";
 import {IUser} from "./User.d";
 import {IGroupMember} from "./GroupMember.d";
 
 export interface IGroupDocument extends Document {
-    creator: string;
+    creator: Types.ObjectId;
     name: string;
     description: string;
     invitation_code: string;

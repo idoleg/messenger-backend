@@ -14,20 +14,7 @@ before(async () => {
 });
 
 describe("Account API", () => {
-    describe("Get account GET /account", () => {
-        it("No token", async () => {
-            const res = await Agent().get(`/account`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
-            const res = await Agent().get(`/account`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
+    describe("GET /account", () => {
         it("Successful getting account profile", async () => {
             const res = await Agent().get(`/account`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
@@ -42,20 +29,7 @@ describe("Account API", () => {
         });
     });
 
-    describe("Change account PUT /account", () => {
-        it("No token", async () => {
-            const res = await Agent().put(`/account`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
-        it("Error token", async () => {
-            const res = await Agent().put(`/account`)
-                .set("Authorization", `wrongToken`);
-            res.should.have.status(401);
-            res.body.message.should.be.equal("No valid token");
-        });
-
+    describe("PUT /account", () => {
         it("Wrong old password (Credentials are wrong)", async () => {
             const res = await Agent().put(`/account`)
                 .send({
@@ -63,6 +37,7 @@ describe("Account API", () => {
                     newPassword: "some password",
                 })
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
+
             res.should.have.status(404);
             res.body.message.should.be.equal("Credentials are wrong");
         });
@@ -74,6 +49,7 @@ describe("Account API", () => {
                     newPassword: "12345",
                 })
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
+
             res.should.have.status(400);
             res.body.message.should.be.equal("Validation error");
         });
@@ -81,6 +57,7 @@ describe("Account API", () => {
         it("Successful update accoount", async () => {
             const res = await Agent().put(`/account`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`);
+
             res.should.have.status(200);
             res.body.should.have.property("id");
             res.body.should.have.property("email");

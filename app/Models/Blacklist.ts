@@ -1,8 +1,8 @@
 import { Mongoose, Schema } from "mongoose";
 
 const BlacklistSchema = new Schema({
-    user: { type: String, unique: false, index: true, required: true },
-    banned: { type: String, default: "", trim: true },
+    user: { type: Schema.Types.ObjectId, ref: "User", unique: false, index: true, required: true },
+    banned: { type: Schema.Types.ObjectId, ref: "User" },
     added_at: { type: Date, default: null },
 });
 
