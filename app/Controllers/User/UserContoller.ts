@@ -13,7 +13,7 @@ export default class UserContoller {
             const { email } = Validator(req.query, UserContoller.emailValidationSchema);
             const userAccount = await User.getByEmail(email);
 
-            next(new UserProfileResource(userAccount.profile));
+            next(new UserProfileResource({id: userAccount._id, ...userAccount.profile}));
         } catch (err) {
             next(err);
         }
@@ -25,7 +25,7 @@ export default class UserContoller {
 
             const userAccount: any = await User.findById(userId);
 
-            next(new UserProfileResource(userAccount.profile));
+            next(new UserProfileResource({id: userAccount._id, ...userAccount.profile}));
         } catch (err) {
             next(err);
         }

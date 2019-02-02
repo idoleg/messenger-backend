@@ -28,6 +28,7 @@ describe("User get API", () => {
                 .set("Authorization", `Bearer ${authTokenOfFirstPerson}`);
 
             res.should.have.status(200);
+            res.body.should.have.property("id");
             res.body.should.have.property("username");
             res.body.should.have.property("fullname");
             res.body.should.have.property("last_seen");
@@ -37,6 +38,7 @@ describe("User get API", () => {
             const res = await Agent().get(`/users/${firstPersonId}`)
                 .set("Authorization", `Bearer ${authTokenOfSecondPerson}`);
             res.should.have.status(200);
+            res.body.should.have.property("id");
             res.body.should.have.property("username");
             res.body.should.have.property("fullname");
             res.body.should.have.property("last_seen");
@@ -56,6 +58,7 @@ describe("User get API", () => {
             const res = await Agent().get(`/users?email=${firstPersonEmail}`)
                 .set("Authorization", `Bearer ${authTokenOfFirstPerson}`);
             res.should.have.status(200);
+            res.body.should.have.property("id");
             res.body.should.have.property("username");
             res.body.should.have.property("fullname");
             res.body.should.have.property("last_seen");
@@ -65,6 +68,7 @@ describe("User get API", () => {
             const res = await Agent().get(`/users?email=${firstPersonEmail}`)
                 .set("Authorization", `Bearer ${authTokenOfSecondPerson}`);
             res.should.have.status(200);
+            res.body.should.have.property("id");
             res.body.should.have.property("username");
             res.body.should.have.property("fullname");
             res.body.should.have.property("last_seen");
