@@ -27,7 +27,7 @@ before(async () => {
 
 describe("Groups API", () => {
     describe("GET /groups/:groupId", () => {
-        it("Successful getting group profile", async () => {
+        it("Successful getting group profile for a member", async () => {
             const res = await Agent().get(`/groups/${groupId}`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
 
@@ -37,6 +37,26 @@ describe("Groups API", () => {
             res.body.should.have.property("name");
             res.body.should.have.property("description");
             res.body.should.have.property("invitation_code");
+        });
+
+        it("Successful getting group profile with invitation code", async () => {
+            const res = await Agent().get(`/groups/${groupId}?invitation_code=inviteGoodPeople`)
+                .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
+            res.should.have.status(200);
+            res.body.should.have.property("id");
+            res.body.should.have.property("creator");
+            res.body.should.have.property("name");
+            res.body.should.have.property("description");
+            res.body.should.have.property("invitation_code");
+        });
+
+        it("Not a member, no invitation code", async () => {
+            const res = await Agent().get(`/groups/${groupId}`)
+                .set("Authorization", `Bearer ${authTokenOfUser}`);
+
+            res.should.have.status(403);
+            res.body.message.should.be.equal("You cannot do it");
         });
     });
 
