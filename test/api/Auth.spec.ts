@@ -15,7 +15,8 @@ describe("Auth API", () => {
             const res = await Agent().post("/auth/login").send({email, password});
 
             res.should.have.status(200);
-            readJwt(res.body.token).userId.should.be.equal(user.id);
+            const loginedUser = await DB.getModel("User").findByToken(res.body.token);
+            loginedUser.id.should.be.equal(user.id);
 
         });
 
@@ -57,7 +58,8 @@ describe("Auth API", () => {
             const res = await Agent().post("/auth/registration").send({name, email, password});
 
             res.should.have.status(201);
-            readJwt(res.body.token).userId.should.be.equal(res.body.user.id);
+            const registeredUser = await DB.getModel("User").findByToken(res.body.token);
+            registeredUser.id.should.be.equal(res.body.user.id);
 
         });
 
@@ -86,7 +88,3 @@ describe("Auth API", () => {
     });
 
 });
-
-function readJwt(token: string) {
-    return jwt.verify(token, Config.get("auth.privateKey")) as any;
-}
