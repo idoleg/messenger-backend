@@ -73,6 +73,7 @@ export default class WebSocketServer extends EventEmitter {
                 const foundUser = await User.findByToken(query.token);
                 if (typeof foundUser !== "boolean") {
                     const user = this.user(foundUser.id);
+                    user.model = foundUser;
 
                     const connection = new WebSocketConnection(request.accept(undefined, request.origin), this);
                     const client = new Client(this.generateUniqueClientName(), connection, user);

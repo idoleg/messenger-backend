@@ -1,8 +1,10 @@
+import { IUser } from "../../../app/Models/User.d";
 import Client from "../Client";
 
 export default class BaseRoom {
 
     public name: string;
+    public model: IUser;
     protected clients: { [index: string]: Client } = {};
     protected length = 0;
 
