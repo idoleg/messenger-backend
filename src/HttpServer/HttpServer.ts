@@ -64,6 +64,7 @@ export default class HttpServer {
         this.expressApp.use(bodyParser.json(this.options.bodyParser));
         this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
         this.expressApp.use(this.expressRouter);
+        this.expressApp.disable('x-powered-by');
         this.expressRouter.use("", () => {
             throw new httpError.NotFound("Wrong path");
         });
