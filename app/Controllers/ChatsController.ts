@@ -17,7 +17,7 @@ export default class UserChatController {
 
             const chats = await UserChat.getChats(req.user);
 
-            res.status(200).json(new UserChatCollectionResource(chats, { offset }));
+           next(new UserChatCollectionResource(chats, { offset }));
         } catch (err) {
             next(err);
         }
@@ -27,7 +27,7 @@ export default class UserChatController {
         try {
             const chat = await UserChat.findChatById(req.params.chatId);
 
-            res.status(200).json(new UserChatResource(chat));
+            next(new UserChatResource(chat));
         } catch (err) {
             next(err);
         }
@@ -37,7 +37,7 @@ export default class UserChatController {
         try {
             const chat = await UserChat.findChatByUserGroupId(req.user, req.body.id);
 
-            res.status(200).json(new UserChatResource(chat));
+            next(new UserChatResource(chat));
         } catch (err) {
             next(err);
         }
@@ -47,7 +47,7 @@ export default class UserChatController {
         try {
             const chat = await UserChat.addChat(req.user, req.body.isGroup, req.body.id, req.user, req.body.preview);
 
-            res.status(200).json(new UserChatResource(chat));
+            next(new UserChatResource(chat));
         } catch (err) {
             next(err);
         }
@@ -57,7 +57,7 @@ export default class UserChatController {
         try {
             const chat = await UserChat.updateChat(req.user, req.body.id, req.user, req.body.preview);
 
-            res.status(200).json(new UserChatResource(chat));
+            next(new UserChatResource(chat));
         } catch (err) {
             next(err);
         }
