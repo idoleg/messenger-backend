@@ -17,7 +17,7 @@ export default class UserChatController {
 
             const chats = await UserChat.getChats(req.user);
 
-           next(new UserChatCollectionResource(chats, { offset }));
+            next(new UserChatCollectionResource(chats, { offset }));
         } catch (err) {
             next(err);
         }
