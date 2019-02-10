@@ -44,17 +44,17 @@ UserSchema.static("findByToken", async function(token: string) {
     let user: Document | null;
 
     if (!decodedToken || typeof  decodedToken !== "object") {
-        return null;
+        return false;
     }
 
     if ("userId" in decodedToken) {
         user = await this.findById(decodedToken.userId);
     } else {
-        return null;
+        return false;
     }
 
     if (!user) {
-        return null;
+        return false;
     }
     return user;
 });

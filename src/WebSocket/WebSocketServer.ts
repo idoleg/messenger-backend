@@ -1,6 +1,8 @@
 import EventEmitter from "events";
-import http, {Server} from "http";
-import websocket, {request as WsRequest, server as WsServer} from "websocket";
+import http, { Server } from "http";
+import websocket, { request as WsRequest, server as WsServer } from "websocket";
+import { DB } from "../../app/index";
+import { IUser, IUserModel } from "../../app/Models/User.d";
 import Chalk from "../Chalk";
 import Application from "../Core/Application";
 import Debug from "../Logging";
@@ -38,7 +40,7 @@ export default class WebSocketServer extends EventEmitter {
             this.httpServer = await createHttpServer(this.$app.config.get("socket"));
         }
 
-        this.wsServer = new WsServer({httpServer: this.httpServer, ...this.$app.config.get("socket")});
+        this.wsServer = new WsServer({ httpServer: this.httpServer, ...this.$app.config.get("socket") });
         this.wsServer.on("request", (request: any) => this.inspectEachConnection(request));
 
         Debug.notice(
@@ -63,19 +65,29 @@ export default class WebSocketServer extends EventEmitter {
         return "";
     }
 
-    public inspectEachConnection(request: WsRequest) {
-        if (request.resourceURL.pathname === "/socket") {
-            const query = request.resourceURL.query as any;
-            const user = this.user(query.token);
+    public async inspectEachConnection(request: WsRequest) {
+        try {
+            if (request.resourceURL.pathname === "/socket") {
+                const query = request.resourceURL.query as any;
+                const User = DB.getModel<IUser, IUserModel>("User");
+                const foundUser = await User.findByToken(query.token);
+                if (typeof foundUser !== "boolean") {
+                    const user = this.user(foundUser.id);
 
-            const connection = new WebSocketConnection(request.accept(undefined, request.origin), this);
-            const client = new Client(this.generateUniqueClientName(), connection, user);
-            connection.client = client;
-            this.clients.add(client);
+                    const connection = new WebSocketConnection(request.accept(undefined, request.origin), this);
+                    const client = new Client(this.generateUniqueClientName(), connection, user);
+                    connection.client = client;
+                    this.clients.add(client);
 
-            this.emit("connect", client);
-        } else {
-            request.reject(404, "wrong path");
+                    this.emit("connect", client);
+                } else {
+                    request.reject(403, "no valid token");
+                }
+            } else {
+                request.reject(404, "wrong path");
+            }
+        } catch {
+            request.reject(403, "no valid token");
         }
     }
 
