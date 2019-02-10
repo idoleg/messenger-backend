@@ -28,26 +28,17 @@ export default class WebSocketConnection extends EventEmitter {
 
     public handleMessage(message: any) {
         try {
-            const parsedMessage = message.utf8Data.split('[');
-            const id = parsedMessage[0];
-            const startPayload = parsedMessage[1].search("{");
-            const name = parsedMessage[1].substring(1,startPayload-2);
-            const payload = JSON.parse(parsedMessage[1].substring(startPayload,parsedMessage[1].length-1));
-            const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT, id, name, payload); //, data.response, data.result);
-
-            // const data = JSON.parse(message.utf8Data);
-            // const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT, data.id, data.name, data.payload, data.response, data.result);
+            const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT); //, data.response, data.result);
+            event.parseRequest(message.utf8Data);
 
             const result = (status: boolean, payload: any) => {
                 this.respond(event.id as number, payload, status);
             };
 
-            this.emit(event.name, payload, this.client, result, event);
-            this.wsServer.emit(event.name, payload, this.client, result, event);
-            // this.emit(event.name, data.payload, this.client, result, event);
-            // this.wsServer.emit(event.name, data.payload, this.client, result, event);
-        } catch (e) {
-            Debug.error(e);
+            this.emit(event.name, event.payload, this.client, result, event);
+            this.wsServer.emit(event.name, event.payload, this.client, result, event);
+        } catch (err) {
+            Debug.error(err);
 }
     }
 
