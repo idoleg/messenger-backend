@@ -44,4 +44,8 @@ export default class WebSocketEvent {
     public isResponse() {
         return !this.isMain();
     }
+
+    public toString() {
+        return `${this.response ? -this.response : ''}[${this.result},${JSON.stringify(this.payload)}]`;
+    }
 }

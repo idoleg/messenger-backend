@@ -28,7 +28,6 @@ export default class WebSocketConnection extends EventEmitter {
 
     public handleMessage(message: any) {
         try {
-            // console.log(message);
             const parsedMessage = message.utf8Data.split('[');
             const id = parsedMessage[0];
             const startPayload = parsedMessage[1].search("{");
@@ -60,10 +59,9 @@ export default class WebSocketConnection extends EventEmitter {
     }
 
     public respond(to: number, payload: any, result: boolean) {
-        // const responseEvent = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, null, undefined, payload, to, result);
-        // console.log(responseEvent);
+         const responseEvent = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, null, undefined, payload, to, result);
         // this.wsConnection.sendUTF(JSON.stringify(responseEvent));
-        this.wsConnection.sendUTF(`${-to}[${result},${JSON.stringify(payload)}]`);
+        this.wsConnection.sendUTF(responseEvent.toString());
     }
 
     public error(code: number, description: string) {
