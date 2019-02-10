@@ -64,15 +64,19 @@ export default class WebSocketServer extends EventEmitter {
     }
 
     public inspectEachConnection(request: WsRequest) {
-        const query = request.resourceURL.query as any;
-        const user = this.user(query.token);
+        if (request.resourceURL.pathname === "/socket") {
+            const query = request.resourceURL.query as any;
+            const user = this.user(query.token);
 
-        const connection = new WebSocketConnection(request.accept(undefined, request.origin), this);
-        const client = new Client(this.generateUniqueClientName(), connection, user);
-        connection.client = client;
-        this.clients.add(client);
+            const connection = new WebSocketConnection(request.accept(undefined, request.origin), this);
+            const client = new Client(this.generateUniqueClientName(), connection, user);
+            connection.client = client;
+            this.clients.add(client);
 
-        this.emit("connect", client);
+            this.emit("connect", client);
+        } else {
+            request.reject(404, "wrong path");
+        }
     }
 
     public generateUniqueClientName() {
