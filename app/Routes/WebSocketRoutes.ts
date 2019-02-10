@@ -6,4 +6,8 @@ export default function() {
         result(true, {message: "how are you?"});
     });
 
+    Socket.on("messages:send", (payload: any, client: any, result: any) => { // {"id":2,"name":"test"}
+        result(true, {message: payload});
+    });
+
 }
