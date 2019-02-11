@@ -16,7 +16,7 @@ const UserChatSchema = new Schema({
 UserChatSchema.static("getChats", async function(user: string | IUser, offset: number) {
     const userId = getRightId(user);
     if (offset) {
-        return await this.find({ user: userId }).skip(offset).limit(offset + CHATS_LIMIT);
+        return await this.find({ user: userId }).skip(offset).limit(CHATS_LIMIT);
     } else {
         return await this.find({ user: userId });
     }
