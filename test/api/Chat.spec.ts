@@ -17,6 +17,7 @@ before(async () => {
     data.group = data.groups.pop();
     data.directChats = await fakeDirectChats(AMOUNT_OF_CHATS, data.users, data.creator);
     data.groupChats = await fakeGroupChats(AMOUNT_OF_CHATS, data.groups, data.users, data.creator);
+    data.chat = data.directChats[0];
 
     authTokenOfCreator = data.creator.createToken();
 });
@@ -25,7 +26,7 @@ describe("Chat API", () => {
 
     describe("GET: /account/chats", () => {
 
-        it("Successful", async () => {
+        it("Successfull", async () => {
             const res = await Agent().get(`/account/chats`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
 
@@ -36,7 +37,7 @@ describe("Chat API", () => {
             res.body.data.should.have.lengthOf(4);
         });
 
-        it("Successful with offset", async () => {
+        it("Successfull with offset", async () => {
             const res = await Agent().get(`/account/chats?offset=2`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
 
@@ -45,6 +46,19 @@ describe("Chat API", () => {
             res.body.should.have.property("data");
             res.body.offset.should.be.equal(2);
             res.body.data.should.have.lengthOf(2);
+        });
+
+    });
+
+    describe("DELETE: /account/chats/:chatId", () => {
+
+        it("Successfull", async () => {
+            const res = await Agent().delete(`/account/chats/${data.chat._id}`)
+                .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
+            res.should.have.status(200);
+            res.body.should.have.property("message");
+            res.body.message.should.be.equal("successfully");
         });
 
     });
