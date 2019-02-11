@@ -70,10 +70,10 @@ describe("Contacts API", () => {
             res.body.should.have.property("addedAt");
         });
 
-        it("Successful posting same contact", async () => {
+        it("Successful posting same contact - property byname is optional", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id, byname: faker.lorem.text() });
+                .send({ id: data.userForManipulations._id /*, byname: faker.lorem.text() */});
 
             res.should.have.status(200);
             res.body.should.have.property("id");
@@ -81,7 +81,7 @@ describe("Contacts API", () => {
             res.body.should.have.property("byname");
             res.body.should.have.property("addedAt");
         });
-
+        /*
         it("Error of posting account - property byname is required", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
@@ -90,7 +90,7 @@ describe("Contacts API", () => {
             res.should.have.status(400);
             res.body.message.should.be.equal("Validation error");
         });
-
+        */
         it("Error of posting account - property id is required", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)

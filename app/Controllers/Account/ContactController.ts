@@ -44,7 +44,7 @@ export default class ContactController {
 
     public static async AddContact(req: any, res: any, next: any) {
         try {
-
+            process.emitWarning("AddContact:" + req.body);
             const { id: userId } = req.user;
 
             const { id: contactId, byname } = Validator(req.body, ContactController.postContactValidationSchema);
@@ -96,7 +96,6 @@ export default class ContactController {
 
     protected static postContactValidationSchema = {
         id: Joi.objectId(),
-        byname: Joi.string().required(),
+        byname: Joi.string(), // без required() - параметр становится опциональным
     };
-
 }
