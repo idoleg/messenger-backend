@@ -58,19 +58,20 @@ describe("Contacts API", () => {
     });
 
     describe("Post new contact POST /account/contacts", async () => {
+        const byname = faker.lorem.text();
         it("Successful posting contact", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id, byname: faker.lorem.text() });
+                .send({ id: data.userForManipulations._id, byname });
 
             res.should.have.status(200);
             res.body.should.have.property("id");
             res.body.should.have.property("contact");
-            res.body.should.have.property("byname");
+            res.body.should.have.property("byname").equal(byname);
             res.body.should.have.property("addedAt");
         });
 
-        it("Successful posting same contact - property byname is optional", async () => {
+        it("Successful posting same contact - property byname is not sent", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
                 .send({ id: data.userForManipulations._id});
@@ -78,35 +79,14 @@ describe("Contacts API", () => {
             res.should.have.status(200);
             res.body.should.have.property("id");
             res.body.should.have.property("contact");
-            res.body.should.have.property("byname");
+            res.body.should.have.property("byname").equal(null);
             res.body.should.have.property("addedAt");
         });
 
-        it("Successful posting same contact - property byname is required", async () => {
-            const res = await Agent().post(`/account/contacts/`)
-                .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id , byname: faker.lorem.text() });
-
-            res.should.have.status(200);
-            res.body.should.have.property("id");
-            res.body.should.have.property("contact");
-            res.body.should.have.property("byname");
-            res.body.should.have.property("addedAt");
-        });
-        /*
-        it("Error of posting account - property byname is required", async () => {
-            const res = await Agent().post(`/account/contacts/`)
-                .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id });
-
-            res.should.have.status(400);
-            res.body.message.should.be.equal("Validation error");
-        });
-        */
         it("Error of posting account - property id is required", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ byname: faker.lorem.text() });
+                .send({ byname });
 
             res.should.have.status(400);
             res.body.message.should.be.equal("Validation error");
