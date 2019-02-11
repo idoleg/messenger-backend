@@ -73,7 +73,19 @@ describe("Contacts API", () => {
         it("Successful posting same contact - property byname is optional", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id /*, byname: faker.lorem.text() */});
+                .send({ id: data.userForManipulations._id});
+
+            res.should.have.status(200);
+            res.body.should.have.property("id");
+            res.body.should.have.property("contact");
+            res.body.should.have.property("byname");
+            res.body.should.have.property("addedAt");
+        });
+
+        it("Successful posting same contact - property byname is required", async () => {
+            const res = await Agent().post(`/account/contacts/`)
+                .set("Authorization", `Bearer ${authTokenOfAccount}`)
+                .send({ id: data.userForManipulations._id , byname: faker.lorem.text() });
 
             res.should.have.status(200);
             res.body.should.have.property("id");
