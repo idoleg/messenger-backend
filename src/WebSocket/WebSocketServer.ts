@@ -76,7 +76,8 @@ export default class WebSocketServer extends EventEmitter {
                     user.model = foundUser;
 
                     const connection = new WebSocketConnection(request.accept(undefined, request.origin), this);
-                    const client = new Client(this.generateUniqueClientName(), connection, user);
+                    const client = new Client(foundUser.id, connection, user);
+                    // const client = new Client(this.generateUniqueClientName(), connection, user);
                     connection.client = client;
                     this.clients.add(client);
 

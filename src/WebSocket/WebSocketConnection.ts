@@ -45,7 +45,8 @@ export default class WebSocketConnection extends EventEmitter {
     public send(name: string, payload: any) {
         const event = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, this.nextEventId, name, payload);
 
-        this.wsConnection.sendUTF(JSON.stringify(event));
+        this.wsConnection.sendUTF(event.toString());
+        // this.wsConnection.sendUTF(JSON.stringify(event));
         this.nextEventId = this.nextEventId + 2;
     }
 

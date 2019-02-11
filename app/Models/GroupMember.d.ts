@@ -1,6 +1,6 @@
-import {Model, Document, Types} from "mongoose";
-import {IUser} from "./User.d";
-import {IGroup} from "./Group.d";
+import { Model, Document, Types } from "mongoose";
+import { IUser } from "./User.d";
+import { IGroup } from "./Group.d";
 
 export interface IGroupMemberDocument extends Document {
     group: Types.ObjectId,
@@ -18,4 +18,5 @@ export interface IGroupMemberModel extends Model<IGroupMember> {
     changeRoleForMember(group: string | IGroup, member: string | IUser, newRole: string): Promise<IGroupMember>;
     deleteMemberFrom(group: string | IGroup, member: string | IUser): Promise<IGroupMember>;
     getMembersFor(group: string | IGroup, offset?: number, limit?: number): Promise<[IGroupMember]>;
+    getAllMembers(group: string | IGroup): Promise<[IGroupMember]>;
 }
