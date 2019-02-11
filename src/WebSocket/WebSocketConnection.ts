@@ -28,30 +28,32 @@ export default class WebSocketConnection extends EventEmitter {
 
     public handleMessage(message: any) {
         try {
-            const data = JSON.parse(message.utf8Data);
-            const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT, data.id, data.name, data.payload, data.response, data.result);
+            const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT); //, data.response, data.result);
+            event.parseRequest(message.utf8Data);
 
             const result = (status: boolean, payload: any) => {
                 this.respond(event.id as number, payload, status);
             };
 
-            this.emit(event.name, data.payload, this.client, result, event);
-            this.wsServer.emit(event.name, data.payload, this.client, result, event);
-        } catch (e) {
-            Debug.error(e);
+            this.emit(event.name, event.payload, this.client, result, event);
+            this.wsServer.emit(event.name, event.payload, this.client, result, event);
+        } catch (err) {
+            Debug.error(err);
 }
     }
 
     public send(name: string, payload: any) {
         const event = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, this.nextEventId, name, payload);
 
-        this.wsConnection.sendUTF(JSON.stringify(event));
+        this.wsConnection.sendUTF(event.toString());
+        // this.wsConnection.sendUTF(JSON.stringify(event));
         this.nextEventId = this.nextEventId + 2;
     }
 
     public respond(to: number, payload: any, result: boolean) {
-        const responseEvent = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, null, undefined, payload, to, result);
-        this.wsConnection.sendUTF(JSON.stringify(responseEvent));
+         const responseEvent = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, null, undefined, payload, to, result);
+        // this.wsConnection.sendUTF(JSON.stringify(responseEvent));
+        this.wsConnection.sendUTF(responseEvent.toString());
     }
 
     public error(code: number, description: string) {

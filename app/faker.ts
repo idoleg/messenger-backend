@@ -15,6 +15,8 @@ App.lifecycle.on("afterInit", async () => {
     await users.forEach((user) => {
         fakeContacts(MULTIPLIER * randomInteger(0, 5), users, user);
         fakeBlacklist(MULTIPLIER * randomInteger(0, 3), users, user);
+        fakeDirectChats(MULTIPLIER * randomInteger(2, 3), users, user);
+        fakeGroupChats(MULTIPLIER * randomInteger(2, 3), groups, users, user);
     });
 
     await App.stop();
@@ -67,6 +69,35 @@ export async function fakeGroups(count: number, users: any[]) {
             description: faker.lorem.sentence(),
             invitation_code: invitationCode,
         });
+    });
+}
+
+export async function fakeDirectChats(count: number, users: any[], user: any) {
+    return await iterable(count, () => {
+        const senderId = getRandomItem(users)._id;
+        const unread = (user._id.equals(senderId)) ? 0 : Math.floor(Math.random() * 10);
+        return DB.getModel<any, any>("UserChat").create({
+                user: user._id,
+                direct: senderId,
+                sender: senderId,
+                preview: faker.lorem.text(),
+                unread,
+            });
+    });
+}
+
+export async function fakeGroupChats(count: number, groups: any[], users: any[], user: any) {
+    return await iterable(count, () => {
+        const groupId = getRandomItem(groups)._id;
+        const senderId = getRandomItem(users)._id;
+        const unread = (user._id.equals(senderId)) ? 0 : Math.floor(Math.random() * 10);
+        return DB.getModel<any, any>("UserChat").create({
+                user: user._id,
+                group: groupId,
+                sender: senderId,
+                preview: faker.lorem.text(),
+                unread,
+            });
     });
 }
 
