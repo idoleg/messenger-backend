@@ -2,6 +2,8 @@ import { Error as MongooseError, Mongoose, Schema } from "mongoose";
 import { getRightId } from "../Common/workWithModels";
 import { IUser } from "./User.d";
 
+export const CHATS_LIMIT = 20;
+
 const UserChatSchema = new Schema({
     user: { type: Schema.Types.ObjectId, ref: "User", index: true, required: true },
     group: { type: Schema.Types.ObjectId, ref: "Group", default: null },
@@ -11,9 +13,13 @@ const UserChatSchema = new Schema({
     unread: { type: Number, default: 0 },
 });
 
-UserChatSchema.static("getChats", async function(user: string | IUser) {
+UserChatSchema.static("getChats", async function(user: string | IUser, offset: number) {
     const userId = getRightId(user);
-    return await this.find({ user: userId });
+    if (offset) {
+        return await this.find({ user: userId }).skip(offset).limit(offset + CHATS_LIMIT);
+    } else {
+        return await this.find({ user: userId });
+    }
 });
 
 UserChatSchema.static("findChatById", async function(chatId: string) {

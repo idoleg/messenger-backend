@@ -12,14 +12,14 @@ const GroupMemberSchema = new Schema({
     role: { type: String, default: "speaker" },
 });
 
-GroupMemberSchema.static("isMember", async function (group: string | IGroup, user: string | IUser) {
+GroupMemberSchema.static("isMember", async function(group: string | IGroup, user: string | IUser) {
     const groupId = getRightId(group);
     const userId = getRightId(user);
 
     return null != await this.findOne({ group: groupId, member: userId });
 });
 
-GroupMemberSchema.static("addMemberTo", async function (group: string | IGroup, user: string | IUser) {
+GroupMemberSchema.static("addMemberTo", async function(group: string | IGroup, user: string | IUser) {
     const groupId = getRightId(group);
     const userId = getRightId(user);
 
@@ -30,14 +30,14 @@ GroupMemberSchema.static("addMemberTo", async function (group: string | IGroup, 
         .populate({ path: "member", select: "profile" });
 });
 
-GroupMemberSchema.static("deleteMemberFrom", async function (group: string | IGroup, member: string | IUser) {
+GroupMemberSchema.static("deleteMemberFrom", async function(group: string | IGroup, member: string | IUser) {
     const groupId = getRightId(group);
     const userId = getRightId(member);
 
     return await this.deleteMany({ group: groupId, member: userId });
 });
 
-GroupMemberSchema.static("changeRoleForMember", async function (group: string | IGroup, member: string | IUser, newRole: string) {
+GroupMemberSchema.static("changeRoleForMember", async function(group: string | IGroup, member: string | IUser, newRole: string) {
     const groupId = getRightId(group);
     const userId = getRightId(member);
 
@@ -45,13 +45,13 @@ GroupMemberSchema.static("changeRoleForMember", async function (group: string | 
         .populate({ path: "member", select: "profile" });
 });
 
-GroupMemberSchema.static("getMembersFor", async function (group: string | IGroup, offset: number = 0, limit: number = MESSAGES_LIMIT) {
+GroupMemberSchema.static("getMembersFor", async function(group: string | IGroup, offset: number = 0, limit: number = MESSAGES_LIMIT) {
     const groupId = getRightId(group);
 
     return await this.find({ group: groupId }).populate({ path: "member", select: "profile" }).limit(limit).skip(offset);
 });
 
-GroupMemberSchema.static("getAllMembers", async function (group: string | IGroup) {
+GroupMemberSchema.static("getAllMembers", async function(group: string | IGroup) {
     const groupId = getRightId(group);
 
     return await this.find({ group: groupId });

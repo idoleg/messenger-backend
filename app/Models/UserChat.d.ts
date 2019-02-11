@@ -15,7 +15,7 @@ export interface IUserChat extends IUserChatDocument {
 }
 
 export interface IUserChatModel extends Model<IUserChat> {
-    getChats(user: string | IUser): Promise<IUserChat>;
+    getChats(user: string | IUser, offset: number): Promise<[IUserChat]>;
     findChatById(chatId: string): Promise<IUserChat>;
     findChatByUserGroupId(user: string | IUser, id: string): Promise<IUserChat>;
     addChat(user: string | IUser, group: boolean, id: string, sender: string | IUser, preview: string): Promise<IUserChat>;

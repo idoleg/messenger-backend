@@ -13,10 +13,9 @@ export default class UserChatController {
 
     public static async getChats(req: any, res: any, next: any) {
         try {
-            const { offset } = Validator(req.query, { offset: Joi.number() });
-
-            const chats = await UserChat.getChats(req.user);
-
+            let { offset } = Validator(req.query, { offset: Joi.number() });
+            if (!offset) offset = 0;
+            const chats = await UserChat.getChats(req.user, offset);
             next(new UserChatCollectionResource(chats, { offset }));
         } catch (err) {
             next(err);
