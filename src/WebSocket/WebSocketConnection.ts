@@ -28,7 +28,7 @@ export default class WebSocketConnection extends EventEmitter {
 
     public handleMessage(message: any) {
         try {
-            const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT); //, data.response, data.result);
+            const event = new WebSocketEvent(Origin.CLIENT_SIDE_EVENT); // , data.response, data.result);
             event.parseRequest(message.utf8Data);
 
             const result = (status: boolean, payload: any) => {
@@ -53,7 +53,7 @@ export default class WebSocketConnection extends EventEmitter {
     public respond(to: number, payload: any, result: boolean) {
          const responseEvent = new WebSocketEvent(Origin.SERVER_SIDE_EVENT, null, undefined, payload, to, result);
         // this.wsConnection.sendUTF(JSON.stringify(responseEvent));
-        this.wsConnection.sendUTF(responseEvent.toString());
+         this.wsConnection.sendUTF(responseEvent.toString());
     }
 
     public error(code: number, description: string) {

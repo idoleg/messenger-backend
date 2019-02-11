@@ -46,14 +46,14 @@ export default class WebSocketEvent {
     }
 
     public parseRequest(message: string) {
-        const parsedMessage = message.split('[');
+        const parsedMessage = message.split("[");
         this.id = +parsedMessage[0];
         const startPayload = parsedMessage[1].search("{");
-        this.name = parsedMessage[1].substring(1,startPayload-2);
-        this.payload = JSON.parse(parsedMessage[1].substring(startPayload,parsedMessage[1].length-1));
+        this.name = parsedMessage[1].substring(1, startPayload - 2);
+        this.payload = JSON.parse(parsedMessage[1].substring(startPayload, parsedMessage[1].length - 1));
     }
 
     public toString() {
-        return `${this.response ? -this.response : ''}[${this.result},${JSON.stringify(this.payload)}]`;
+        return `${this.response ? -this.response : ""}[${this.result},${JSON.stringify(this.payload)}]`;
     }
 }
