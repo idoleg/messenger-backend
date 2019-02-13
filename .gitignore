@@ -6,6 +6,7 @@
 package-lock.json
 node_modules
 dist
+mochawesome-report
 
 test/.nyc-tmp
 test/.coverage
