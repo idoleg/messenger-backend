@@ -1,6 +1,7 @@
 import faker from "faker";
 import { fakeContacts, fakeUsers } from "../../../dist/app/faker";
 import { Agent } from "../Bootstrap";
+import { doesNotReject } from "assert";
 
 const AMOUNT_OF_USERS = 5;
 
@@ -62,7 +63,7 @@ describe("Contacts API", () => {
         it("Successful posting contact", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id, byname });
+                .send({ user: data.userForManipulations._id, byname });
 
             res.should.have.status(200);
             res.body.should.have.property("id");
@@ -74,7 +75,7 @@ describe("Contacts API", () => {
         it("Successful posting same contact - property byname is not sent", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
-                .send({ id: data.userForManipulations._id});
+                .send({ user: data.userForManipulations._id});
 
             res.should.have.status(200);
             res.body.should.have.property("id");
@@ -83,11 +84,19 @@ describe("Contacts API", () => {
             res.body.should.have.property("addedAt");
         });
 
-        it("Error of posting account - property id is required", async () => {
+        it("Error of posting account - property user is required", async () => {
             const res = await Agent().post(`/account/contacts/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
                 .send({ byname });
 
+            res.should.have.status(400);
+            res.body.message.should.be.equal("Validation error");
+        });
+
+        it("Error of posting account - the user does not exist", async () => {
+            const res = await Agent().post(`/account/contacts/`)
+                .set("Authorization", `Bearer ${authTokenOfAccount}`)
+                .send({ user: "userNotExist" });
             res.should.have.status(400);
             res.body.message.should.be.equal("Validation error");
         });

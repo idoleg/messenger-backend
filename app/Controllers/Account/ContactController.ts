@@ -46,7 +46,7 @@ export default class ContactController {
         try {
             const { id: userId } = req.user;
 
-            const { id: contactId, byname } = Validator(req.body, ContactController.postContactValidationSchema);
+            const { user: contactId, byname } = Validator(req.body, ContactController.postContactValidationSchema);
 
             const contact = await Contact.addContact(userId, contactId, byname);
 
@@ -94,7 +94,7 @@ export default class ContactController {
     }
 
     protected static postContactValidationSchema = {
-        id: Joi.objectId(),
-        byname: Joi.string(), // без required() - параметр становится опциональным
+        user: Joi.objectId(),
+        byname: Joi.string(),
     };
 }
