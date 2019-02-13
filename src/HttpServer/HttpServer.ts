@@ -13,6 +13,7 @@ interface IServerOptions {
     port: number;
     host: string;
     cors?: CorsOptions;
+    basepath?: string;
     bodyParser?: bodyParser.OptionsJson & bodyParser.OptionsText & bodyParser.OptionsUrlencoded;
 }
 
@@ -58,18 +59,20 @@ export default class HttpServer {
     }
 
     public async init() {
-        this.expressApp.use(express.json());
-        // this.expressApp.use(cors(this.options.cors));
-        this.expressApp.use(cors());
-        this.expressApp.use(bodyParser.json(this.options.bodyParser));
-        this.expressApp.use(bodyParser.urlencoded(this.options.bodyParser));
-        this.expressApp.use(this.expressRouter);
+        const basepath = this.options.basepath || "/";
         this.expressApp.disable("x-powered-by");
-        this.expressRouter.use("", () => {
+
+        this.expressApp.use(basepath, express.json());
+        this.expressApp.use(cors(this.options.cors));
+        this.expressApp.use(basepath, cors());
+        this.expressApp.use(basepath, bodyParser.json(this.options.bodyParser));
+        this.expressApp.use(basepath, bodyParser.urlencoded(this.options.bodyParser));
+        this.expressApp.use(basepath, this.expressRouter);
+        this.expressRouter.use(basepath, () => {
             throw new httpError.NotFound("Wrong path");
         });
-        this.expressApp.use(this.resourceHandler.bind(this));
-        this.expressApp.use(this.errorHandler.bind(this));
+        this.expressApp.use(basepath, this.resourceHandler.bind(this));
+        this.expressApp.use(basepath, this.errorHandler.bind(this));
 
         this.httpServer = await createListener(this.expressApp, this.options);
     }
