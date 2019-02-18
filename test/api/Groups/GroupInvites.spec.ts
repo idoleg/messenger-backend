@@ -24,6 +24,15 @@ before(async () => {
 
 describe("Group invites API", () => {
     describe("Get invitation code GET /groups/%id/invites", () => {
+        it("Successful getting group profile", async () => {
+            const res = await Agent().get(`/groups/${groupId}/invites`)
+                .set("Authorization", `Bearer ${authTokenOfCreator}`);
+
+            res.should.have.status(200);
+            res.body.should.have.property("active");
+            res.body.should.have.property("invitation_code");
+        });
+
         it("No token", async () => {
             const res = await Agent().get(`/groups/${groupId}/invites`);
             res.should.have.status(401);
@@ -43,18 +52,17 @@ describe("Group invites API", () => {
             res.should.have.status(403);
             res.body.message.should.be.equal("You cannot do it");
         });
+    });
 
-        it("Successful getting group profile", async () => {
-            const res = await Agent().get(`/groups/${groupId}/invites`)
+    describe("Create invitation code POST /groups/%id/invites", () => {
+        it("Successful creating", async () => {
+            const res = await Agent().post(`/groups/${groupId}/invites`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
-
             res.should.have.status(200);
             res.body.should.have.property("active");
             res.body.should.have.property("invitation_code");
         });
-    });
 
-    describe("Create invitation code POST /groups/%id/invites", () => {
         it("No token", async () => {
             const res = await Agent().post(`/groups/${groupId}/invites`);
             res.should.have.status(401);
@@ -75,17 +83,16 @@ describe("Group invites API", () => {
             res.body.message.should.be.equal("You cannot do it");
         });
 
-        it("Successful creating", async () => {
-            const res = await Agent().post(`/groups/${groupId}/invites`)
-                .set("Authorization", `Bearer ${authTokenOfCreator}`);
-            res.should.have.status(200);
-            res.body.should.have.property("active");
-            res.body.should.have.property("invitation_code");
-        });
-
     });
 
     describe("Delete invitation code DELETE /groups/%id/invites", () => {
+        it("Successful updating group", async () => {
+            const res = await Agent().delete(`/groups/${groupId}/invites`)
+                .set("Authorization", `Bearer ${authTokenOfCreator}`);
+            res.should.have.status(200);
+            res.body.message.should.be.equal("successfully");
+        });
+
         it("No token", async () => {
             const res = await Agent().delete(`/groups/${groupId}/invites`);
             res.should.have.status(401);
@@ -104,13 +111,6 @@ describe("Group invites API", () => {
                 .set("Authorization", `Bearer ${authTokenOfUser}`);
             res.should.have.status(403);
             res.body.message.should.be.equal("You cannot do it");
-        });
-
-        it("Successful updating group", async () => {
-            const res = await Agent().delete(`/groups/${groupId}/invites`)
-                .set("Authorization", `Bearer ${authTokenOfCreator}`);
-            res.should.have.status(200);
-            res.body.message.should.be.equal("successfully");
         });
 
     });

@@ -30,6 +30,19 @@ describe("Account API", () => {
     });
 
     describe("PUT /account", () => {
+        it("Successful update accoount", async () => {
+            const res = await Agent().put(`/account`)
+                .set("Authorization", `Bearer ${authTokenOfAccount}`);
+
+            res.should.have.status(200);
+            res.body.should.have.property("id");
+            res.body.should.have.property("email");
+            res.body.should.have.property("profile");
+            res.body.profile.should.have.property("username");
+            res.body.profile.should.have.property("fullname");
+            res.body.profile.should.have.property("last_seen");
+        });
+
         it("Wrong old password (Credentials are wrong)", async () => {
             const res = await Agent().put(`/account`)
                 .send({
@@ -52,19 +65,6 @@ describe("Account API", () => {
 
             res.should.have.status(400);
             res.body.message.should.be.equal("Validation error");
-        });
-
-        it("Successful update accoount", async () => {
-            const res = await Agent().put(`/account`)
-                .set("Authorization", `Bearer ${authTokenOfAccount}`);
-
-            res.should.have.status(200);
-            res.body.should.have.property("id");
-            res.body.should.have.property("email");
-            res.body.should.have.property("profile");
-            res.body.profile.should.have.property("username");
-            res.body.profile.should.have.property("fullname");
-            res.body.profile.should.have.property("last_seen");
         });
     });
 });
