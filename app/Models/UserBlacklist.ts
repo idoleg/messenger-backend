@@ -15,4 +15,4 @@ BlacklistSchema.static("removeFromBlacklist", async function(id: string, userId:
     return await this.deleteMany({ _id: id, user: userId });
 });
 
-export default (mongoose: Mongoose) => mongoose.model("Blacklist", BlacklistSchema, "users.blacklist");
+export default (mongoose: Mongoose) => mongoose.model("UserBlacklist", BlacklistSchema, "users.blacklist");

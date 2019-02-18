@@ -1,7 +1,7 @@
 import { DB } from "../..";
 import Validator from "../../../src/HttpServer/Validator";
 import Joi from "../../../src/Joi/Joi";
-import { IBlacklist, IBlacklostModel } from "../../Models/Blacklist.d";
+import { IBlacklist, IBlacklostModel } from "../../Models/UserBlacklist.d";
 import BlacklistCollectionResource from "../../Resources/BlacklistCollectionResource";
 import BlacklistResource from "../../Resources/BlacklistResource";
 

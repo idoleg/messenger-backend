@@ -6,11 +6,11 @@ import UserProfileResource from "../../Resources/UserProfileResource";
 
 const User = DB.getModel<IUser, IUserModel>("User");
 
-export default class UserContoller {
+export default class UserController {
 
     public static async getByEmail(req: any, res: any, next: any) {
         try {
-            const { email } = Validator(req.query, UserContoller.emailValidationSchema);
+            const { email } = Validator(req.query, UserController.emailValidationSchema);
             const userAccount = await User.getByEmail(email);
 
             next(new UserProfileResource({id: userAccount._id, ...userAccount.profile}));
@@ -21,7 +21,7 @@ export default class UserContoller {
 
     public static async getById(req: any, res: any, next: any) {
         try {
-            const { userId } = Validator(req.params, UserContoller.idValidationSchema);
+            const { userId } = Validator(req.params, UserController.idValidationSchema);
 
             const userAccount: any = await User.findById(userId);
 

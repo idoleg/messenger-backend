@@ -1,6 +1,6 @@
 import {Express} from "express";
 import MessageController from "../Controllers/User/MessageController";
-import UserController from "../Controllers/User/UserContoller";
+import UserController from "../Controllers/User/UserController";
 
 export default function(express: Express) {
 

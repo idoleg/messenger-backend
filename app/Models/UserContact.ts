@@ -22,4 +22,4 @@ ContactSchema.static("deleteContact", async function(id: string, userId: string)
     return await this.deleteMany({ _id: id, user: userId });
 });
 
-export default (mongoose: Mongoose) => mongoose.model("Contact", ContactSchema, "users.contacts");
+export default (mongoose: Mongoose) => mongoose.model("UserContact", ContactSchema, "users.contacts");

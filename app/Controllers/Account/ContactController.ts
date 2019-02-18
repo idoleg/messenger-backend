@@ -2,7 +2,7 @@ import httpError from "http-errors";
 import { DB } from "../..";
 import Validator from "../../../src/HttpServer/Validator";
 import Joi from "../../../src/Joi/Joi";
-import { IContact, IUserContactModel } from "../../Models/Contact.d";
+import { IContact, IUserContactModel } from "../../Models/UserContact.d";
 import ContactCollectionResource from "../../Resources/ContactCollectionResource";
 import ContactResource from "../../Resources/ContactResource";
 
