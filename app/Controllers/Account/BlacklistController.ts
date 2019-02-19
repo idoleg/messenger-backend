@@ -8,7 +8,7 @@ import BlacklistResource from "../../Resources/BlacklistResource";
 const Blacklist = DB.getModel<IBlacklist, IBlacklostModel>("Blacklist");
 
 export default class ContactController {
-    public static async getBlacklist(req: any, res: any, next: any) {
+    public static async get(req: any, res: any, next: any) {
         try {
 
             const { offset } = Validator(req.query, { offset: Joi.number() });
@@ -23,7 +23,7 @@ export default class ContactController {
         }
     }
 
-    public static async addToBlacklist(req: any, res: any, next: any) {
+    public static async add(req: any, res: any, next: any) {
         try {
 
             const { id: userId } = req.user;
@@ -39,7 +39,7 @@ export default class ContactController {
         }
     }
 
-    public static async deleteFromBlacklist(req: any, res: any, next: any) {
+    public static async delete(req: any, res: any, next: any) {
         try {
 
             const { id: userId } = req.user;

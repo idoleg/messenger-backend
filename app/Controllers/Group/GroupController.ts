@@ -9,7 +9,7 @@ const Group = DB.getModel<IGroup, IGroupModel>("Group");
 
 export default class GroupController {
 
-    public static async getGroup(req: any, res: any, next: any) {
+    public static async get(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
@@ -26,7 +26,7 @@ export default class GroupController {
         }
     }
 
-    public static async addGroup(req: any, res: any, next: any) {
+    public static async add(req: any, res: any, next: any) {
         try {
             const {name, description} = Validator(req.body, GroupController.validationAddSchema);
             const group = await Group.addGroup(req.user, name, description);
@@ -40,7 +40,7 @@ export default class GroupController {
         }
     }
 
-    public static async updateGroup(req: any, res: any, next: any) {
+    public static async update(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const {name, description} = Validator(req.body, GroupController.validationUpdateSchema);
@@ -60,7 +60,7 @@ export default class GroupController {
         }
     }
 
-    public static async enterGroup(req: any, res: any, next: any) {
+    public static async enter(req: any, res: any, next: any) {
         try {
             if (req.method === "LINK") {
                 const {invitation_code} = Validator(req.query, GroupController.validationEnterSchema);
@@ -82,7 +82,7 @@ export default class GroupController {
         }
     }
 
-    public static async leaveGroup(req: any, res: any, next: any) {
+    public static async leave(req: any, res: any, next: any) {
         try {
             if (req.method === "UNLINK") {
                 const {groupId} = Validator(req.params, {groupId: Joi.objectId()});

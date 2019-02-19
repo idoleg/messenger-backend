@@ -14,7 +14,7 @@ const User = DB.getModel<IUser, IUserModel>("User");
 
 export default class MemberController {
 
-    public static async getMembers(req: any, res: any, next: any) {
+    public static async get(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const {offset} = Validator(req.query, {offset: Joi.number()});
@@ -30,7 +30,7 @@ export default class MemberController {
         }
     }
 
-    public static async addMember(req: any, res: any, next: any) {
+    public static async add(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const {user} = Validator(req.body, {user: Joi.objectId().required()});
@@ -51,7 +51,7 @@ export default class MemberController {
         }
     }
 
-    public static async changeRoleForMember(req: any, res: any, next: any) {
+    public static async changeRole(req: any, res: any, next: any) {
         try {
             const {groupId, userId} = Validator(req.params, {
                 groupId: Joi.objectId(),
@@ -79,7 +79,7 @@ export default class MemberController {
         }
     }
 
-    public static async deleteMember(req: any, res: any, next: any) {
+    public static async delete(req: any, res: any, next: any) {
         try {
             const {groupId, userId} = Validator(req.params, {groupId: Joi.objectId(), userId: Joi.objectId().required()});
             const group = await Group.findById(groupId);

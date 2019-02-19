@@ -11,7 +11,7 @@ const User = DB.getModel<IUser, IUserModel>("User");
 
 export default class UserChatController {
 
-    public static async getChats(req: any, res: any, next: any) {
+    public static async get(req: any, res: any, next: any) {
         try {
             let { offset } = Validator(req.query, { offset: Joi.number() });
             if (!offset) offset = 0;
@@ -42,7 +42,7 @@ export default class UserChatController {
         }
     }
 
-    public static async addChat(req: any, res: any, next: any) {
+    public static async add(req: any, res: any, next: any) {
         try {
             const chat = await UserChat.addChat(req.user, req.body.isGroup, req.body.id, req.user, req.body.preview);
 
@@ -52,7 +52,7 @@ export default class UserChatController {
         }
     }
 
-    public static async updateChat(req: any, res: any, next: any) {
+    public static async update(req: any, res: any, next: any) {
         try {
             const chat = await UserChat.updateChat(req.user, req.body.id, req.user, req.body.preview);
 
@@ -62,7 +62,7 @@ export default class UserChatController {
         }
     }
 
-    public static async deleteChat(req: any, res: any, next: any) {
+    public static async delete(req: any, res: any, next: any) {
         try {
             await UserChat.deleteChatById(req.params.chatId);
 

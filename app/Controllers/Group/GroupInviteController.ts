@@ -9,7 +9,7 @@ const Group = DB.getModel<IGroup, IGroupModel>("Group");
 
 export default class GroupController {
 
-    public static async getInvite(req: any, res: any, next: any) {
+    public static async get(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
@@ -22,7 +22,7 @@ export default class GroupController {
         }
     }
 
-    public static async createInvite(req: any, res: any, next: any) {
+    public static async create(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
@@ -37,7 +37,7 @@ export default class GroupController {
         }
     }
 
-    public static async deleteInvite(req: any, res: any, next: any) {
+    public static async delete(req: any, res: any, next: any) {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);

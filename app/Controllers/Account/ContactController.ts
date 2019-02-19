@@ -42,7 +42,7 @@ export default class ContactController {
         }
     }
 
-    public static async AddContact(req: any, res: any, next: any) {
+    public static async add(req: any, res: any, next: any) {
         try {
             const { id: userId } = req.user;
 
@@ -57,7 +57,7 @@ export default class ContactController {
         }
     }
 
-    public static async updateContact(req: any, res: any, next: any) {
+    public static async update(req: any, res: any, next: any) {
         try {
 
             const { id: userId } = req.user;
@@ -77,7 +77,7 @@ export default class ContactController {
         }
     }
 
-    public static async deleteContact(req: any, res: any, next: any) {
+    public static async delete(req: any, res: any, next: any) {
         try {
 
             const { id: userId } = req.user;
