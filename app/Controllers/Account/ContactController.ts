@@ -94,7 +94,7 @@ export default class ContactController {
     }
 
     protected static postContactValidationSchema = {
-        user: Joi.objectId(),
+        user: Joi.objectId().required(),
         byname: Joi.string(),
     };
 }
