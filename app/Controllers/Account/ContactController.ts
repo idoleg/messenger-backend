@@ -6,7 +6,7 @@ import { IContact, IUserContactModel } from "../../Models/UserContact.d";
 import ContactCollectionResource from "../../Resources/ContactCollectionResource";
 import ContactResource from "../../Resources/ContactResource";
 
-const Contact = DB.getModel<IContact, IUserContactModel>("Contact");
+const Contact = DB.getModel<IContact, IUserContactModel>("UserContact");
 
 export default class ContactController {
     public static async get(req: any, res: any, next: any) {

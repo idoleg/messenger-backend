@@ -5,7 +5,7 @@ import { IBlacklist, IBlacklostModel } from "../../Models/UserBlacklist.d";
 import BlacklistCollectionResource from "../../Resources/BlacklistCollectionResource";
 import BlacklistResource from "../../Resources/BlacklistResource";
 
-const Blacklist = DB.getModel<IBlacklist, IBlacklostModel>("Blacklist");
+const Blacklist = DB.getModel<IBlacklist, IBlacklostModel>("UserBlacklist");
 
 export default class ContactController {
     public static async get(req: any, res: any, next: any) {
