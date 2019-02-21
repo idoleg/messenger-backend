@@ -21,7 +21,7 @@ before(async () => {
 });
 
 describe("Blacklist API", () => {
-    describe("Get blacklist GET /account/blacklist", () => {
+    describe("GET /account/blacklist", () => {
 
         it("Successful getting contacts", async () => {
             const res = await Agent().get(`/account/blacklist`)
@@ -35,7 +35,7 @@ describe("Blacklist API", () => {
 
     });
 
-    describe("Post new user to blacklist POST /account/blacklist", async () => {
+    describe("POST /account/blacklist", async () => {
         it("Successful posting contact", async () => {
             const res = await Agent().post(`/account/blacklist/`)
                 .set("Authorization", `Bearer ${authTokenOfAccount}`)
@@ -65,7 +65,7 @@ describe("Blacklist API", () => {
         });
     });
 
-    describe("Delete account from blacklist DELETE /account/blacklist/%id", () => {
+    describe("DELETE /account/blacklist/%id", () => {
        it("Successful deleting contact", async () => {
            const res = await Agent().delete(`/account/blacklist/${data.mainUserBannedAccount._id}`)
                .set("Authorization", `Bearer ${authTokenOfAccount}`);

@@ -22,7 +22,7 @@ before(async () => {
 });
 
 describe("Contacts API", () => {
-    describe("Get contacts GET /account/contacts", () => {
+    describe("GET /account/contacts", () => {
 
         it("Successful getting contacts", async () => {
             const res = await Agent().get(`/account/contacts`)
@@ -36,7 +36,7 @@ describe("Contacts API", () => {
 
     });
 
-    describe("Get contact by id GET /account/contacts/%id", () => {
+    describe("GET /account/contacts/%id", () => {
 
         it("Successful getting contact", async () => {
             const res = await Agent().get(`/account/contacts/${data.mainUserContact._id}`)
@@ -58,7 +58,7 @@ describe("Contacts API", () => {
         });
     });
 
-    describe("Post new contact POST /account/contacts", async () => {
+    describe("POST /account/contacts", async () => {
         const byname = faker.lorem.text();
         it("Successful posting contact", async () => {
             const res = await Agent().post(`/account/contacts/`)
@@ -102,7 +102,7 @@ describe("Contacts API", () => {
         });
     });
 
-    describe("Put contact byname PUT /account/contacts/%id", () => {
+    describe("PUT /account/contacts/%id", () => {
        it("Successful setting byname to contact", async () => {
            const newName = faker.lorem.text();
            const res = await Agent().put(`/account/contacts/${data.mainUserContact._id}`)
@@ -136,7 +136,7 @@ describe("Contacts API", () => {
        });
     });
 
-    describe("Delete contact DELETE /account/contacts/%id", () => {
+    describe("DELETE /account/contacts/%id", () => {
        it("Successful deleting contact", async () => {
            const res = await Agent().delete(`/account/contacts/${data.mainUserContact._id}`)
                .set("Authorization", `Bearer ${authTokenOfAccount}`);

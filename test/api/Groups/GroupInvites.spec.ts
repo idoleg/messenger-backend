@@ -23,7 +23,7 @@ before(async () => {
 });
 
 describe("Group invites API", () => {
-    describe("Get invitation code GET /groups/%id/invites", () => {
+    describe("GET /groups/%id/invites", () => {
         it("Successful getting group profile", async () => {
             const res = await Agent().get(`/groups/${groupId}/invites`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
@@ -54,7 +54,7 @@ describe("Group invites API", () => {
         });
     });
 
-    describe("Create invitation code POST /groups/%id/invites", () => {
+    describe("POST /groups/%id/invites", () => {
         it("Successful creating", async () => {
             const res = await Agent().post(`/groups/${groupId}/invites`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
@@ -85,7 +85,7 @@ describe("Group invites API", () => {
 
     });
 
-    describe("Delete invitation code DELETE /groups/%id/invites", () => {
+    describe("DELETE /groups/%id/invites", () => {
         it("Successful updating group", async () => {
             const res = await Agent().delete(`/groups/${groupId}/invites`)
                 .set("Authorization", `Bearer ${authTokenOfCreator}`);
