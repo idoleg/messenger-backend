@@ -2,11 +2,11 @@ import httpError from "http-errors";
 import { DB } from "../..";
 import Validator from "../../../src/HttpServer/Validator";
 import Joi from "../../../src/Joi/Joi";
-import { IContact, IUserContactModel } from "../../Models/UserContact.d";
+import { IUserContact, IUserContactModel } from "../../Models/UserContact.d";
 import ContactCollectionResource from "../../Resources/ContactCollectionResource";
 import ContactResource from "../../Resources/ContactResource";
 
-const Contact = DB.getModel<IContact, IUserContactModel>("UserContact");
+const Contact = DB.getModel<IUserContact, IUserContactModel>("UserContact");
 
 export default class ContactController {
     public static async get(req: any, res: any, next: any) {

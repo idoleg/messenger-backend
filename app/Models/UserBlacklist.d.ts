@@ -6,10 +6,10 @@ export interface IBlacklistDocument extends Document {
     added_at: Date;
 }
 
-export interface IBlacklist extends IBlacklistDocument {
+export interface IUserBlacklist extends IBlacklistDocument {
 }
 
-export interface IBlacklostModel extends Model<IBlacklist> {
-    addToBlacklist(userId: string, bannedId: string): Promise<IBlacklist>;
-    removeFromBlacklist(id: string, userId: string): Promise<IBlacklist>;
+export interface IUserBlacklostModel extends Model<IUserBlacklist> {
+    addToBlacklist(userId: string, bannedId: string): Promise<IUserBlacklist>;
+    removeFromBlacklist(id: string, userId: string): Promise<IUserBlacklist>;
 }

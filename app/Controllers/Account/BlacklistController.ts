@@ -1,11 +1,11 @@
 import { DB } from "../..";
 import Validator from "../../../src/HttpServer/Validator";
 import Joi from "../../../src/Joi/Joi";
-import { IBlacklist, IBlacklostModel } from "../../Models/UserBlacklist.d";
+import { IUserBlacklist, IUserBlacklostModel } from "../../Models/UserBlacklist.d";
 import BlacklistCollectionResource from "../../Resources/BlacklistCollectionResource";
 import BlacklistResource from "../../Resources/BlacklistResource";
 
-const Blacklist = DB.getModel<IBlacklist, IBlacklostModel>("UserBlacklist");
+const Blacklist = DB.getModel<IUserBlacklist, IUserBlacklostModel>("UserBlacklist");
 
 export default class ContactController {
     public static async get(req: any, res: any, next: any) {

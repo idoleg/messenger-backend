@@ -7,11 +7,11 @@ export interface IAccountContactDocument extends Document {
     added_at: Date;
 }
 
-export interface IContact extends IAccountContactDocument {
+export interface IUserContact extends IAccountContactDocument {
 }
 
-export interface IUserContactModel extends Model<IContact> {
-    addContact(userId: string, contactId: string, byname: string): Promise<IContact>;
-    updateContact(id: string, userId: string, byname: string): Promise<IContact>;
-    deleteContact(id: string, userId: string): Promise<IContact>;
+export interface IUserContactModel extends Model<IUserContact> {
+    addContact(userId: string, contactId: string, byname: string): Promise<IUserContact>;
+    updateContact(id: string, userId: string, byname: string): Promise<IUserContact>;
+    deleteContact(id: string, userId: string): Promise<IUserContact>;
 }
