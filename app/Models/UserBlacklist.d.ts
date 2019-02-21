@@ -9,7 +9,7 @@ export interface IBlacklistDocument extends Document {
 export interface IUserBlacklist extends IBlacklistDocument {
 }
 
-export interface IUserBlacklostModel extends Model<IUserBlacklist> {
+export interface IUserBlacklistModel extends Model<IUserBlacklist> {
     addToBlacklist(userId: string, bannedId: string): Promise<IUserBlacklist>;
     removeFromBlacklist(id: string, userId: string): Promise<IUserBlacklist>;
 }
