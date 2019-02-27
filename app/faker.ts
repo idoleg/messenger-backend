@@ -12,12 +12,20 @@ App.lifecycle.on("afterInit", async () => {
     await fakeGroupMembers(MULTIPLIER * 20, groups, users);
     await fakeGroupMessages(MULTIPLIER * 100, groups, users);
     await fakeUserConversation(MULTIPLIER * 10, users);
-    await users.forEach((user) => {
-        fakeContacts(MULTIPLIER * randomInteger(0, 5), users, user);
-        fakeBlacklist(MULTIPLIER * randomInteger(0, 3), users, user);
-        fakeDirectChats(MULTIPLIER * randomInteger(2, 3), users, user);
-        fakeGroupChats(MULTIPLIER * randomInteger(2, 3), groups, users, user);
-    });
+    for (let i = 0; i < users.length; i++) {
+        let user = users[i];
+        await fakeContacts(MULTIPLIER * randomInteger(0, 5), users, user);
+        await fakeBlacklist(MULTIPLIER * randomInteger(0, 3), users, user);
+        await fakeDirectChats(MULTIPLIER * randomInteger(2, 3), users, user);
+        await fakeGroupChats(MULTIPLIER * randomInteger(2, 3), groups, users, user);
+    }
+
+    // await users.forEach((user) => {
+    //     fakeContacts(MULTIPLIER * randomInteger(0, 5), users, user);
+    //     fakeBlacklist(MULTIPLIER * randomInteger(0, 3), users, user);
+    //     fakeDirectChats(MULTIPLIER * randomInteger(2, 3), users, user);
+    //     fakeGroupChats(MULTIPLIER * randomInteger(2, 3), groups, users, user);
+    // });
 
     await App.stop();
 });
@@ -122,7 +130,7 @@ export async function fakeGroupMessages(count: number, groups: any[], users: any
 
 export async function fakeContacts(count: number, users: any[], user: any) {
     return await iterable(count, () => {
-        return DB.getModel<any, any>("Contact").create({
+        return DB.getModel<any, any>("UserContact").create({
             user: user._id,
             contact: getRandomItem(users)._id,
             byname: faker.lorem.text(),
@@ -133,7 +141,7 @@ export async function fakeContacts(count: number, users: any[], user: any) {
 
 export async function fakeBlacklist(count: number, users: any[], user: any) {
     return await iterable(count, () => {
-        return DB.getModel<any, any>("Blacklist").create({
+        return DB.getModel<any, any>("UserBlacklist").create({
             user: user._id,
             banned: getRandomItem(users)._id,
             added_at: Date.now(),
