@@ -11,7 +11,7 @@ export default {
     //     if (!this._flags) this._flags = {};
     // },
     coerce(value: any, state: any, options: any) {
-        if (!Types.ObjectId.isValid(value)) {
+        if (!Types.ObjectId.isValid(value) || value.length === 12) {
             return this.createError("objectId.invalid", {value}, state, options);
         }
 
