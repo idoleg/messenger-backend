@@ -1,13 +1,13 @@
 import {Document, Model, Types} from "mongoose";
 
-export interface IAccountContactDocument extends Document {
+export interface IUserContactDocument extends Document {
     user: Types.ObjectId;
     contact: Types.ObjectId;
     byname: string;
     added_at: Date;
 }
 
-export interface IUserContact extends IAccountContactDocument {
+export interface IUserContact extends IUserContactDocument {
 }
 
 export interface IUserContactModel extends Model<IUserContact> {

@@ -36,6 +36,6 @@ export default class UserController {
     };
 
     protected static idValidationSchema = {
-        userId: Joi.objectId(),
+        userId: Joi.objectId().required(),
     };
 }

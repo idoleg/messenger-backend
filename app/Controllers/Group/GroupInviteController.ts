@@ -51,14 +51,4 @@ export default class GroupController {
             next(err);
         }
     }
-
-    protected static validationAddSchema = {
-        name: Joi.string().required().min(2),
-        description: Joi.string(),
-    };
-
-    protected static validationUpdateSchema = {
-        name: Joi.string().min(2),
-        description: Joi.string(),
-    };
 }
