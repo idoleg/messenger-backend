@@ -30,7 +30,22 @@ describe("Contacts API", () => {
 
             res.should.have.status(200);
             res.body.should.have.property("user");
-            res.body.should.have.property("offset");
+            res.body.offset.should.be.equal(0);
+            res.body.should.have.property("data");
+        });
+
+    });
+
+    describe("GET /account/contacts - use offset", () => {
+
+        it("Successful getting contacts", async () => {
+            const res = await Agent().get(`/account/contacts`)
+                .query({offset: 1})
+                .set("Authorization", `Bearer ${authTokenOfAccount}`);
+
+            res.should.have.status(200);
+            res.body.offset.should.be.equal(1);
+            res.body.data.should.have.lengthOf(0);
             res.body.should.have.property("data");
         });
 
