@@ -7,6 +7,10 @@ const ContactSchema = new Schema({
     added_at: { type: Date, default: null },
 });
 
+ContactSchema.static("get", async function(userId: string, offset: number) {
+    return await this.find({ user: userId }).skip(offset);
+});
+
 ContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
     return await this.findOneAndUpdate({ user: userId, contact: contactId },
         { $set: { user: userId, contact: contactId, byname }, $setOnInsert: { added_at: Date.now() }},

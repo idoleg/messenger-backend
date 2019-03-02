@@ -11,6 +11,7 @@ export interface IUserContact extends IUserContactDocument {
 }
 
 export interface IUserContactModel extends Model<IUserContact> {
+    get(userId: string, offset?: number): Promise<[IUserContact]>;
     addContact(userId: string, contactId: string, byname: string): Promise<IUserContact>;
     updateContact(id: string, userId: string, byname: string): Promise<IUserContact>;
     deleteContact(id: string, userId: string): Promise<IUserContact>;
