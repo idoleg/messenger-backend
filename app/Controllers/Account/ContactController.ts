@@ -66,7 +66,7 @@ export default class ContactController {
 
             const { byname } = Validator(req.body, { byname: Joi.string().required() });
 
-            const contact = await Contact.updateContact(id, userId, byname);
+            const contact = await Contact.findOneAndUpdate({user: userId, contact: id}, {byname: byname});
 
             if (!contact) throw new httpError.NotFound("Contact with such id was not found");
 
