@@ -84,7 +84,7 @@ export default class ContactController {
 
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
-            await Contact.deleteContact(id, userId);
+            await Contact.deleteOne({user: userId, contact: id});
 
             res.json({message: "successfully"});
 
