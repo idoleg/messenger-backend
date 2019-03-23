@@ -120,7 +120,7 @@ describe("Contacts API", () => {
     describe("PUT /account/contacts/%id", () => {
        it("Successful setting byname to contact", async () => {
            const newName = faker.lorem.text();
-           const res = await Agent().put(`/account/contacts/${data.mainUserContact._id}`)
+           const res = await Agent().put(`/account/contacts/${data.userForManipulations._id}`)
                .set("Authorization", `Bearer ${authTokenOfAccount}`)
                .send({ byname: newName });
 
