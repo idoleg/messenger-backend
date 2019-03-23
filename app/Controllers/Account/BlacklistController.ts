@@ -46,7 +46,7 @@ export default class ContactController {
 
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
-            await Blacklist.removeFromBlacklist(id, userId);
+            await Blacklist.deleteOne({user: userId, banned: id});
 
             res.json({ message: "successfully" });
 
