@@ -40,23 +40,27 @@ UserSchema.method("createToken", function() {
 });
 
 UserSchema.static("findByToken", async function(token: string) {
-    const decodedToken = jwt.verify(token, Config.get("auth.privateKey")) as any;
-    let user: Document | null;
+    try {
+        const decodedToken = jwt.verify(token, Config.get("auth.privateKey")) as any;
+        let user: Document | null;
 
-    if (!decodedToken || typeof  decodedToken !== "object") {
+        if (!decodedToken || typeof  decodedToken !== "object") {
+            return false;
+        }
+
+        if ("userId" in decodedToken) {
+            user = await this.findById(decodedToken.userId);
+        } else {
+            return false;
+        }
+
+        if (!user) {
+            return false;
+        }
+        return user;
+    } catch (err) {
         return false;
     }
-
-    if ("userId" in decodedToken) {
-        user = await this.findById(decodedToken.userId);
-    } else {
-        return false;
-    }
-
-    if (!user) {
-        return false;
-    }
-    return user;
 });
 
 export default (mongoose: Mongoose) => {

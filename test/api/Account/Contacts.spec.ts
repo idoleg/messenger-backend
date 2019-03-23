@@ -1,7 +1,7 @@
+import { doesNotReject } from "assert";
 import faker from "faker";
 import { fakeContacts, fakeUsers } from "../../../dist/app/faker";
 import { Agent } from "../Bootstrap";
-import { doesNotReject } from "assert";
 
 const AMOUNT_OF_USERS = 5;
 

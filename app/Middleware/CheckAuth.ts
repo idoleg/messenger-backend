@@ -7,7 +7,11 @@ const User = DB.getModel<IUser, IUserModel>("User");
 export default class CheckAuth {
     public static async isAuth(req: any, res: any, next: any) {
         try {
-            if (req.method === "OPTIONS" || req.url === "/auth/login" || req.url === "/auth/registration" || req.url === "/socket") {
+            if (req.method === "OPTIONS"
+                ||
+                (req.method === "POST"
+                &&
+                (req.url === "/auth/login" || req.url === "/auth/registration" || req.url === "/socket"))) {
                 return next();
             }
             const authHeader = req.get("Authorization");
