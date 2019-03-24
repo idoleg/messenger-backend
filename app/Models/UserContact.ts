@@ -18,7 +18,7 @@ ContactSchema.static("addContact", async function(userId: string, contactId: str
 });
 
 ContactSchema.static("updateContact", async function(id: string, userId: string, byname: string) {
-    return await this.findOneAndUpdate({ _id: id, user: userId },
+    return await this.findOneAndUpdate({ contact: id, user: userId },
         { $set: { byname }}, { new: true });
 });
 
