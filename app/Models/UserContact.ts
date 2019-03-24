@@ -23,7 +23,7 @@ ContactSchema.static("updateContact", async function(id: string, userId: string,
 });
 
 ContactSchema.static("deleteContact", async function(id: string, userId: string) {
-    return await this.deleteMany({ _id: id, user: userId });
+    return await this.deleteMany({ contact: id, user: userId });
 });
 
 export default (mongoose: Mongoose) => mongoose.model("UserContact", ContactSchema, "users.contacts");
