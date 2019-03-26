@@ -7,11 +7,12 @@ import HttpServer from "../../src/HttpServer/HttpServer";
 process.env.APP_ENV = "test";
 process.env.AUTO_FAKER_OFF = "true";
 
-import {App} from "../../dist/app/index";
+import {App, Socket} from "../../dist/app/index";
 
 export let Agent: () => SuperAgent<any>;
 export let Server: HttpServer;
 export const TestApp = App;
+export const TestSocket = Socket;
 export const Config = App.config;
 export const DB = App.get("mongodb");
 export const MongoServer = new MongoMemoryServer();
