@@ -8,5 +8,6 @@ export default function() {
     });
 
     Socket.on("messages:send", MessageWSController.receive);
+    Socket.on("chat:typing", MessageWSController.typing);
 
 }

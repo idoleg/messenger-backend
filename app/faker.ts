@@ -12,8 +12,7 @@ App.lifecycle.on("afterInit", async () => {
     await fakeGroupMembers(MULTIPLIER * 20, groups, users);
     await fakeGroupMessages(MULTIPLIER * 100, groups, users);
     await fakeUserConversation(MULTIPLIER * 10, users);
-    for (let i = 0; i < users.length; i++) {
-        const user = users[i];
+    for (const user of users) {
         await fakeContacts(MULTIPLIER * randomInteger(0, 5), users, user);
         await fakeBlacklist(MULTIPLIER * randomInteger(0, 3), users, user);
         await fakeDirectChats(MULTIPLIER * randomInteger(2, 3), users, user);
