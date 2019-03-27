@@ -71,22 +71,23 @@ export default class MessageWSController {
     public static async typing(payload: any, client: any, result: any) {
         try {
             const { status, group, recipient } = payload;
+            const sender = client.user.model._id.toString();
 
             if (group && await GroupMembers.isMember(group, client.user.model)) {
                 const members = await GroupMembers.getAllMembers(group);
                 await members.forEach(async (el) => {
                     const id = el.member.toString();
-                    if ((!el.member.equals(client.user.model._id)) && Socket.rooms.has(`user:${id}`)) {
+                    if ((!el.member.equals(sender)) && Socket.rooms.has(`user:${id}`)) {
                         const room = Socket.rooms.get(`user:${id}`);
                         if (room) {
-                            room.emit("chat:typing", { status, group, sender: id });
+                            room.emit("chat:typing", { status, group, sender });
                         }
                     }
                 });
             } else if (recipient) {
                 const room = Socket.rooms.get(`user:${recipient}`);
                 if (room) {
-                    room.emit("chat:typing", { status, sender: recipient });
+                    room.emit("chat:typing", { status, sender });
                 }
             } else {
                 result(false, { error: "Credentials are wrong" });
