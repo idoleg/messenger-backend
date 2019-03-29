@@ -40,7 +40,10 @@ before(async () => {
         const token = user.createToken();
         data.tokens.push(token);
 
-        const socket = new WebSocket(`ws://${address.address}:8888/socket?token=${token}`, ``);
+        const socket = new WebSocket(`ws://${address.address}:${address.port}/socket?token=${token}`, ``);
+        socket.onerror = (event: any) => {
+            throw new Error(`An error occured with the ${user.id} connection... ${event}`);
+        };
 
         data.sockets.push(socket);
     }
@@ -49,7 +52,16 @@ before(async () => {
 describe("WS chat:typing", () => {
 
     describe("Person must get WS event chat:typing when some start|stop writing to him", () => {
-        // TO DO it("", async () => {});
+        it("First person start typing to second person", async () => {
+            data.sockets[secondPerson].onmessage = (event: any) => {
+                if (typeof event.data === "string") {
+                    // TO DO should be
+                } else {
+                  throw new Error(`Bad data type received... ${event}`);
+                }
+            };
+            data.sockets[firstPerson].send(`2["chat:typing",{"status":"start", "recipient":"${data.users[secondPerson].id}"}`);
+        });
     });
 
     describe("Group must get WS event chat:typing when some group member start|stop writing", () => {
