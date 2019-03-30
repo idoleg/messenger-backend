@@ -90,7 +90,7 @@ export default class MessageWSController {
                     room.emit("chat:typing", { status, sender });
                 }
             } else {
-                result(false, { error: "Credentials are wrong" });
+                return result(false, { error: "Credentials are wrong" });
             }
 
             result(true, { message: payload, sent_at: new Date() });
