@@ -13,6 +13,9 @@ export default class GroupController {
         try {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const group = await Group.getGroup(groupId);
+            if (!group) {
+                throw new httpError.Forbidden("Group doesnt exist!");
+            }
             const invitation_code = req.query.invitation_code;
 
             if (!await group.isMember(req.user) && (!invitation_code || invitation_code !== group.invitation_code)) {
@@ -45,7 +48,9 @@ export default class GroupController {
             const {groupId} = Validator(req.params, {groupId: Joi.objectId()});
             const {name, description} = Validator(req.body, GroupController.validationUpdateSchema);
             const group = await Group.getGroup(groupId);
-
+            if (!group) {
+                throw new httpError.Forbidden("Group doesnt exist!");
+            }
             if (!await group.isCreator(req.user)) {
                 throw new httpError.Forbidden("You cannot do it");
             }
