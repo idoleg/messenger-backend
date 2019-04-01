@@ -9,6 +9,7 @@ import ContactResource from "../../Resources/ContactResource";
 const Contact = DB.getModel<IUserContact, IUserContactModel>("UserContact");
 
 export default class ContactController {
+
     public static async get(req: any, res: any, next: any) {
         try {
 
@@ -16,6 +17,15 @@ export default class ContactController {
             const { id } = req.user;
 
             const contacts = await Contact.get(id, offset);
+
+             let i = 0;
+                for (let user of contacts) {
+                    const contact = await Contact.findById(user.contact);
+                    if (!contact)  {
+                        contacts.splice(i, 1);
+                    }
+                i++;
+            }
 
             next(new ContactCollectionResource(contacts, {user: id, offset}));
 
