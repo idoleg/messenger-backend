@@ -59,7 +59,7 @@ export default class MessageWSController {
                     room.emit("message:new", messagePayload);
                 }
             } else {
-                result(false, { error: "Credentials are wrong" });
+                return result(false, { error: "Credentials are wrong" });
             }
 
             result(true, { message: payload, sent_at: newMessage.sent_at });
