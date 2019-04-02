@@ -41,7 +41,7 @@ export default class MessageWSController {
                     if ((!el.member.equals(client.user.model._id)) && Socket.rooms.has(`user:${id}`)) {
                         const room = Socket.rooms.get(`user:${id}`);
                         if (room) {
-                            room.emit("message:new", messagePayload);
+                            room.emit("messages:new", messagePayload);
                         }
                     }
                 });
@@ -56,7 +56,7 @@ export default class MessageWSController {
                 }
                 const room = Socket.rooms.get(`user:${recipient}`);
                 if (room) {
-                    room.emit("message:new", messagePayload);
+                    room.emit("messages:new", messagePayload);
                 }
             } else {
                 return result(false, { error: "Credentials are wrong" });
