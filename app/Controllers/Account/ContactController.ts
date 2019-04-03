@@ -18,15 +18,6 @@ export default class ContactController {
 
             const contacts = await Contact.get(id, offset);
 
-             let i = 0;
-                for (let user of contacts) {
-                    const contact = await Contact.findById(user.contact);
-                    if (!contact)  {
-                        contacts.splice(i, 1);
-                    }
-                i++;
-            }
-
             next(new ContactCollectionResource(contacts, {user: id, offset}));
 
         } catch (err) {
