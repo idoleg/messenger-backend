@@ -16,9 +16,9 @@ const UserChatSchema = new Schema({
 UserChatSchema.static("getChats", async function(user: string | IUser, offset: number) {
     const userId = getRightId(user);
     if (offset) {
-        return await this.find({ user: userId }).skip(offset).limit(CHATS_LIMIT);
+        return await this.find({ user: userId }).skip(offset).limit(CHATS_LIMIT).populate("group","name").populate("direct","profile");
     } else {
-        return await this.find({ user: userId });
+        return await this.find({ user: userId }).populate("group","name").populate("direct","profile");
     }
 });
 
