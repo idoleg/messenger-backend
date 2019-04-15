@@ -9,7 +9,7 @@ export default class UserChatResource extends BaseResource {
         if (this.group) {
             chatName = this.group.name;
             groupId = this.group._id;
-        } 
+        }
         if (this.direct) {
             console.log({...this.direct.profile});
             chatName = this.direct.profile.username;

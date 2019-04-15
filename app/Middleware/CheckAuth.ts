@@ -11,7 +11,7 @@ export default class CheckAuth {
                 ||
                 (req.method === "POST"
                 &&
-                (req.url === "/auth/login" || req.url === "/auth/registration" || req.url === "/socket"))) {
+                (/^\/(auth\/login|auth\/registration|socket)[\/]{0,1}$/.test(req.url)))) {
                 return next();
             }
             const authHeader = req.get("Authorization");
