@@ -2,10 +2,12 @@ import httpError from "http-errors";
 import Validator from "../../../src/HttpServer/Validator";
 import {DB} from "../../index";
 import {IGroup, IGroupModel} from "../../Models/Group.d";
+import {IUserChat, IUserChatModel} from "../../Models/UserChat.d";
 import GroupResource from "../../Resources/GroupResource";
 import Joi from "./../../../src/Joi/Joi";
 
 const Group = DB.getModel<IGroup, IGroupModel>("Group");
+const UserChat = DB.getModel<IUserChat, IUserChatModel>("UserChat");
 
 export default class GroupController {
 
@@ -34,7 +36,8 @@ export default class GroupController {
             const {name, description} = Validator(req.body, GroupController.validationAddSchema);
             const group = await Group.addGroup(req.user, name, description);
 
-            group.addMember(req.user);
+            await group.addMember(req.user);
+            await UserChat.addChat(req.user,true,group.id,req.user,"I am here");
 
             next(new GroupResource(group));
 

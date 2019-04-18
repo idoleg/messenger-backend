@@ -4,6 +4,7 @@ import {DB} from "../../index";
 import {IGroup, IGroupModel} from "../../Models/Group.d";
 import {IGroupMember, IGroupMemberModel} from "../../Models/GroupMember.d";
 import {IUser, IUserModel} from "../../Models/User.d";
+import {IUserChat, IUserChatModel} from "../../Models/UserChat.d";
 import GroupMemberCollectionResource from "../../Resources/GroupMemberCollectionResource";
 import GroupMemberResource from "../../Resources/GroupMemberResource";
 import Joi from "./../../../src/Joi/Joi";
@@ -11,6 +12,7 @@ import Joi from "./../../../src/Joi/Joi";
 const Group = DB.getModel<IGroup, IGroupModel>("Group");
 const GroupMember = DB.getModel<IGroupMember, IGroupMemberModel>("GroupMember");
 const User = DB.getModel<IUser, IUserModel>("User");
+const UserChat = DB.getModel<IUserChat, IUserChatModel>("UserChat");
 
 export default class MemberController {
 
@@ -43,6 +45,7 @@ export default class MemberController {
             }
 
             const member = await GroupMember.addMemberTo(groupId, user);
+            UserChat.addChat(user,true,groupId,user,"I am here");
 
             next(new GroupMemberResource(member));
 
