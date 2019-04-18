@@ -23,12 +23,12 @@ export default class MessageWSController {
                 group,
                 text,
                 read: false,
-                sent_at: newMessage.sent_at,
+                sent_at: newMessage.sent_at.getTime(),
             };
 
             if (group && await GroupMembers.isMember(group, client.user.model)) {
                 newMessage = await GroupMessages.send(client.user.model, group, text);
-                messagePayload.sent_at = newMessage.sent_at;
+                messagePayload.sent_at = newMessage.sent_at.getTime();
                 const members = await GroupMembers.getAllMembers(group);
                 await members.forEach(async (el) => {
                     const id = el.member.toString();
@@ -41,13 +41,13 @@ export default class MessageWSController {
                     if ((!el.member.equals(client.user.model._id)) && Socket.rooms.has(`user:${id}`)) {
                         const room = Socket.rooms.get(`user:${id}`);
                         if (room) {
-                            room.emit("message:new", messagePayload);
+                            room.emit("messages:new", messagePayload);
                         }
                     }
                 });
             } else if (recipient) {
                 newMessage = await UserMessages.send(client.user.model, recipient, text);
-                messagePayload.sent_at = newMessage.sent_at;
+                messagePayload.sent_at = newMessage.sent_at.getTime();
                 const chat = await UserChats.findChatByUserGroupId(client.user.model, recipient);
                 if (chat) {
                     await UserChats.updateChat(client.user.model, recipient, client.user.model, text);
@@ -56,13 +56,13 @@ export default class MessageWSController {
                 }
                 const room = Socket.rooms.get(`user:${recipient}`);
                 if (room) {
-                    room.emit("message:new", messagePayload);
+                    room.emit("messages:new", messagePayload);
                 }
             } else {
                 return result(false, { error: "Credentials are wrong" });
             }
 
-            result(true, { message: payload, sent_at: newMessage.sent_at });
+            result(true, { message: payload, sent_at: newMessage.sent_at.getTime() });
         } catch (err) {
             result(false, { error: err });
         }

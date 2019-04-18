@@ -54,6 +54,6 @@ export default class WebSocketEvent {
     }
 
     public toString() {
-        return `${this.response ? -this.response : ""}[${this.result},${JSON.stringify(this.payload)}]`;
+        return `${this.response ? -this.response : ""}["${this.name !== "nameless" ? this.name : this.result}",${JSON.stringify(this.payload)}]`;
     }
 }
