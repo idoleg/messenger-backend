@@ -1,4 +1,7 @@
 
+## Node.js
+Требуемая версия не ниже 10.
+
 ## TypeScript
 В проекте ипользуется TypeScript версии 3.2.2
  1. [➔ Официальная Докуменатция](https://www.typescriptlang.org/docs/handbook/basic-types.html)
