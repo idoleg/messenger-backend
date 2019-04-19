@@ -45,7 +45,7 @@ export default class MemberController {
             }
 
             const member = await GroupMember.addMemberTo(groupId, user);
-            UserChat.addChat(user,true,groupId,user,"I am here");
+            UserChat.addChat(user, true, groupId, user, "I am here");
 
             next(new GroupMemberResource(member));
 

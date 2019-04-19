@@ -37,7 +37,7 @@ export default class GroupController {
             const group = await Group.addGroup(req.user, name, description);
 
             await group.addMember(req.user);
-            await UserChat.addChat(req.user,true,group.id,req.user,"I am here");
+            await UserChat.addChat(req.user, true, group.id, req.user, "I am here");
 
             next(new GroupResource(group));
 

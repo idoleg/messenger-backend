@@ -11,7 +11,6 @@ export default class UserChatResource extends BaseResource {
             groupId = this.group._id;
         }
         if (this.direct) {
-            console.log({...this.direct.profile});
             chatName = this.direct.profile.username;
             directId = this.direct._id;
         }
