@@ -23,10 +23,10 @@ before(async () => {
 });
 describe("User message API", () => {
 
-    describe("GET: /users/:userId/messages", () => {
+    describe("GET: /user/:userId/messages", () => {
 
         it("Successful getting conversation between users", async () => {
-            const res = await Agent().get(`/users/${secondPersonId}/messages`)
+            const res = await Agent().get(`/user/${secondPersonId}/messages`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(200);
@@ -35,7 +35,7 @@ describe("User message API", () => {
         });
 
         it("Successful getting conversation between users - it's empty", async () => {
-            const res = await Agent().get(`/users/${data.anoutherPerson._id}/messages`)
+            const res = await Agent().get(`/user/${data.anoutherPerson._id}/messages`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(200);
@@ -44,7 +44,7 @@ describe("User message API", () => {
         });
 
         it("Successful getting conversation between users - use offset", async () => {
-            const res = await Agent().get(`/users/${secondPersonId}/messages`)
+            const res = await Agent().get(`/user/${secondPersonId}/messages`)
                 .query({offset: 70})
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
@@ -54,7 +54,7 @@ describe("User message API", () => {
         });
 
         it("Error of getting conversation between user - user is not exist", async () => {
-            const res = await Agent().get(`/users/userIsNotExist/messages`)
+            const res = await Agent().get(`/user/userIsNotExist/messages`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(400);
@@ -63,12 +63,12 @@ describe("User message API", () => {
 
     });
 
-    describe("GET: /users/:userId/messages/:messageId", () => {
+    describe("GET: /user/:userId/messages/:messageId", () => {
 
         it("Successful getting one message by id", async () => {
             const messageId = data.messages[1]._id.toString();
 
-            const res = await Agent().get(`/users/${secondPersonId}/messages/${messageId}`)
+            const res = await Agent().get(`/user/${secondPersonId}/messages/${messageId}`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(200);
@@ -82,7 +82,7 @@ describe("User message API", () => {
         it("Error of getting message by id - user is not exist", async () => {
             const messageId = data.messages[1]._id.toString();
 
-            const res = await Agent().get(`/users/userIsNotExist/messages/${messageId}`)
+            const res = await Agent().get(`/user/userIsNotExist/messages/${messageId}`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(400);
@@ -90,7 +90,7 @@ describe("User message API", () => {
         });
 
         it("Error of getting message by id - get wrong id of message", async () => {
-            const res = await Agent().get(`/users/${secondPersonId}/messages/messageNotExist`)
+            const res = await Agent().get(`/user/${secondPersonId}/messages/messageNotExist`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(400);
@@ -100,7 +100,7 @@ describe("User message API", () => {
         it("Error of getting message by id - message does not belong conversation of these users", async () => {
             const messageId = data.outherMessages[0]._id;
 
-            const res = await Agent().get(`/users/${secondPersonId}/messages/${messageId}`)
+            const res = await Agent().get(`/user/${secondPersonId}/messages/${messageId}`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(404);
@@ -109,12 +109,12 @@ describe("User message API", () => {
 
     });
 
-    describe("POST: /users/:userId/messages", () => {
+    describe("POST: /user/:userId/messages", () => {
 
         it("Successful sending message to user", async () => {
             const messageText = "This is awesome message";
 
-            const res = await Agent().post(`/users/${secondPersonId}/messages`)
+            const res = await Agent().post(`/user/${secondPersonId}/messages`)
                 .send({text: messageText})
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
@@ -130,7 +130,7 @@ describe("User message API", () => {
         it("Error of sending message to user - user is not exist", async () => {
             const messageText = "This is awesome message";
 
-            const res = await Agent().post(`/users/userIsNotExist/messages`)
+            const res = await Agent().post(`/user/userIsNotExist/messages`)
                 .send({text: messageText})
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
@@ -139,7 +139,7 @@ describe("User message API", () => {
         });
 
         it("Error of sending message to user - text does not get in body", async () => {
-            const res = await Agent().post(`/users/${secondPersonId}/messages`)
+            const res = await Agent().post(`/user/${secondPersonId}/messages`)
                 .set("Authorization", "Bearer " + authTokenOfFirstPerson);
 
             res.should.have.status(400);
