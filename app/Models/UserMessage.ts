@@ -18,7 +18,7 @@ UserMessageSchema.static("send", async function(sender: string | IUser, recipien
     const senderId = getRightId(sender);
     const recipientId = getRightId(recipient);
 
-    return await this.create({sender: senderId, recipient: recipientId, text});
+    return await this.create({sender: senderId, recipient: recipientId, text, read: false});
 });
 
 UserMessageSchema.static("findConversation", async function(

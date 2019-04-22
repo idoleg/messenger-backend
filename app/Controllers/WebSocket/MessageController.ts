@@ -23,12 +23,12 @@ export default class MessageWSController {
                 group,
                 text,
                 read: false,
-                sent_at: newMessage.sent_at,
+                sent_at: newMessage.sent_at.getTime(),
             };
 
             if (group && await GroupMembers.isMember(group, client.user.model)) {
                 newMessage = await GroupMessages.send(client.user.model, group, text);
-                messagePayload.sent_at = newMessage.sent_at;
+                messagePayload.sent_at = newMessage.sent_at.getTime();
                 const members = await GroupMembers.getAllMembers(group);
                 await members.forEach(async (el) => {
                     const id = el.member.toString();
@@ -47,7 +47,7 @@ export default class MessageWSController {
                 });
             } else if (recipient) {
                 newMessage = await UserMessages.send(client.user.model, recipient, text);
-                messagePayload.sent_at = newMessage.sent_at;
+                messagePayload.sent_at = newMessage.sent_at.getTime();
                 const chat = await UserChats.findChatByUserGroupId(client.user.model, recipient);
                 if (chat) {
                     await UserChats.updateChat(client.user.model, recipient, client.user.model, text);
@@ -62,7 +62,7 @@ export default class MessageWSController {
                 return result(false, { error: "Credentials are wrong" });
             }
 
-            result(true, { message: payload, sent_at: newMessage.sent_at });
+            result(true, { message: payload, sent_at: newMessage.sent_at.getTime() });
         } catch (err) {
             result(false, { error: err });
         }
