@@ -66,6 +66,15 @@ UserChatSchema.static("updateChat", async function(user: string | IUser, id: str
     return chat;
 });
 
+UserChatSchema.static("resetChatUnread", async function(user: string | IUser, id: string) {
+    const chat = await this.findChatByUserGroupId(user, id);
+    if (chat) {
+        chat.unread = 0;
+        await chat.save();
+    }
+    return true;
+});
+
 UserChatSchema.static("deleteChatById", async function(chatId: string) {
     await this.findOneAndRemove({ _id: chatId });
     return true;

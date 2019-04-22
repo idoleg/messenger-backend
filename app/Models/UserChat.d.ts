@@ -20,6 +20,7 @@ export interface IUserChatModel extends Model<IUserChat> {
     findChatByUserGroupId(user: string | IUser, id: string): Promise<IUserChat>;
     addChat(user: string | IUser, group: boolean, id: string, sender: string | IUser, preview: string): Promise<IUserChat>;
     updateChat(user: string | IUser, id: string, sender: string | IUser, preview: string): Promise<IUserChat>;
+    resetChatUnread(user: string | IUser, id: string): Promise<boolean>;
     deleteChatById(chatId: string): Promise<boolean>;
     deleteChatByUserGroupId(user: string | IUser, id: string): Promise<IUser> | Promise<boolean>;
 }
