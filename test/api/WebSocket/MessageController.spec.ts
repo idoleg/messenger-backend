@@ -48,7 +48,7 @@ describe("WS chat:typing", () => {
             data.sockets[firstPerson].onmessage = (event: any) => {
                 if (typeof event.data === "string") {
                     const haveTrue = event.data.search("true");
-                    haveTrue.should.be.equal(3);
+                    haveTrue.should.be.equal(4);
 
                     const startPayload = event.data.search("{");
                     const payload = JSON.parse(event.data.substring(startPayload, event.data.length - 1));
@@ -61,7 +61,7 @@ describe("WS chat:typing", () => {
 
             data.sockets[secondPerson].onmessage = (event: any) => {
                 if (typeof event.data === "string") {
-                    event.data.should.be.equal(`[null,{"status":"start","sender":"${data.users[firstPerson].id}"}]`);
+                    event.data.should.be.equal(`["chat:typing",{"status":"start","sender":"${data.users[firstPerson].id}"}]`);
                 } else {
                   throw new Error(`Bad data type received... ${event}`);
                 }
@@ -72,7 +72,7 @@ describe("WS chat:typing", () => {
             data.sockets[firstPerson].onmessage = (event: any) => {
                 if (typeof event.data === "string") {
                     const haveTrue = event.data.search("true");
-                    haveTrue.should.be.equal(3);
+                    haveTrue.should.be.equal(4);
 
                     const startPayload = event.data.search("{");
                     const payload = JSON.parse(event.data.substring(startPayload, event.data.length - 1));
@@ -85,7 +85,7 @@ describe("WS chat:typing", () => {
 
             data.sockets[secondPerson].onmessage = (event: any) => {
                 if (typeof event.data === "string") {
-                    event.data.should.be.equal(`[null,{"status":"stop","sender":"${data.users[firstPerson].id}"}]`);
+                    event.data.should.be.equal(`["chat:typing",{"status":"stop","sender":"${data.users[firstPerson].id}"}]`);
                 } else {
                   throw new Error(`Bad data type received... ${event}`);
                 }
@@ -113,7 +113,7 @@ describe("WS chat:typing", () => {
             data.sockets[firstPerson].onmessage = (event: any) => {
                 if (typeof event.data === "string") {
                     const haveTrue = event.data.search("true");
-                    haveTrue.should.be.equal(3);
+                    haveTrue.should.be.equal(4);
 
                     const startPayload = event.data.search("{");
                     const payload = JSON.parse(event.data.substring(startPayload, event.data.length - 1));
