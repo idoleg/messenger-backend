@@ -73,19 +73,7 @@ export default class MessageWSController {
             const { id, sender } = payload;
             const recipient = client.user.model._id.toString();
 
-            if (id && await GroupMembers.isMember(id, client.user.model)) {
-                const members = await GroupMembers.getAllMembers(id);
-                await members.forEach(async (el) => {
-                    const memberId = el.member.toString();
-                    await UserChats.resetChatUnread(memberId, id);
-                    if ((!el.member.equals(client.user.model._id)) && Socket.rooms.has(`user:${memberId}`)) {
-                        const room = Socket.rooms.get(`user:${memberId}`);
-                        if (room) {
-                            room.emit("messages:read", { id, recipient });
-                        }
-                    }
-                });
-            } else if (sender) {
+            if (sender || (id && await GroupMembers.isMember(id, client.user.model))) {
                 await UserChats.resetChatUnread(sender, id);
                 const room = Socket.rooms.get(`user:${sender}`);
                 if (room) {
@@ -95,7 +83,7 @@ export default class MessageWSController {
                 return result(false, { error: "Credentials are wrong" });
             }
 
-            result(true, { message: payload, sent_at: new Date() });
+            result(true, { message: payload });
         } catch (err) {
             result(false, { error: err });
         }
