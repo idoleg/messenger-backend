@@ -45,11 +45,11 @@ export default class ContactController {
 
     public static async add(req: any, res: any, next: any) {
         try {
-            const { id: userId } = req.user;
+            const { id: userId, profile: userProfile } = req.user;
 
-            const { user: contactId, byname } = Validator(req.body, ContactController.postContactValidationSchema);
+            const { byname } = Validator(req.body, ContactController.postContactValidationSchema);
 
-            const contact = await Contact.addContact(userId, contactId, byname);
+            const contact = await Contact.addContact(userId, userProfile, byname);
 
             next(new ContactResource(contact));
 
@@ -95,7 +95,6 @@ export default class ContactController {
     }
 
     protected static postContactValidationSchema = {
-        user: Joi.objectId().required(),
         byname: Joi.string(),
     };
 }
