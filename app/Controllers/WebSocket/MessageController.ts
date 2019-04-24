@@ -95,7 +95,7 @@ export default class MessageWSController {
                 return result(false, { error: "Credentials are wrong" });
             }
 
-            result(true, { message: payload, sent_at: new Date() });
+            result(true, { message: payload });
         } catch (err) {
             result(false, { error: err });
         }
