@@ -13,10 +13,11 @@ export default class ContactController {
         try {
 
             const { offset } = Validator(req.query, { offset: Joi.number() });
+
             const { id } = req.user;
 
             const contacts = await Contact.get(id, offset);
-
+            
             next(new ContactCollectionResource(contacts, {user: id, offset}));
 
         } catch (err) {

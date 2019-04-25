@@ -4,8 +4,8 @@ export default class ContactResource extends BaseResource {
 
     public uncover() {
         return {
-            id: this._id,
-            contact: this.contact,
+            profile: this.contact.profile,
+            contact: this.contact._id,
             byname: this.byname,
             addedAt: this.added_at,
         };

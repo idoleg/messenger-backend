@@ -8,7 +8,7 @@ const ContactSchema = new Schema({
 });
 
 ContactSchema.static("get", async function(userId: string, offset: number) {
-    return await this.find({ user: userId }).skip(offset);
+    return await this.find({ user: userId }).populate({ path: "contact", select: "profile" }).skip(offset);
 });
 
 ContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
