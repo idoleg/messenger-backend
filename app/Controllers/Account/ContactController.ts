@@ -9,7 +9,6 @@ import ContactResource from "../../Resources/ContactResource";
 const Contact = DB.getModel<IUserContact, IUserContactModel>("UserContact");
 
 export default class ContactController {
-
     public static async get(req: any, res: any, next: any) {
         try {
 
