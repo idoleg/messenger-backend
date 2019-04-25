@@ -8,16 +8,7 @@ const ContactSchema = new Schema({
 });
 
 ContactSchema.static("get", async function(userId: string, offset: number) {
-        const contacts = await this.find({ user: userId }).skip(offset);
-        let i = 0;
-        for (let user of contacts) {
-            const contact = await this.findById(user.contact);
-            if (!contact) {
-                contacts.splice(i, 1);
-            }
-            i++;         
-        }
-        return contacts;
+    return await this.find({ user: userId }).skip(offset);
 });
 
 ContactSchema.static("addContact", async function(userId: string, contactId: string, byname: string) {
