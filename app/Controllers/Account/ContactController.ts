@@ -85,6 +85,10 @@ export default class ContactController {
 
             const { id } = Validator(req.params, { id: Joi.objectId() });
 
+            const contact = await Contact.findById(id);
+
+            if (!contact || !contact.user.equals(userId)) throw new httpError.NotFound("Contact with such id was not found");
+
             await Contact.deleteContact(id, userId);
 
             res.json({message: "successfully"});
