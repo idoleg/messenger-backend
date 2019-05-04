@@ -40,6 +40,26 @@ UserMessageSchema.static("findConversation", async function(
         .limit(limit).skip(offset);
 });
 
+UserMessageSchema.static("findUnreadConversation", async function(
+    firstPerson: string | IUser,
+    secondPerson: string | IUser,
+    offset: number = 0,
+    limit: number = MESSAGES_LIMIT,
+) {
+    const firstPersonId = getRightId(firstPerson);
+    const secondPersonId = getRightId(secondPerson);
+
+    return await this.find(
+        {
+            read: false,
+            $or: [
+                {sender: firstPersonId, recipient: secondPersonId},
+                {sender: secondPersonId, recipient: firstPersonId},
+            ],
+        })
+        .limit(limit).skip(offset);
+});
+
 UserMessageSchema.static("findOneForConversation", async function(
     firstPerson: string | IUser,
     secondPerson: string | IUser,
@@ -61,6 +81,22 @@ UserMessageSchema.static("findOneForConversation", async function(
     throw new MongooseError.DocumentNotFoundError(
         `Between users ${firstPerson} and ${secondPerson} there is not message with id ${messageId}`,
     );
+});
+
+UserMessageSchema.static("setConversationRead", async function(
+    firstPerson: string | IUser,
+    secondPerson: string | IUser,
+    timeBound: Date,
+) {
+    const unreadMessages = await this.findUnreadConversation(firstPerson, secondPerson, 0, 0);
+    unreadMessages.forEach((message: any) => {
+        if (message.sent_at <= timeBound) {
+            message.read = true;
+            message.save();
+        }
+    });
+
+    return true;
 });
 
 export default (mongoose: Mongoose) => {

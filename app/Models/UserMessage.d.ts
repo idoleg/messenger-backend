@@ -17,4 +17,5 @@ export interface IUserMessageModel extends Model<IUserMessage> {
     send(sender: string | IUser, recipient: string | IUser, text: string): Promise<IUserMessage>;
     findConversation(firstPerson: string | IUser, secondPerson: string | IUser, offset?: number, limit?: number): Promise<IUserMessage[]>;
     findOneForConversation(firstPerson: string | IUser, secondPerson: string | IUser, messageId: string): Promise<IUserMessage>;
+    setConversationRead(firstPerson: string | IUser, secondPerson: string | IUser, timeBound: Date): Promise<boolean>;
 }

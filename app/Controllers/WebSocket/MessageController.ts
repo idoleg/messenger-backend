@@ -73,12 +73,19 @@ export default class MessageWSController {
             const { id, sender } = payload;
             const recipient = client.user.model._id.toString();
 
-            if (sender || (id && await GroupMembers.isMember(id, client.user.model))) {
+            if (id && await GroupMembers.isMember(id, client.user.model)) {
                 await UserChats.resetChatUnread(sender, id);
                 const room = Socket.rooms.get(`user:${sender}`);
                 if (room) {
                     room.emit("messages:read", { id, recipient });
                 }
+            } else if (sender) {
+                await UserChats.resetChatUnread(sender, id);
+                const room = Socket.rooms.get(`user:${sender}`);
+                if (room) {
+                    room.emit("messages:read", { id, recipient });
+                }
+                await UserMessages.setConversationRead(sender, recipient, new Date());
             } else {
                 return result(false, { error: "Credentials are wrong" });
             }
