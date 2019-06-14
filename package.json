@@ -5,31 +5,63 @@
   "main": "index.js",
   "author": "Oleg Shikov <oleg.shikov@ya.ru>",
   "scripts": {
-    "start": "node dist/app",
-    "dev": "nodemon  dist/app",
+    "build": "(rm -r dist || rd /s /q dist) & tsc",
+    "start": "set APP_DEBUG=false & node dist/app",
+    "dev": "set APP_DEBUG=true & nodemon  dist/app",
+    "faker": "set APP_DEBUG=false & node dist/app/faker",
     "lint": "tslint -p tslint.json --format stylish",
     "fix": "tslint -p tslint.json --fix --format stylish",
-    "test": "mocha --reporter spec -r ts-node/register test/**/*.ts",
-    "test-coverage": "nyc mocha --reporter spec -r ts-node/register test/**/*.ts"
+    "test": "mocha --reporter spec",
+    "test:report": "mocha --reporter mochawesome --reporter-options reportDir=test/.report",
+    "test:coverage": "nyc mocha --reporter spec"
   },
   "license": "GPL",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "body-parser": "^1.18.3",
     "chalk": "^2.4.1",
+    "cors": "^2.8.5",
     "dot-prop": "^4.2.0",
     "dotenv": "^6.2.0",
+    "express": "^4.16.4",
+    "getenv": "git+https://github.com/idoleg/node-getenv.git",
+    "http-errors": "^1.7.1",
+    "joi": "^14.3.1",
+    "jsonwebtoken": "^8.4.0",
     "moment": "^2.23.0",
+    "mongoose": "^5.4.2",
+    "pretty-error": "^2.1.1",
     "websocket": "^1.0.28"
   },
   "devDependencies": {
+    "@types/bcryptjs": "^2.4.2",
     "@types/chai": "^4.1.7",
+    "@types/cors": "^2.8.4",
     "@types/dot-prop": "^4.2.0",
     "@types/dotenv": "^6.1.0",
+    "@types/express": "^4.16.0",
+    "@types/faker": "^4.1.4",
+    "@types/getenv": "^0.7.0",
+    "@types/http-errors": "^1.6.1",
+    "@types/joi": "^14.0.1",
+    "@types/jsonwebtoken": "^8.3.0",
     "@types/mocha": "^5.2.5",
+    "@types/mongoose": "^5.3.7",
     "@types/node": "^10.12.18",
+    "@types/sinon": "^7.0.3",
+    "@types/superagent": "git+https://github.com/superpike/superagentEdited.git",
+    "@types/validator": "^10.9.0",
+    "@types/websocket": "0.0.40",
     "chai": "^4.2.0",
+    "chai-http": "^4.2.1",
+    "cz-customizable": "^5.3.0",
+    "faker": "^4.1.0",
     "mocha": "^5.2.0",
+    "mochawesome": "^3.1.1",
+    "mongodb-memory-server": "^2.9.3",
     "nodemon": "^1.18.9",
     "nyc": "^13.1.0",
+    "sinon": "^7.2.2",
     "source-map-support": "^0.5.9",
     "ts-node": "^7.0.1",
     "tslint": "^5.12.0",
@@ -43,13 +75,23 @@
     "exclude": [
       "**/*.d.ts",
       "dist",
-      "config"
+      "config",
+      "test"
     ],
     "reporter": [
-      "html", "text"
+      "html",
+      "text"
     ],
     "temp-dir": "test/.nyc-tmp",
-    "report-dir": "test/.nyc-coverage",
+    "report-dir": "test/.coverage",
     "all": true
+  },
+  "config": {
+    "commitizen": {
+      "path": "node_modules/cz-customizable"
+    },
+    "cz-customizable": {
+      "config": "commitizen.js"
+    }
   }
 }

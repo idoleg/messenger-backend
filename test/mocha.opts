@@ -1,0 +1,5 @@
+--file test/api/Bootstrap.ts
+--require ts-node/register test/**/*.ts
+--require source-map-support
+--recursive
+--timeout 200000

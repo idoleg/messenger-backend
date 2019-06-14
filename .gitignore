@@ -1,9 +1,13 @@
 .idea
+.vscode
 
 .env
+.env.test
 package-lock.json
 node_modules
 dist
+mochawesome-report
 
 test/.nyc-tmp
-test/.nyc-coverage
+test/.coverage
+test/.report
